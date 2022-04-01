@@ -20,7 +20,7 @@ import requests
 import telebot
 
 bot = telebot.TeleBot(
-    "5112623870:AAFTiyiYfNUxHNDyklZfZTTEyMePsL8Fe18", parse_mode=None)
+    "YOUR BOT TOKEN", parse_mode=None)
 
 
 @bot.message_handler(commands=['start'])
