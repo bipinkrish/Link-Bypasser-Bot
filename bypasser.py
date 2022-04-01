@@ -18,9 +18,12 @@ import json
 import base64
 import requests
 import telebot
+from dotenv import load_dotenv
 
-bot = telebot.TeleBot(
-    "YOUR BOT TOKEN", parse_mode=None)
+load_dotenv()
+
+
+bot = telebot.TeleBot(os.getenv('TOKEN'), parse_mode=None)
 
 
 @bot.message_handler(commands=['start'])
