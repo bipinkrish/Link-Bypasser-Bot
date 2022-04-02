@@ -7,10 +7,6 @@ add your bot token in env file
 
 start - Welcome Message with supported sites
 af - adfly
-
 gp - gplinks
-
 dl - droplink
-
 lv - linkvertise
-
