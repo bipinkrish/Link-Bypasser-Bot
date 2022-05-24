@@ -23,7 +23,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-bot = telebot.TeleBot(os.getenv('TOKEN'), parse_mode=None)
+bot = telebot.TeleBot(os.environ.get("TOKEN", "") , parse_mode=None)
 
 
 @bot.message_handler(commands=['start'])
