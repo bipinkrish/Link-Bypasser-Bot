@@ -3,3 +3,4 @@ cloudscraper
 bs4 
 telebot
 python-dotenv
+pyTelegramBotAPI
