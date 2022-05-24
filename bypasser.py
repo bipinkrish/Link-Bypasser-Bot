@@ -24,7 +24,7 @@ import os
 load_dotenv()
 
 
-bot = telebot.TeleBot(os.environ.get("TOKEN", "") , parse_mode=None)
+bot = telebot.TeleBot(os.environ.get("TOKEN", ""))
 
 
 @bot.message_handler(commands=['start'])
