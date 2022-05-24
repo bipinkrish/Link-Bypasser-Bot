@@ -4,3 +4,4 @@ bs4
 telebot
 python-dotenv
 pyTelegramBotAPI
+lxml
