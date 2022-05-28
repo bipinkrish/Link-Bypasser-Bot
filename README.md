@@ -1,7 +1,7 @@
 # link-bypasser-telegram-bot
 
 # How to USE
-add your bot token in TOKEN variable
+add your bot token in TOKEN env
 
 # Commands to set in bot
 
