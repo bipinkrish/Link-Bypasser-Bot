@@ -5,7 +5,7 @@ A Telegram Bot that can Bypass the Ad Links
 
 ## Variables
 
-- `BOT_TOKEN` Your bot token from @BotFather
+- `TOKEN` Your bot token from @BotFather
 
 ---
 
