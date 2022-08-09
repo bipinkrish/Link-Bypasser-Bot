@@ -1,6 +1,6 @@
 # Link-Bypasser-Bot
 
-A Telegram Bot that can Bypass the Ad Links
+a Telegram Bot that can Bypass the Ad Links
 ---
 
 ## Variables
