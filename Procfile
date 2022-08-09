@@ -1,1 +1,1 @@
-web: python3 bypasser.py
+web: python3 main.py
