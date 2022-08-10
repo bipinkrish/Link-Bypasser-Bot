@@ -88,9 +88,9 @@ def af(message):
 
 
 # megaup link
-@bot.message_handler(commands=['mp'])
+@bot.message_handler(commands=['mu'])
 def af(message):
-    url = message.text.split("/mp ")[1]
+    url = message.text.split("/mu ")[1]
     print("You Have Entered:",url)
     link = bypasser.megaup(url)
     bot.reply_to(message, link)  
