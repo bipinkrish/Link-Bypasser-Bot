@@ -35,6 +35,10 @@ wt - wetransfer
 mu - megaup
 
 gd - Google Drive Look-Alike
+
+ot - others
+
+ou - ouo
 ```
 ---
 

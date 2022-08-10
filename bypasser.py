@@ -1,4 +1,5 @@
 import re
+import requests
 from base64 import b64decode
 from urllib.parse import unquote
 import time
@@ -112,6 +113,7 @@ def linkvertise(url):
     api = "https://api.emilyx.in/api"
     client = cloudscraper.create_scraper(allow_brotli=False)
     resp = client.get(url)
+
     if resp.status_code == 404:
         return "File not found/The link you entered is wrong!"
     try:
@@ -119,10 +121,84 @@ def linkvertise(url):
         res = resp.json()
     except BaseException:
         return "API UnResponsive / Invalid Link !"
+
     if res["success"] is True:
         return res["url"]
     else:
-        return res["msg"]
+        try:
+            payload = {"url": url}
+            url_bypass = requests.post("https://api.bypass.vip/", data=payload).json()
+            bypassed = url_bypass["destination"]
+            return bypassed
+        except:
+            return "Could not Bypass your URL :("
+
+
+###################################################################################################################
+# others
+
+# api from https://github.com/bypass-vip/bypass.vip
+def others(url):
+    try:
+        payload = {"url": url}
+        url_bypass = requests.post("https://api.bypass.vip/", data=payload).json()
+        bypassed = url_bypass["destination"]
+        return bypassed
+    except:
+        return "Could not Bypass your URL :("
+
+
+#################################################################################################################
+# ouo
+
+# RECAPTCHA v3 BYPASS
+# code from https://github.com/xcscxr/Recaptcha-v3-bypass
+def RecaptchaV3(ANCHOR_URL):
+    url_base = 'https://www.google.com/recaptcha/'
+    post_data = "v={}&reason=q&c={}&k={}&co={}"
+    client = requests.Session()
+    client.headers.update({
+        'content-type': 'application/x-www-form-urlencoded'
+    })
+    matches = re.findall('([api2|enterprise]+)\/anchor\?(.*)', ANCHOR_URL)[0]
+    url_base += matches[0]+'/'
+    params = matches[1]
+    res = client.get(url_base+'anchor', params=params)
+    token = re.findall(r'"recaptcha-token" value="(.*?)"', res.text)[0]
+    params = dict(pair.split('=') for pair in params.split('&'))
+    post_data = post_data.format(params["v"], token, params["k"], params["co"])
+    res = client.post(url_base+'reload', params=f'k={params["k"]}', data=post_data)
+    answer = re.findall(r'"rresp","(.*?)"', res.text)[0]    
+    return answer
+
+
+# code from https://github.com/xcscxr/ouo-bypass/
+ANCHOR_URL = 'https://www.google.com/recaptcha/api2/anchor?ar=1&k=6Lcr1ncUAAAAAH3cghg6cOTPGARa8adOf-y9zv2x&co=aHR0cHM6Ly9vdW8uaW86NDQz&hl=en&v=1B_yv3CBEV10KtI2HJ6eEXhJ&size=invisible&cb=4xnsug1vufyr'
+def ouo(url):
+    client = requests.Session()
+    tempurl = url.replace("ouo.press", "ouo.io")
+    p = urlparse(tempurl)
+    id = tempurl.split('/')[-1]
+    
+    res = client.get(tempurl)
+    next_url = f"{p.scheme}://{p.hostname}/go/{id}"
+
+    for _ in range(2):
+        if res.headers.get('Location'):
+            break
+        bs4 = BeautifulSoup(res.content, 'lxml')
+        inputs = bs4.form.findAll("input", {"name": re.compile(r"token$")})
+        data = { input.get('name'): input.get('value') for input in inputs }
+        
+        ans = RecaptchaV3(ANCHOR_URL)
+        data['x-token'] = ans
+        h = {
+            'content-type': 'application/x-www-form-urlencoded'
+        }
+        res = client.post(next_url, data=data, headers=h, allow_redirects=False)
+        next_url = f"{p.scheme}://{p.hostname}/xreallcygo/{id}"
+
+    return res.headers.get('Location')
 
 
 ####################################################################################################################        
