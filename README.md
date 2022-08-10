@@ -36,7 +36,7 @@ mu - megaup
 
 gd - Google Drive Look-Alike
 ```
-
+---
 
 ### Credits
 1. [Dr Caduceus](https://github.com/TheCaduceus) <i> for writing the Script in Colab </i>
