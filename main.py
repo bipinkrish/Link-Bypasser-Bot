@@ -24,7 +24,7 @@ def af(message):
         link = out['bypassed_url']
         bot.edit_message_text(link, msg.chat.id, msg.id)
     except:
-        bot.reply_to(message, "Failed to Bypass")
+        bot.edit_message_text("Failed to Bypass", msg.chat.id, msg.id)
 
 # gplinks short url
 @bot.message_handler(commands=['gp'])
