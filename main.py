@@ -129,15 +129,16 @@ def gd(message):
 # gd list
 @bot.message_handler(commands=['gdlist'])
 def gdlis(message):
-    list = """- appdrive.in
-    - driveapp.in
-    - drivehub.in
-    - gdflix.pro
-    - drivesharer.in
-    - drivebit.in
-    - drivelinks.in
-    - driveace.in
-    - drivepro.in
+    list = """
+- appdrive.in \n\
+- driveapp.in \n\
+- drivehub.in \n\
+- gdflix.pro \n\
+- drivesharer.in \n\
+- drivebit.in \n\
+- drivelinks.in \n\
+- driveace.in \n\
+- drivepro.in \n\
           """
     bot.reply_to(message, list)       
 
@@ -155,26 +156,27 @@ def ot(message):
 # others list
 @bot.message_handler(commands=['otlist'])
 def otlis(message):
-    list="""exe.io/exey.io	
-    sub2unlock.net/sub2unlock.com	
-    rekonise.com	
-    letsboost.net	
-    ph.apps2app.com	
-    mboost.me	
-    shortconnect.com	
-    sub4unlock.com	
-    ytsubme.com	
-    bit.ly	
-    social-unlock.com	
-    boost.ink	
-    goo.gl	
-    shrto.ml	
-    t.co	
-    tinyurl.com
+    list="""
+- exe.io/exey.io \n\
+- sub2unlock.net/sub2unlock.com \n\
+- rekonise.com \n\
+- letsboost.net \n\
+- ph.apps2app.com \n\
+- mboost.me	\n\
+- shortconnect.comb \n\
+- sub4unlock.com \n\
+- ytsubme.com \n\
+- bit.ly \n\
+- social-unlock.com	\n\
+- boost.ink	\n\
+- goo.gl \n\
+- shrto.ml \n\
+- t.co \n\
+- tinyurl.com
     """
     bot.reply_to(message, list)       
 
 
 # server loop
-print("server started")
+print("bot started")
 bot.infinity_polling()
