@@ -1,13 +1,11 @@
 import re
 import requests
 from base64 import b64decode
-from urllib.parse import unquote
+from urllib.parse import unquote, urlparse
 import time
 import cloudscraper
 from bs4 import BeautifulSoup
-from urllib.parse import urlparse
 from lxml import etree
-from urllib.parse import urlparse
 from dotenv import load_dotenv
 load_dotenv()
 
