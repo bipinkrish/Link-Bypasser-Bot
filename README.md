@@ -8,7 +8,7 @@ a Telegram Bot that can Bypass the Ad Links
 
 - `TOKEN` Your bot token from @BotFather
 - `CRYPT` (optional) Your GDTot Crypt! If you don't know how to get Crypt then [Learn Here](https://www.youtube.com/watch?v=EfZ29CotRSU)
-- `XSRF_TOKEN` and `Laravel_Session` (optional) XSRF_TOKEN and laravel_session cookies! If you don't know how to get then then watch [this Video](https://www.youtube.com/watch?v=EfZ29CotRSU) (for GDTOT) and do the same for Sharer.pw
+- `XSRF_TOKEN` and `Laravel_Session` (both are optional) XSRF_TOKEN and laravel_session cookies! If you don't know how to get then then watch [this Video](https://www.youtube.com/watch?v=EfZ29CotRSU) (for GDTOT) and do the same for Sharer.pw
 ---
 
 
