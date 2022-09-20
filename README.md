@@ -16,43 +16,24 @@ a Telegram Bot that can Bypass the Ad Links
 
 ```
 start - Welcome Message with supported sites
-
 af - adfly
-
 gp - gplinks
-
 dl - droplink
-
 lv - linkvertise
-
 md - mdisk
-
 rl - rocklinks
-
 pd - pixeldrain
-
 wt - wetransfer
-
 mu - megaup
-
 gd - Google Drive Look-Alike
-
 ot - others
-
 ou - ouo
-
 gt - gdtot
-
 sh - sharer.pw
-
 ps - psa.pm
-
 go - gofile
-
 st - shorte
-
 pi - pixl
-
 an - anonfiles
 ```
 ---
