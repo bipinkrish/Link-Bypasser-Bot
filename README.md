@@ -43,7 +43,17 @@ ou - ouo
 
 gt - gdtot
 
-sh - sharer
+sh - sharer.pw
+
+ps - psa.pm
+
+go - gofile
+
+st - shorte
+
+pi - pixl
+
+an - anonfiles
 ```
 ---
 

@@ -13,12 +13,89 @@ XSRF_TOKEN = os.environ.get("XSRF_TOKEN","")
 # start
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    bot.reply_to(message, "Available Sites \n /af - Adfly \n /gp - gplinks \n /dl - droplink \n /lv - linkvertise \n /md - mdisk \n /rl - rocklinks \n /pd - pixeldrain \n /wt - wetransfer \n /mu - megaup \n /gd - Drive Look-Alike (/gdlist) \n /ot - others (/otlist) \n /ou - ouo \n /gt - gdtot \n /sh -  sharer pw")
+    bot.reply_to(message, "Available Sites \n /af - Adfly \n /gp - gplinks \n /dl - droplink \n /lv - linkvertise \n \
+/md - mdisk \n /rl - rocklinks \n /pd - pixeldrain \n /wt - wetransfer \n /mu - megaup \n /gd - Drive Look-Alike (/gdlist) \n \
+/ot - others (/otlist) \n /ou - ouo \n /gt - gdtot \n /sh -  sharer \n /ps - psa \n /go - gofile \n /st - shorte \n \
+/pi - pixl \n /an - anonfiles")
+
+
+# anonfiles
+@bot.message_handler(commands=['an'])
+def an(message):
+    try:
+        url = message.text.split("/an ")[1]
+    except:
+        bot.reply_to(message, "Invalid format, /xx link")
+        return
+    print("You Have Entered anonfiles:",url)
+    msg = bot.reply_to(message, "bypassing...")
+    link = bypasser.anonfile(url)
+    bot.edit_message_text(link, msg.chat.id, msg.id)
+
+
+# pixl
+@bot.message_handler(commands=['pi'])
+def pi(message):
+    try:
+        url = message.text.split("/pi ")[1]
+    except:
+        bot.reply_to(message, "Invalid format, /xx link")
+        return
+    print("You Have Entered pixl:",url)
+    msg = bot.reply_to(message, "bypassing...")
+    link = bypasser.pixl(url)
+    bot.edit_message_text(link, msg.chat.id, msg.id)
+
+
+# shorte
+@bot.message_handler(commands=['st'])
+def st(message):
+    try:
+        url = message.text.split("/st ")[1]
+    except:
+        bot.reply_to(message, "Invalid format, /xx link")
+        return
+    print("You Have Entered shorte:",url)
+    msg = bot.reply_to(message, "bypassing...")
+    link = bypasser.sh_st_bypass(url)
+    bot.edit_message_text(link, msg.chat.id, msg.id)
+
+
+# go file
+@bot.message_handler(commands=['go'])
+def go(message):
+    try:
+        url = message.text.split("/go ")[1]
+    except:
+        bot.reply_to(message, "Invalid format, /xx link")
+        return
+    print("You Have Entered gofile:",url)
+    msg = bot.reply_to(message, "bypassing...")
+    link = bypasser.gofile_dl(url)
+    bot.edit_message_text(link, msg.chat.id, msg.id)
+
+
+# psa
+@bot.message_handler(commands=['ps'])
+def ps(message):
+    try:
+        url = message.text.split("/ps ")[1]
+    except:
+        bot.reply_to(message, "Invalid format, /xx link")
+        return
+    print("You Have Entered psa:",url)
+    msg = bot.reply_to(message, "bypassing...")
+    links = bypasser.psa_bypasser(url)
+    bot.edit_message_text(links, msg.chat.id, msg.id)
 
 
 # sharer pw
 @bot.message_handler(commands=['sh'])
 def sh(message):
+    if XSRF_TOKEN == "" or Laravel_Session == "":
+        bot.reply_to(message, "You can't use this because XSRF_TOKEN and Laravel_Session ENV are not set")
+        return
+
     try:
         url = message.text.split("/sh ")[1]
     except:

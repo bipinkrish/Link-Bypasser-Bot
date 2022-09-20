@@ -6,8 +6,181 @@ import time
 import cloudscraper
 from bs4 import BeautifulSoup
 from lxml import etree
+import hashlib
 from dotenv import load_dotenv
 load_dotenv()
+
+
+#######################################################
+# anonfiles
+
+def anonfile(url):
+
+    headersList = { "Accept": "*/*"}
+    payload = ""
+
+    response = requests.request("GET", url, data=payload,  headers=headersList).text.split("\n")
+    for ele in response:
+        if "https://cdn" in ele and "anonfiles.com" in ele and url.split("/")[-2] in ele:
+            break
+
+    return ele.split('href="')[1].split('"')[0]
+
+
+##########################################################
+# pixl
+
+def pixl(url):
+    count = 1
+    dl_msg = ""
+    currentpage = 1
+    settotalimgs = True
+    totalimages = ""
+    client = cloudscraper.create_scraper(allow_brotli=False)
+    resp = client.get(url)
+    if resp.status_code == 404:
+        return "File not found/The link you entered is wrong!"
+    soup = BeautifulSoup(resp.content, "html.parser")
+    if "album" in url and settotalimgs:
+        totalimages = soup.find("span", {"data-text": "image-count"}).text
+        settotalimgs = False
+    thmbnailanch = soup.findAll(attrs={"class": "--media"})
+    links = soup.findAll(attrs={"data-pagination": "next"})
+    try:
+        url = links[0].attrs["href"]
+    except BaseException:
+        url = None
+    for ref in thmbnailanch:
+        imgdata = client.get(ref.attrs["href"])
+        if not imgdata.status_code == 200:
+            time.sleep(5)
+            continue
+        imghtml = BeautifulSoup(imgdata.text, "html.parser")
+        downloadanch = imghtml.find(attrs={"class": "btn-download"})
+        currentimg = downloadanch.attrs["href"]
+        currentimg = currentimg.replace(" ", "%20")
+        dl_msg += f"{count}. {currentimg}\n"
+        count += 1
+    currentpage += 1
+    fld_msg = f"Your provided Pixl.is link is of Folder and I've Found {count - 1} files in the folder.\n"
+    fld_link = f"\nFolder Link: {url}\n"
+    final_msg = fld_link + "\n" + fld_msg + "\n" + dl_msg
+    return final_msg
+
+
+############################################################
+# sirigan  ( unused )
+
+def siriganbypass(url):
+    client = requests.Session()
+    res = client.get(url)
+    url = res.url.split('=', maxsplit=1)[-1]
+
+    while True:
+        try: url = base64.b64decode(url).decode('utf-8')
+        except: break
+
+    return url.split('url=')[-1]
+
+
+############################################################
+# shorte
+
+def sh_st_bypass(url):    
+    client = requests.Session()
+    client.headers.update({'referer': url})
+    p = urlparse(url)
+    
+    res = client.get(url)
+
+    sess_id = re.findall('''sessionId(?:\s+)?:(?:\s+)?['|"](.*?)['|"]''', res.text)[0]
+    
+    final_url = f"{p.scheme}://{p.netloc}/shortest-url/end-adsession"
+    params = {
+        'adSessionId': sess_id,
+        'callback': '_'
+    }
+    time.sleep(5) # !important
+    
+    res = client.get(final_url, params=params)
+    dest_url = re.findall('"(.*?)"', res.text)[1].replace('\/','/')
+    
+    return {
+        'src': url,
+        'dst': dest_url
+    }['dst']
+
+
+#############################################################
+# gofile
+
+def gofile_dl(url,password=""):
+    api_uri = 'https://api.gofile.io'
+    client = requests.Session()
+    res = client.get(api_uri+'/createAccount').json()
+    
+    data = {
+        'contentId': url.split('/')[-1],
+        'token': res['data']['token'],
+        'websiteToken': '12345',
+        'cache': 'true',
+        'password': hashlib.sha256(password.encode('utf-8')).hexdigest()
+    }
+    res = client.get(api_uri+'/getContent', params=data).json()
+
+    content = []
+    for item in res['data']['contents'].values():
+        content.append(item)
+    
+    return {
+        'accountToken': data['token'],
+        'files': content
+    }["files"][0]["link"]
+
+
+###############################################################
+# psa 
+
+def try2link_bypass(url):
+	client = cloudscraper.create_scraper(allow_brotli=False)
+	
+	url = url[:-1] if url[-1] == '/' else url
+	
+	params = (('d', int(time.time()) + (60 * 4)),)
+	r = client.get(url, params=params, headers= {'Referer': 'https://newforex.online/'})
+	
+	soup = BeautifulSoup(r.text, 'html.parser')
+	inputs = soup.find(id="go-link").find_all(name="input")
+	data = { input.get('name'): input.get('value') for input in inputs }	
+	time.sleep(7)
+	
+	headers = {'Host': 'try2link.com', 'X-Requested-With': 'XMLHttpRequest', 'Origin': 'https://try2link.com', 'Referer': url}
+	
+	bypassed_url = client.post('https://try2link.com/links/go', headers=headers,data=data)
+	return bypassed_url.json()["url"]
+		
+
+def try2link_scrape(url):
+	client = cloudscraper.create_scraper(allow_brotli=False)	
+	h = {
+	'upgrade-insecure-requests': '1', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36',
+	}
+	res = client.get(url, cookies={}, headers=h)
+	url = 'https://try2link.com/'+re.findall('try2link\.com\/(.*?) ', res.text)[0]
+	return try2link_bypass(url)
+    
+
+def psa_bypasser(psa_url):
+    client = cloudscraper.create_scraper(allow_brotli=False)
+    r = client.get(psa_url)
+    soup = BeautifulSoup(r.text, "html.parser").find_all(class_="dropshadowboxes-drop-shadow dropshadowboxes-rounded-corners dropshadowboxes-inside-and-outside-shadow dropshadowboxes-lifted-both dropshadowboxes-effect-default")
+    links = ""
+    for link in soup:
+        try:
+            exit_gate = link.a.get("href")
+            links = links + try2link_scrape(exit_gate) + '\n'
+        except: pass
+    return links
 
 
 ################################################################
@@ -55,7 +228,7 @@ def sharer_pw(url,Laravel_Session, XSRF_TOKEN, forced_login=False):
     if len(ddl_btn) and not forced_login and not 'url' in info_parsed:
         # retry download via login
         return sharer_pw(url,Laravel_Session, XSRF_TOKEN, forced_login=True)
-    return info_parsed
+    return info_parsed["gdrive_link"]
 
 
 #################################################################
