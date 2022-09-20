@@ -1,13 +1,90 @@
 import re
 import requests
-from base64 import b64decode
-from urllib.parse import unquote, urlparse
+import base64
+from urllib.parse import unquote, urlparse, parse_qs
 import time
 import cloudscraper
 from bs4 import BeautifulSoup
 from lxml import etree
 from dotenv import load_dotenv
 load_dotenv()
+
+
+################################################################
+# sharer pw
+
+def parse_info(res):
+    f = re.findall(">(.*?)<\/td>", res.text)
+    info_parsed = {}
+    for i in range(0, len(f), 3):
+        info_parsed[f[i].lower().replace(' ', '_')] = f[i+2]
+    return info_parsed
+
+def sharer_pw(url,Laravel_Session, XSRF_TOKEN, forced_login=False):
+    client = cloudscraper.create_scraper(allow_brotli=False)
+    client.cookies.update({
+        "XSRF-TOKEN": XSRF_TOKEN,
+        "laravel_session": Laravel_Session
+    })
+    res = client.get(url)
+    token = re.findall("_token\s=\s'(.*?)'", res.text, re.DOTALL)[0]
+    ddl_btn = etree.HTML(res.content).xpath("//button[@id='btndirect']")
+    info_parsed = parse_info(res)
+    info_parsed['error'] = True
+    info_parsed['src_url'] = url
+    info_parsed['link_type'] = 'login'
+    info_parsed['forced_login'] = forced_login
+    headers = {
+        'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'x-requested-with': 'XMLHttpRequest'
+    }
+    data = {
+        '_token': token
+    }
+    if len(ddl_btn):
+        info_parsed['link_type'] = 'direct'
+    if not forced_login:
+        data['nl'] = 1
+    try: 
+        res = client.post(url+'/dl', headers=headers, data=data).json()
+    except:
+        return info_parsed
+    if 'url' in res and res['url']:
+        info_parsed['error'] = False
+        info_parsed['gdrive_link'] = res['url']
+    if len(ddl_btn) and not forced_login and not 'url' in info_parsed:
+        # retry download via login
+        return sharer_pw(url,Laravel_Session, XSRF_TOKEN, forced_login=True)
+    return info_parsed
+
+
+#################################################################
+# gdtot
+
+def gdtot(url,GDTot_Crypt):
+    client = cloudscraper.create_scraper(allow_brotli=False)
+    match = re.findall(r"https?://(.+)\.gdtot\.(.+)\/\S+\/\S+", url)[0]
+    client.cookies.update({ "crypt": GDTot_Crypt })
+    res = client.get(url)
+    res = client.get(f"https://{match[0]}.gdtot.{match[1]}/dld?id={url.split('/')[-1]}")
+    url = re.findall(r'URL=(.*?)"', res.text)[0]
+    info = {}
+    info["error"] = False
+    params = parse_qs(urlparse(url).query)
+    if "gd" not in params or not params["gd"] or params["gd"][0] == "false":
+        info["error"] = True
+        if "msgx" in params:
+            info["message"] = params["msgx"][0]
+        else:
+            info["message"] = "Invalid link"
+    else:
+        decoded_id = base64.b64decode(str(params["gd"][0])).decode("utf-8")
+        drive_link = f"https://drive.google.com/open?id={decoded_id}"
+        info["gdrive_link"] = drive_link
+    if not info["error"]:
+        return info["gdrive_link"]
+    else:
+        return "Could not generate GDrive URL for your GDTot Link :("
 
 
 ##################################################################
@@ -30,7 +107,7 @@ def decrypt_url(code):
                     break
         i+=1
     key = ''.join(key)
-    decrypted = b64decode(key)[16:-16]
+    decrypted = base64.b64decode(key)[16:-16]
     return decrypted.decode('utf-8')
 
 
@@ -45,7 +122,7 @@ def adfly(url):
         return out
     url = decrypt_url(ysmm)
     if re.search(r'go\.php\?u\=', url):
-        url = b64decode(re.sub(r'(.*?)u=', '', url)).decode()
+        url = base64.b64decode(re.sub(r'(.*?)u=', '', url)).decode()
     elif '&dest=' in url:
         url = unquote(re.sub(r'(.*?)dest=', '', url))
     out['bypassed_url'] = url
