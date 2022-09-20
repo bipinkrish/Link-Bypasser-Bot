@@ -25,7 +25,7 @@ rl - rocklinks
 pd - pixeldrain
 wt - wetransfer
 mu - megaup
-gd - Google Drive Look-Alike
+gd - google drive look-alike
 ot - others
 ou - ouo
 gt - gdtot
