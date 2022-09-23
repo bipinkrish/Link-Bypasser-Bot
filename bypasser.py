@@ -11,6 +11,82 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+######################################################
+# shareus
+
+def shareus(url):
+    token = url.split("=")[-1]
+    bypassed_url = "https://us-central1-my-apps-server.cloudfunctions.net/r?shortid="+ token
+    response = requests.get(bypassed_url).text
+    return response
+
+
+#######################################################
+# shortingly
+
+def shortlingly(url):
+    client = cloudscraper.create_scraper(allow_brotli=False)
+    if 'shortingly.me' in url:
+        DOMAIN = "https://go.techyjeeshan.xyz"
+    else:
+        return "Incorrect Link"
+
+    url = url[:-1] if url[-1] == '/' else url
+
+    code = url.split("/")[-1]
+    
+    final_url = f"{DOMAIN}/{code}"
+
+    resp = client.get(final_url)
+    soup = BeautifulSoup(resp.content, "html.parser")
+    
+    try: inputs = soup.find(id="go-link").find_all(name="input")
+    except: return "Incorrect Link"
+    
+    data = { input.get('name'): input.get('value') for input in inputs }
+
+    h = { "x-requested-with": "XMLHttpRequest" }
+    
+    time.sleep(5)
+    r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
+    try:
+        return r.json()['url']
+    except: return "Something went wrong :("
+
+
+#######################################################
+# Gyanilinks - gtlinks.me
+
+def gyanilinks(url):
+    client = cloudscraper.create_scraper(allow_brotli=False)
+    if 'gtlinks.me' in url:
+        DOMAIN = "https://go.bloggertheme.xyz"
+    else:
+        return "Incorrect Link"
+
+    url = url[:-1] if url[-1] == '/' else url
+
+    code = url.split("/")[-1]
+    
+    final_url = f"{DOMAIN}/{code}"
+
+    resp = client.get(final_url)
+    soup = BeautifulSoup(resp.content, "html.parser")
+    
+    try: inputs = soup.find(id="go-link").find_all(name="input")
+    except: return "Incorrect Link"
+    
+    data = { input.get('name'): input.get('value') for input in inputs }
+
+    h = { "x-requested-with": "XMLHttpRequest" }
+    
+    time.sleep(5)
+    r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
+    try:
+        return r.json()['url']
+    except: return "Something went wrong :("
+
+
 #######################################################
 # anonfiles
 
@@ -306,32 +382,31 @@ def adfly(url):
 # gplinks
 
 def gplinks(url: str):
-
-        client = cloudscraper.create_scraper(allow_brotli=False)
-        p = urlparse(url)
-        final_url = f"{p.scheme}://{p.netloc}/links/go"
-        res = client.head(url)
-        header_loc = res.headers["location"]
-        param = header_loc.split("postid=")[-1]
-        req_url = f"{p.scheme}://{p.netloc}/{param}"
-        p = urlparse(header_loc)
-        ref_url = f"{p.scheme}://{p.netloc}/"
-        h = {"referer": ref_url}
-        res = client.get(req_url, headers=h, allow_redirects=False)
-        bs4 = BeautifulSoup(res.content, "html.parser")
-        inputs = bs4.find_all("input")
-        time.sleep(10) # !important
-        data = { input.get("name"): input.get("value") for input in inputs }
-        h = {
-		    "content-type": "application/x-www-form-urlencoded",
-		    "x-requested-with": "XMLHttpRequest"
-		}
-        time.sleep(10)
-        res = client.post(final_url, headers=h, data=data)
-        try:
-            return res.json()["url"].replace("/","/")
-        except:
-            return "Could not Bypass your URL :("
+    client = cloudscraper.create_scraper(allow_brotli=False)
+    p = urlparse(url)
+    final_url = f"{p.scheme}://{p.netloc}/links/go"
+    res = client.head(url)
+    header_loc = res.headers["location"]
+    param = header_loc.split("postid=")[-1]
+    req_url = f"{p.scheme}://{p.netloc}/{param}"
+    p = urlparse(header_loc)
+    ref_url = f"{p.scheme}://{p.netloc}/"
+    h = {"referer": ref_url}
+    res = client.get(req_url, headers=h, allow_redirects=False)
+    bs4 = BeautifulSoup(res.content, "html.parser")
+    inputs = bs4.find_all("input")
+    time.sleep(10) # !important
+    data = { input.get("name"): input.get("value") for input in inputs }
+    h = {
+        "content-type": "application/x-www-form-urlencoded",
+        "x-requested-with": "XMLHttpRequest"
+    }
+    time.sleep(10)
+    res = client.post(final_url, headers=h, data=data)
+    try:
+        return res.json()["url"].replace("/","/")
+    except: 
+        return "Could not Bypass your URL :("
 
 
 ######################################################################################################
@@ -361,7 +436,6 @@ def linkvertise(url):
     api = "https://api.emilyx.in/api"
     client = cloudscraper.create_scraper(allow_brotli=False)
     resp = client.get(url)
-
     if resp.status_code == 404:
         return "File not found/The link you entered is wrong!"
     try:
@@ -369,7 +443,6 @@ def linkvertise(url):
         res = resp.json()
     except BaseException:
         return "API UnResponsive / Invalid Link !"
-
     if res["success"] is True:
         return res["url"]
     else:
@@ -473,20 +546,35 @@ def mdisk(url):
 # rocklinks
 
 def rocklinks(url):
-    api = "https://api.emilyx.in/api"
     client = cloudscraper.create_scraper(allow_brotli=False)
-    resp = client.get(url)
-    if resp.status_code == 404:
-        return "File not found/The link you entered is wrong!"
-    try:
-        resp = client.post(api, json={"type": "rocklinks", "url": url})
-        res = resp.json()
-    except BaseException:
-        return "API UnResponsive / Invalid Link !"
-    if res["success"] is True:
-        return res["url"]
+    if 'rocklinks.net' in url:
+        DOMAIN = "https://blog.disheye.com"
     else:
-        return res["msg"]
+        DOMAIN = "https://rocklinks.net"
+
+    url = url[:-1] if url[-1] == '/' else url
+
+    code = url.split("/")[-1]
+    if 'rocklinks.net' in url:
+        final_url = f"{DOMAIN}/{code}?quelle=" 
+    else:
+        final_url = f"{DOMAIN}/{code}"
+
+    resp = client.get(final_url)
+    soup = BeautifulSoup(resp.content, "html.parser")
+    
+    try: inputs = soup.find(id="go-link").find_all(name="input")
+    except: return "Incorrect Link"
+    
+    data = { input.get('name'): input.get('value') for input in inputs }
+
+    h = { "x-requested-with": "XMLHttpRequest" }
+    
+    time.sleep(10)
+    r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
+    try:
+        return r.json()['url']
+    except: return "Something went wrong :("
 
 
 ###################################################################################################################
@@ -553,9 +641,12 @@ def megaup(url):
 # AppDrive or DriveApp etc. Look-Alike Link and as well as the Account Details (Required for Login Required Links only)
 
 def unified(url):
+
     try:
+
         Email = "OPTIONAL"
         Password = "OPTIONAL"
+
         account = {"email": Email, "passwd": Password}
         client = cloudscraper.create_scraper(allow_brotli=False)
         client.headers.update(

@@ -35,6 +35,9 @@ go - gofile
 st - shorte
 pi - pixl
 an - anonfiles
+gy - gyanilinks
+sg - shortingly
+su - shareus
 ```
 ---
 
