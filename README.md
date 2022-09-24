@@ -38,6 +38,10 @@ an - anonfiles
 gy - gyanilinks
 sg - shortingly
 su - shareus
+db - dropbox
+fc - filecrypt
+zs - zippyshare
+mf - mediafire
 ```
 ---
 

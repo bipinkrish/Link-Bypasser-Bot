@@ -7,8 +7,108 @@ import cloudscraper
 from bs4 import BeautifulSoup
 from lxml import etree
 import hashlib
+import json
 from dotenv import load_dotenv
 load_dotenv()
+
+
+##################################################
+# mediafire
+
+def mediafire(url):
+
+    res = requests.get(url, stream=True)
+    contents = res.text
+
+    for line in contents.splitlines():
+        m = re.search(r'href="((http|https)://download[^"]+)', line)
+        if m:
+            return m.groups()[0]
+
+
+####################################################
+# zippyshare
+
+def zippyshare(url):
+    resp = requests.get(url).text
+    surl = resp.split("document.getElementById('dlbutton').href = ")[1].split(";")[0]
+    parts = surl.split("(")[1].split(")")[0].split(" ")
+    val = str(int(parts[0]) % int(parts[2]) + int(parts[4]) % int(parts[6]))
+    surl = surl.split('"')
+    burl = url.split("zippyshare.com")[0]
+    furl = burl + "zippyshare.com" + surl[1] + val + surl[-2]
+    return furl
+
+
+####################################################
+# filercrypt
+
+def getlinks(dlc,client):
+    headers = {
+    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:103.0) Gecko/20100101 Firefox/103.0',
+    'Accept': 'application/json, text/javascript, */*',
+    'Accept-Language': 'en-US,en;q=0.5',
+    # 'Accept-Encoding': 'gzip, deflate',
+    'X-Requested-With': 'XMLHttpRequest',
+    'Origin': 'http://dcrypt.it',
+    'Connection': 'keep-alive',
+    'Referer': 'http://dcrypt.it/',
+    }
+
+    data = {
+        'content': dlc,
+    }
+
+    response = client.post('http://dcrypt.it/decrypt/paste', headers=headers, data=data).json()["success"]["links"]
+    links = ""
+    for link in response:
+        links = links + link + "\n"
+    return links[:-1]
+
+
+def filecrypt(url):
+
+    client = cloudscraper.create_scraper(allow_brotli=False)
+    headers = {
+    "authority": "filecrypt.co",
+    "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+    "accept-language": "en-US,en;q=0.9",
+    "cache-control": "max-age=0",
+    "content-type": "application/x-www-form-urlencoded",
+    "dnt": "1",
+    "origin": "https://filecrypt.co",
+    "referer": url,
+    "sec-ch-ua": '"Google Chrome";v="105", "Not)A;Brand";v="8", "Chromium";v="105"',
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "Windows",
+    "sec-fetch-dest": "document",
+    "sec-fetch-mode": "navigate",
+    "sec-fetch-site": "same-origin",
+    "sec-fetch-user": "?1",
+    "upgrade-insecure-requests": "1",
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36" 
+    }
+    
+
+    resp = client.get(url, headers=headers)
+    soup = BeautifulSoup(resp.content, "html.parser")
+
+    buttons = soup.find_all("button")
+    for ele in buttons:
+        line = ele.get("onclick")
+        if line !=None and "DownloadDLC" in line:
+            dlclink = "https://filecrypt.co/DLC/" + line.split("DownloadDLC('")[1].split("'")[0] + ".html"
+            break
+
+    resp = client.get(dlclink,headers=headers)
+    return getlinks(resp.text,client)
+
+
+#####################################################
+# dropbox
+
+def dropbox(url):
+    return url.replace("www.","").replace("dropbox.com","dl.dropboxusercontent.com").replace("?dl=0","")
 
 
 ######################################################

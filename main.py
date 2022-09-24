@@ -16,7 +16,64 @@ def send_welcome(message):
     bot.reply_to(message, "Available Sites \n /af - Adfly \n /gp - gplinks \n /dl - droplink \n /lv - linkvertise \n \
 /md - mdisk \n /rl - rocklinks \n /pd - pixeldrain \n /wt - wetransfer \n /mu - megaup \n /gd - Drive Look-Alike (/gdlist) \n \
 /ot - others (/otlist) \n /ou - ouo \n /gt - gdtot \n /sh -  sharer \n /ps - psa \n /go - gofile \n /st - shorte \n \
-/pi - pixl \n /an - anonfiles \n /gy - gyanilinks \n /sg - shortingly \n /su - shareus")
+/pi - pixl \n /an - anonfiles \n /gy - gyanilinks \n /sg - shortingly \n /su - shareus \n /db - dropbox \n /fc - filecrypt \n \
+/zs - zippyshare \n /mf - mediafire")
+
+
+# mediafire
+@bot.message_handler(commands=['mf'])
+def mf(message):
+    try:
+        url = message.text.split("/mf ")[1]
+    except:
+        bot.reply_to(message, "Invalid format, /xx link")
+        return
+    print("You Have Entered mediafire:",url)
+    msg = bot.reply_to(message, "bypassing...")
+    link = bypasser.mediafire(url)
+    bot.edit_message_text(link, msg.chat.id, msg.id)
+
+
+# zippyshare
+@bot.message_handler(commands=['zs'])
+def zs(message):
+    try:
+        url = message.text.split("/zs ")[1]
+    except:
+        bot.reply_to(message, "Invalid format, /xx link")
+        return
+    print("You Have Entered zippyshare:",url)
+    msg = bot.reply_to(message, "bypassing...")
+    link = bypasser.zippyshare(url)
+    bot.edit_message_text(link, msg.chat.id, msg.id)
+
+
+# filecrypt
+@bot.message_handler(commands=['fc'])
+def fc(message):
+    try:
+        url = message.text.split("/fc ")[1]
+    except:
+        bot.reply_to(message, "Invalid format, /xx link")
+        return
+    print("You Have Entered filecrypt:",url)
+    msg = bot.reply_to(message, "bypassing...")
+    link = bypasser.filecrypt(url)
+    bot.edit_message_text(link, msg.chat.id, msg.id)
+
+
+# dropbox
+@bot.message_handler(commands=['db'])
+def db(message):
+    try:
+        url = message.text.split("/db ")[1]
+    except:
+        bot.reply_to(message, "Invalid format, /xx link")
+        return
+    print("You Have Entered dropbox:",url)
+    msg = bot.reply_to(message, "bypassing...")
+    link = bypasser.dropbox(url)
+    bot.edit_message_text(link, msg.chat.id, msg.id)
 
 
 # shareus
