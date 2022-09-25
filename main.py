@@ -1,14 +1,15 @@
 import telebot
 import bypasser
 import os
+from config import Vars
 
-# bot
-TOKEN = os.environ.get("TOKEN", "")
+TOKEN = Vars[0]
+GDTot_Crypt = Vars[1]
+Laravel_Session = Vars[2]
+XSRF_TOKEN = Vars[3]
+
+# Bot
 bot = telebot.TeleBot(TOKEN)
-GDTot_Crypt = os.environ.get("CRYPT","b0lDek5LSCt6ZjVRR2EwZnY4T1EvVndqeDRtbCtTWmMwcGNuKy8wYWpDaz0%3D")
-Laravel_Session = os.environ.get("Laravel_Session","")
-XSRF_TOKEN = os.environ.get("XSRF_TOKEN","")
-
 
 # start
 @bot.message_handler(commands=['start'])
