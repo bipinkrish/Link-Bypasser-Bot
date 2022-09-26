@@ -12,6 +12,158 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+###############################################
+# katdrive
+
+def parse_info_katdrive(res):
+    info_parsed = {}
+    title = re.findall('>(.*?)<\/h4>', res.text)[0]
+    info_chunks = re.findall('>(.*?)<\/td>', res.text)
+    info_parsed['title'] = title
+    for i in range(0, len(info_chunks), 2):
+        info_parsed[info_chunks[i]] = info_chunks[i+1]
+    return info_parsed
+
+def katdrive_dl(url,katcrypt):
+    client = requests.Session()
+    client.cookies.update({'crypt': katcrypt})
+    
+    res = client.get(url)
+    info_parsed = parse_info_katdrive(res)
+    info_parsed['error'] = False
+    
+    up = urlparse(url)
+    req_url = f"{up.scheme}://{up.netloc}/ajax.php?ajax=download"
+    
+    file_id = url.split('/')[-1]
+    data = { 'id': file_id }
+    headers = {'x-requested-with': 'XMLHttpRequest'}
+    
+    try:
+        res = client.post(req_url, headers=headers, data=data).json()['file']
+    except:
+        return {'error': True, 'src_url': url}
+    
+    gd_id = re.findall('gd=(.*)', res, re.DOTALL)[0]
+    info_parsed['gdrive_url'] = f"https://drive.google.com/open?id={gd_id}"
+    info_parsed['src_url'] = url
+    return info_parsed['gdrive_url']
+
+
+###############################################
+# hubdrive
+
+def parse_info_hubdrive(res):
+    info_parsed = {}
+    title = re.findall('>(.*?)<\/h4>', res.text)[0]
+    info_chunks = re.findall('>(.*?)<\/td>', res.text)
+    info_parsed['title'] = title
+    for i in range(0, len(info_chunks), 2):
+        info_parsed[info_chunks[i]] = info_chunks[i+1]
+    return info_parsed
+
+def hubdrive_dl(url,hcrypt):
+    client = requests.Session()
+    client.cookies.update({'crypt': hcrypt})
+    
+    res = client.get(url)
+    info_parsed = parse_info_hubdrive(res)
+    info_parsed['error'] = False
+    
+    up = urlparse(url)
+    req_url = f"{up.scheme}://{up.netloc}/ajax.php?ajax=download"
+    
+    file_id = url.split('/')[-1]
+    data = { 'id': file_id }
+    headers = {'x-requested-with': 'XMLHttpRequest'}
+    
+    try:
+        res = client.post(req_url, headers=headers, data=data).json()['file']
+    except:
+        return {'error': True, 'src_url': url}
+    
+    gd_id = re.findall('gd=(.*)', res, re.DOTALL)[0]
+    info_parsed['gdrive_url'] = f"https://drive.google.com/open?id={gd_id}"
+    info_parsed['src_url'] = url
+    return info_parsed['gdrive_url']
+
+
+#################################################
+# drivefire
+
+def parse_info_drivefire(res):
+    info_parsed = {}
+    title = re.findall('>(.*?)<\/h4>', res.text)[0]
+    info_chunks = re.findall('>(.*?)<\/td>', res.text)
+    info_parsed['title'] = title
+    for i in range(0, len(info_chunks), 2):
+        info_parsed[info_chunks[i]] = info_chunks[i+1]
+    return info_parsed
+
+def drivefire_dl(url,dcrypt):
+    client = requests.Session()
+    client.cookies.update({'crypt': dcrypt})
+    
+    res = client.get(url)
+    info_parsed = parse_info_drivefire(res)
+    info_parsed['error'] = False
+    
+    up = urlparse(url)
+    req_url = f"{up.scheme}://{up.netloc}/ajax.php?ajax=download"
+    
+    file_id = url.split('/')[-1]
+    data = { 'id': file_id }
+    headers = {'x-requested-with': 'XMLHttpRequest'}
+    
+    try:
+        res = client.post(req_url, headers=headers, data=data).json()['file']
+    except:
+        return {'error': True, 'src_url': url}
+    
+    decoded_id = res.rsplit('/', 1)[-1]
+    info_parsed = f"https://drive.google.com/file/d/{decoded_id}"
+    return info_parsed
+
+
+##################################################
+# kolop
+
+def parse_info_kolop(res):
+    info_parsed = {}
+    title = re.findall('>(.*?)<\/h4>', res.text)[0]
+    info_chunks = re.findall('>(.*?)<\/td>', res.text)
+    info_parsed['title'] = title
+    for i in range(0, len(info_chunks), 2):
+        info_parsed[info_chunks[i]] = info_chunks[i+1]
+    return info_parsed
+
+def kolop_dl(url,kcrypt):
+    client = requests.Session()
+    client.cookies.update({'crypt': kcrypt})
+    
+    res = client.get(url)
+    info_parsed = parse_info_kolop(res)
+    info_parsed['error'] = False
+    
+    up = urlparse(url)
+    req_url = f"{up.scheme}://{up.netloc}/ajax.php?ajax=download"
+    
+    file_id = url.split('/')[-1]
+    data = { 'id': file_id }
+    headers = { 'x-requested-with': 'XMLHttpRequest'}
+    
+    try:
+        res = client.post(req_url, headers=headers, data=data).json()['file']
+    except:
+        return {'error': True, 'src_url': url}
+    
+    gd_id = re.findall('gd=(.*)', res, re.DOTALL)[0]
+    info_parsed['gdrive_url'] = f"https://drive.google.com/open?id={gd_id}"
+    info_parsed['src_url'] = url
+
+    return info_parsed['gdrive_url']
+
+
 ##################################################
 # mediafire
 
@@ -362,7 +514,7 @@ def psa_bypasser(psa_url):
 ################################################################
 # sharer pw
 
-def parse_info(res):
+def parse_info_sharer(res):
     f = re.findall(">(.*?)<\/td>", res.text)
     info_parsed = {}
     for i in range(0, len(f), 3):
@@ -378,7 +530,7 @@ def sharer_pw(url,Laravel_Session, XSRF_TOKEN, forced_login=False):
     res = client.get(url)
     token = re.findall("_token\s=\s'(.*?)'", res.text, re.DOTALL)[0]
     ddl_btn = etree.HTML(res.content).xpath("//button[@id='btndirect']")
-    info_parsed = parse_info(res)
+    info_parsed = parse_info_sharer(res)
     info_parsed['error'] = True
     info_parsed['src_url'] = url
     info_parsed['link_type'] = 'login'
