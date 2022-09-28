@@ -4,3 +4,5 @@ bs4
 python-dotenv
 pyTelegramBotAPI
 lxml
+lk21
+cfscrape

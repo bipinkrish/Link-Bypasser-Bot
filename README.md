@@ -13,6 +13,7 @@ a Telegram Bot that can Bypass the Ad Links
 - `DRIVEFIRE_CRYPT` (optional) Your DRIVEFIRE Crypt!
 - `HUBDRIVE_CRYPT` (optional) Your HUBDRIVE Crypt!
 - `KATDRIVE_CRYPT` (optional) Your KATDRIVE Crypt!
+- `UPTOBOX_TOKEN` your UPTOBOX Token
 ---
 
 
@@ -20,32 +21,24 @@ a Telegram Bot that can Bypass the Ad Links
 
 ```
 start - Welcome Message with supported sites
+dl - ddl
 af - adfly
 gp - gplinks
-dl - droplink
+dp - droplink
 lv - linkvertise
-md - mdisk
 rl - rocklinks
-pd - pixeldrain
-wt - wetransfer
-mu - megaup
 gd - google drive look-alike
 ot - others
 ou - ouo
 gt - gdtot
 sh - sharer.pw
 ps - psa.pm
-go - gofile
 st - shorte
 pi - pixl
-an - anonfiles
 gy - gyanilinks
 sg - shortingly
 su - shareus
-db - dropbox
 fc - filecrypt
-zs - zippyshare
-mf - mediafire
 ko - kolop
 df - drivefire
 hd - hubdrive

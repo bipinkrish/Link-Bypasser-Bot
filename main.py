@@ -1,7 +1,7 @@
 import telebot
 import bypasser
 import os
-
+import ddl
 
 # bot
 TOKEN = os.environ.get("TOKEN", "")
@@ -22,38 +22,47 @@ KATCRYPT = os.environ.get("KATDRIVE_CRYPT","")
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
     bot.reply_to(message, "🔗 *Available Sites* \n\n  \
+ `/dl` - _direct download link (/ddllist)_ \n  \
  `/af` - _adfly_ \n  \
  `/gp` - _gplinks_ \n  \
- `/dl` - _droplink_ \n  \
+ `/dp` - _droplink_ \n  \
  `/lv` - _linkvertise_ \n  \
- `/md` - _mdisk_ \n  \
  `/rl` - _rocklinks_ \n  \
- `/pd` - _pixeldrain_ \n  \
- `/wt` - _wetransfer_ \n  \
- `/mu` - _megaup_ \n  \
  `/gd` - _gdrive look-alike (/gdlist)_ \n  \
  `/ot` - _others (/otlist)_ \n  \
  `/ou` - _ouo_ \n  \
  `/gt` - _gdtot_ \n  \
  `/sh` - _sharer_ \n  \
  `/ps` - _psa_ \n  \
- `/go` - _gofile_ \n  \
  `/st` - _shorte_ \n  \
  `/pi` - _pixl_ \n  \
- `/an` - _anonfiles_ \n  \
  `/gy` - _gyanilinks_ \n  \
  `/sg` - _shortingly_ \n  \
  `/su` - _shareus_ \n  \
- `/db` - _dropbox_ \n  \
  `/fc` - _filecrypt_ \n  \
- `/zs` - _zippyshare_ \n  \
- `/mf` - _mediafire_ \n  \
  `/ko` - _kolop_ \n  \
  `/df` - _drivefire_ \n  \
  `/hd` - _hubdrive_ \n  \
  `/kd` - _katdrive_ \n\n\
 _reply to the link with command or use format /xx link_",
 parse_mode="Markdown")
+
+
+# direct download link
+@bot.message_handler(commands=['dl'])
+def dl(message):
+    try:
+        url = message.reply_to_message.text
+    except:
+        try:
+            url = message.text.split("/dl ")[1]
+        except:
+            bot.reply_to(message, "⚠️ _Invalid format, either_ *reply* _to a_ *link* _or use_ */xx link*", parse_mode="Markdown")
+            return
+    print("You Have Entered ddl:",url)
+    msg = bot.reply_to(message, "⚡ _generating..._", parse_mode="Markdown")
+    link = ddl.direct_link_generator(url)
+    bot.edit_message_text(f'_{link}_', msg.chat.id, msg.id, parse_mode="Markdown")
 
 
 # katdrive
@@ -140,40 +149,6 @@ def ko(message):
     bot.edit_message_text(f'_{link}_', msg.chat.id, msg.id, parse_mode="Markdown")
 
 
-# mediafire
-@bot.message_handler(commands=['mf'])
-def mf(message):
-    try:
-        url = message.reply_to_message.text
-    except:
-        try:
-            url = message.text.split("/mf ")[1]
-        except:
-            bot.reply_to(message, "⚠️ _Invalid format, either_ *reply* _to a_ *link* _or use_ */xx link*", parse_mode="Markdown")
-            return
-    print("You Have Entered mediafire:",url)
-    msg = bot.reply_to(message, "🔎 _bypassing..._", parse_mode="Markdown")
-    link = bypasser.mediafire(url)
-    bot.edit_message_text(f'_{link}_', msg.chat.id, msg.id, parse_mode="Markdown")
-
-
-# zippyshare
-@bot.message_handler(commands=['zs'])
-def zs(message):
-    try:
-        url = message.reply_to_message.text
-    except:
-        try:
-            url = message.text.split("/zs ")[1]
-        except:
-            bot.reply_to(message, "⚠️ _Invalid format, either_ *reply* _to a_ *link* _or use_ */xx link*", parse_mode="Markdown")
-            return
-    print("You Have Entered zippyshare:",url)
-    msg = bot.reply_to(message, "🔎 _bypassing..._", parse_mode="Markdown")
-    link = bypasser.zippyshare(url)
-    bot.edit_message_text(f'_{link}_', msg.chat.id, msg.id, parse_mode="Markdown")
-
-
 # filecrypt
 @bot.message_handler(commands=['fc'])
 def fc(message):
@@ -188,23 +163,6 @@ def fc(message):
     print("You Have Entered filecrypt:",url)
     msg = bot.reply_to(message, "🔎 _bypassing..._", parse_mode="Markdown")
     link = bypasser.filecrypt(url)
-    bot.edit_message_text(f'_{link}_', msg.chat.id, msg.id, parse_mode="Markdown")
-
-
-# dropbox
-@bot.message_handler(commands=['db'])
-def db(message):
-    try:
-        url = message.reply_to_message.text
-    except:
-        try:
-            url = message.text.split("/db ")[1]
-        except:
-            bot.reply_to(message, "⚠️ _Invalid format, either_ *reply* _to a_ *link* _or use_ */xx link*", parse_mode="Markdown")
-            return
-    print("You Have Entered dropbox:",url)
-    msg = bot.reply_to(message, "🔎 _bypassing..._", parse_mode="Markdown")
-    link = bypasser.dropbox(url)
     bot.edit_message_text(f'_{link}_', msg.chat.id, msg.id, parse_mode="Markdown")
 
 
@@ -259,23 +217,6 @@ def gy(message):
     bot.edit_message_text(f'_{link}_', msg.chat.id, msg.id, parse_mode="Markdown")
 
 
-# anonfiles
-@bot.message_handler(commands=['an'])
-def an(message):
-    try:
-        url = message.reply_to_message.text
-    except:
-        try:
-            url = message.text.split("/an ")[1]
-        except:
-            bot.reply_to(message, "⚠️ _Invalid format, either_ *reply* _to a_ *link* _or use_ */xx link*", parse_mode="Markdown")
-            return
-    print("You Have Entered anonfiles:",url)
-    msg = bot.reply_to(message, "🔎 _bypassing..._", parse_mode="Markdown")
-    link = bypasser.anonfile(url)
-    bot.edit_message_text(f'_{link}_', msg.chat.id, msg.id, parse_mode="Markdown")
-
-
 # pixl
 @bot.message_handler(commands=['pi'])
 def pi(message):
@@ -307,23 +248,6 @@ def st(message):
     print("You Have Entered shorte:",url)
     msg = bot.reply_to(message, "🔎 _bypassing..._", parse_mode="Markdown")
     link = bypasser.sh_st_bypass(url)
-    bot.edit_message_text(f'_{link}_', msg.chat.id, msg.id, parse_mode="Markdown")
-
-
-# go file
-@bot.message_handler(commands=['go'])
-def go(message):
-    try:
-        url = message.reply_to_message.text
-    except:
-        try:
-            url = message.text.split("/go ")[1]
-        except:
-            bot.reply_to(message, "⚠️ _Invalid format, either_ *reply* _to a_ *link* _or use_ */xx link*", parse_mode="Markdown")
-            return
-    print("You Have Entered gofile:",url)
-    msg = bot.reply_to(message, "🔎 _bypassing..._", parse_mode="Markdown")
-    link = bypasser.gofile_dl(url)
     bot.edit_message_text(f'_{link}_', msg.chat.id, msg.id, parse_mode="Markdown")
 
 
@@ -421,13 +345,13 @@ def gp(message):
 
 
 # droplink url
-@bot.message_handler(commands=['dl'])
+@bot.message_handler(commands=['dp'])
 def dp(message):
     try:
         url = message.reply_to_message.text
     except:
         try:
-            url = message.text.split("/dl ")[1]
+            url = message.text.split("/dp ")[1]
         except:
             bot.reply_to(message, "⚠️ _Invalid format, either_ *reply* _to a_ *link* _or use_ */xx link*", parse_mode="Markdown")
             return
@@ -454,23 +378,6 @@ def lv(message):
     bot.edit_message_text(f'_{link}_', msg.chat.id, msg.id, parse_mode="Markdown")
 
 
-# mdisk link
-@bot.message_handler(commands=['md'])
-def md(message):
-    try:
-        url = message.reply_to_message.text
-    except:
-        try:
-            url = message.text.split("/md ")[1]
-        except:
-            bot.reply_to(message, "⚠️ _Invalid format, either_ *reply* _to a_ *link* _or use_ */xx link*", parse_mode="Markdown")
-            return
-    print("You Have Entered mdisk:",url)
-    msg = bot.reply_to(message, "🔎 _bypassing..._", parse_mode="Markdown")
-    link = bypasser.mdisk(url)
-    bot.edit_message_text(f'_{link}_', msg.chat.id, msg.id, parse_mode="Markdown")
-
-
 # rocklinks link
 @bot.message_handler(commands=['rl'])
 def rl(message):
@@ -485,57 +392,6 @@ def rl(message):
     print("You Have Entered rocklinks:",url)
     msg = bot.reply_to(message, "🔎 _bypassing..._", parse_mode="Markdown")
     link = bypasser.rocklinks(url)
-    bot.edit_message_text(f'_{link}_', msg.chat.id, msg.id, parse_mode="Markdown")
-
-
-# pixeldrain link
-@bot.message_handler(commands=['pd'])
-def pd(message):
-    try:
-        url = message.reply_to_message.text
-    except:
-        try:
-            url = message.text.split("/pd ")[1]
-        except:
-            bot.reply_to(message, "⚠️ _Invalid format, either_ *reply* _to a_ *link* _or use_ */xx link*", parse_mode="Markdown")
-            return
-    print("You Have Entered pixeldrain:",url)
-    msg = bot.reply_to(message, "🔎 _bypassing..._", parse_mode="Markdown")
-    link = bypasser.pixeldrain(url)
-    bot.edit_message_text(f'_{link}_', msg.chat.id, msg.id, parse_mode="Markdown") 
-   
-
-# wetransfer link
-@bot.message_handler(commands=['wt'])
-def wt(message):
-    try:
-        url = message.reply_to_message.text
-    except:
-        try:
-            url = message.text.split("/wt ")[1]
-        except:
-            bot.reply_to(message, "⚠️ _Invalid format, either_ *reply* _to a_ *link* _or use_ */xx link*", parse_mode="Markdown")
-            return
-    print("You Have Entered wetransfer:",url)
-    msg = bot.reply_to(message, "🔎 _bypassing..._", parse_mode="Markdown")
-    link = bypasser.wetransfer(url)
-    bot.edit_message_text(f'_{link}_', msg.chat.id, msg.id, parse_mode="Markdown")   
-
-
-# megaup link
-@bot.message_handler(commands=['mu'])
-def mu(message):
-    try:
-        url = message.reply_to_message.text
-    except:
-        try:
-            url = message.text.split("/mu ")[1]
-        except:
-            bot.reply_to(message, "⚠️ _Invalid format, either_ *reply* _to a_ *link* _or use_ */xx link*", parse_mode="Markdown")
-            return
-    print("You Have Entered megaup:",url)
-    msg = bot.reply_to(message, "🔎 _bypassing..._", parse_mode="Markdown")
-    link = bypasser.megaup(url)
     bot.edit_message_text(f'_{link}_', msg.chat.id, msg.id, parse_mode="Markdown")
 
 
@@ -573,23 +429,6 @@ def gd(message):
     bot.edit_message_text(f'_{link}_', msg.chat.id, msg.id, parse_mode="Markdown") 
 
 
-# gd list
-@bot.message_handler(commands=['gdlist'])
-def gdlis(message):
-    list = """_
-- appdrive.in \n\
-- driveapp.in \n\
-- drivehub.in \n\
-- gdflix.pro \n\
-- drivesharer.in \n\
-- drivebit.in \n\
-- drivelinks.in \n\
-- driveace.in \n\
-- drivepro.in \n\
-          _"""
-    bot.reply_to(message, list, parse_mode="Markdown")       
-
-
 # others
 @bot.message_handler(commands=['ot'])
 def ot(message):
@@ -605,6 +444,23 @@ def ot(message):
     msg = bot.reply_to(message, "🔎 _bypassing..._", parse_mode="Markdown")
     link = bypasser.others(url)
     bot.edit_message_text(f'_{link}_', msg.chat.id, msg.id, parse_mode="Markdown") 
+
+
+# gd list
+@bot.message_handler(commands=['gdlist'])
+def gdlis(message):
+    list = """_
+- appdrive.in \n\
+- driveapp.in \n\
+- drivehub.in \n\
+- gdflix.pro \n\
+- drivesharer.in \n\
+- drivebit.in \n\
+- drivelinks.in \n\
+- driveace.in \n\
+- drivepro.in \n\
+          _"""
+    bot.reply_to(message, list, parse_mode="Markdown")
 
 
 # others list
@@ -629,6 +485,39 @@ def otlis(message):
     _"""
     bot.reply_to(message, list, parse_mode="Markdown")       
 
+
+# ddl list
+@bot.message_handler(commands=['ddllist'])
+def ddllis(message):
+    list="""_
+- disk.yandex.com \n\
+- mediafire.com \n\
+- uptobox.com \n\
+- osdn.net \n\
+- github.com \n\
+- hxfile.co \n\
+- anonfiles.com \n\
+- letsupload.io \n\
+- 1drv.ms(onedrive) \n\
+- pixeldrain.com \n\
+- antfiles.com \n\
+- streamtape.com \n\
+- bayfiles.com \n\
+- racaty.net \n\
+- 1fichier.com \n\
+- solidfiles.com \n\
+- krakenfiles.com \n\
+- upload.ee \n\
+- mdisk.me \n\
+- wetransfer.com \n\
+- gofile.io \n\
+- dropbox.com \n\
+- zippyshare.com \n\
+- megaup.net \n\
+- fembed.net, fembed.com, femax20.com, fcdn.stream, feurl.com, layarkacaxxi.icu, naniplay.nanime.in, naniplay.nanime.biz, naniplay.com, mm9842.com \n\
+- sbembed.com, watchsb.com, streamsb.net, sbplay.org
+    _"""
+    bot.reply_to(message, list, parse_mode="Markdown")       
 
 # server loop
 print("bot started")
