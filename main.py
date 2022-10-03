@@ -32,7 +32,7 @@ def mainthread(cmd,message):
         try:
             url = str(message.text.split(f"{cmd} ")[1])
         except:
-            app.send_message(message.chat.id, f"⚠️ __Invalid format, either__ **reply** _to a_ **link** __or use like this -->__ **{cmd} link**", reply_to_message_id=message.id)
+            app.send_message(message.chat.id, f"⚠️ __Invalid format, either__ **reply** __to a__ **link** __or use like this ->__ **{cmd} link**", reply_to_message_id=message.id)
             return
 
     # ola movies
