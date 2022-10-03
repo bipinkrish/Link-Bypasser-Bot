@@ -1,6 +1,6 @@
 # Link-Bypasser-Bot
 
-a Telegram Bot that can Bypass the Ad Links
+a Telegram Bot that can Bypass Ad Links and Generate Direct Links. see the Bot in Action [@BypassLinkBot](https://t.me/BypassLinkBot)
 
 ---
 
@@ -24,30 +24,30 @@ a Telegram Bot that can Bypass the Ad Links
 ## Commands to Set for the Bot @BotFather
 
 ```
-start - supported commands
-dl - ddl
-af - adfly
-gp - gplinks
-dp - droplink
-lv - linkvertise
-rl - rocklinks
-gd - google drive look-alike
-ot - others
-ou - ouo
-gt - gdtot
-sh - sharer.pw
-ps - psa.pm
-st - shorte
-pi - pixl
-gy - gyanilinks
-sg - shortingly
-su - shareus
-fc - filecrypt
-ko - kolop
-df - drivefire
-hd - hubdrive
-kd - katdrive
-sc - script links
-ol - olamovies
+start - Welcome Message
+dl - Direct Download Link
+af - AdFly
+gp - GPlinks
+dp - DropLink
+lv - LinkVertise
+rl - RockLinks
+gd - Google Drive Look-Alike
+ot - Others
+ou - Ouo
+gt - GdTot
+sh - Sharer.pw
+ps - PSA.pm
+st - Shorte
+pi - Pixl
+gy - GyaniLinks
+sg - Shortingly
+su - ShareUs
+fc - FileCrypt
+ko - Kolop
+df - DriveFire
+hd - HubDrive
+kd - KatDrive
+sc - Script Links
+ol - OlaMovies
 ```
 
