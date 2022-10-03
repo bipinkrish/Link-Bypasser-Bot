@@ -12,6 +12,171 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+###################################################
+# script links
+
+def getfinal(domain, url, sess):
+
+    #sess = requests.session()
+    res = sess.get(url)
+    soup = BeautifulSoup(res.text,"html.parser")
+    soup = soup.find("form").findAll("input")
+    datalist = []
+    for ele in soup:
+        datalist.append(ele.get("value"))
+
+    data = {
+            '_method': datalist[0],
+            '_csrfToken': datalist[1],
+            'ad_form_data': datalist[2],
+            '_Token[fields]': datalist[3],
+            '_Token[unlocked]': datalist[4],
+        }
+
+    sess.headers = {
+            'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:103.0) Gecko/20100101 Firefox/103.0',
+            'Accept': 'application/json, text/javascript, */*; q=0.01',
+            'Accept-Language': 'en-US,en;q=0.5',
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            'X-Requested-With': 'XMLHttpRequest',
+            'Origin': domain,
+            'Connection': 'keep-alive',
+            'Referer': url,
+            'Sec-Fetch-Dest': 'empty',
+            'Sec-Fetch-Mode': 'cors',
+            'Sec-Fetch-Site': 'same-origin',
+            }
+
+    # print("waiting 10 secs")
+    time.sleep(10) # important
+    response = sess.post(domain+'/links/go', data=data).json()
+    furl = response["url"]
+    print(furl)
+    return furl
+
+
+def getfirst(url):
+
+    sess = requests.session()
+    res = sess.get(url)
+
+    soup = BeautifulSoup(res.text,"html.parser")
+    soup = soup.find("form")
+    action = soup.get("action")
+    soup = soup.findAll("input")
+    datalist = []
+    for ele in soup:
+        datalist.append(ele.get("value"))
+    sess.headers = {
+        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:103.0) Gecko/20100101 Firefox/103.0',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'Origin': action,
+        'Connection': 'keep-alive',
+        'Referer': action,
+        'Upgrade-Insecure-Requests': '1',
+        'Sec-Fetch-Dest': 'document',
+        'Sec-Fetch-Mode': 'navigate',
+        'Sec-Fetch-Site': 'same-origin',
+        'Sec-Fetch-User': '?1',
+    }
+
+    data = {'newwpsafelink': datalist[1], "g-recaptcha-response": RecaptchaV3()}
+    response = sess.post(action, data=data)
+    soup = BeautifulSoup(response.text, "html.parser")
+    soup = soup.findAll("div", class_="wpsafe-bottom text-center")
+    for ele in soup:
+        rurl = ele.find("a").get("onclick")[13:-12]
+
+    res = sess.get(rurl)
+    furl = res.url
+    # print(furl)
+    return getfinal(f'https://{furl.split("/")[-2]}/',furl,sess)
+
+
+################################################
+# ola movies
+
+def olamovies(url):
+    
+    print("this takes time, you might want to take a break.")
+    headers = {
+            'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:103.0) Gecko/20100101 Firefox/103.0',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.5',
+            'Referer': url,
+            'Alt-Used': 'olamovies.ink',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1',
+            'Sec-Fetch-Dest': 'document',
+            'Sec-Fetch-Mode': 'navigate',
+            'Sec-Fetch-Site': 'same-origin',
+            'Sec-Fetch-User': '?1',
+        }
+
+    client = cloudscraper.create_scraper()
+    res = client.get(url)
+    soup = BeautifulSoup(res.text,"html.parser")
+    soup = soup.findAll("div", class_="wp-block-button")
+
+    outlist = []
+    for ele in soup:
+        outlist.append(ele.find("a").get("href"))
+
+    slist = []
+    for ele in outlist:
+        try:
+            key = ele.split("?key=")[1].split("&id=")[0].replace("%2B","+").replace("%3D","=").replace("%2F","/")
+            id = ele.split("&id=")[1]
+        except:
+            continue
+        
+        count = 3
+        params = { 'key': key, 'id': id}
+        soup = "None"
+        # print("trying","https://olamovies.ink/download/&key="+key+"&id="+id)
+
+        while 'rocklinks.net' not in soup and "try2link.com" not in soup:
+            res = client.get("https://olamovies.ink/download/", params=params, headers=headers)
+            soup = BeautifulSoup(res.text,"html.parser")
+            soup = soup.findAll("a")[0].get("href")
+            if soup != "":
+                if "try2link.com" in soup or 'rocklinks.net' in soup:
+                    # print("added", soup)
+                    slist.append(soup)
+                else:
+                    # print(soup, "not addded")
+                    pass
+            else:
+                if count == 0:
+                    # print('moving on')
+                    break
+                else:
+                    count -= 1
+                    # print("retrying")
+                
+            # print("waiting 10 secs")
+            time.sleep(10)
+
+    #print(slist)
+    final = []
+    for ele in slist:
+        if "rocklinks.net" in ele:
+            final.append(rocklinks(ele))
+        elif "try2link.com" in ele:
+            final.append(try2link_bypass(ele))
+        else:
+            # print(ele)
+            pass
+    #print(final)
+    links = ""
+    for ele in final:
+        links = links + ele + "\n"
+    print("Bypassed Links")
+    print(links)
+    return links
+
+
 ###############################################
 # katdrive
 
@@ -726,7 +891,7 @@ def others(url):
 
 # RECAPTCHA v3 BYPASS
 # code from https://github.com/xcscxr/Recaptcha-v3-bypass
-def RecaptchaV3(ANCHOR_URL):
+def RecaptchaV3(ANCHOR_URL="https://www.google.com/recaptcha/api2/anchor?ar=1&k=6Lcr1ncUAAAAAH3cghg6cOTPGARa8adOf-y9zv2x&co=aHR0cHM6Ly9vdW8uaW86NDQz&hl=en&v=1B_yv3CBEV10KtI2HJ6eEXhJ&size=invisible&cb=4xnsug1vufyr"):
     url_base = 'https://www.google.com/recaptcha/'
     post_data = "v={}&reason=q&c={}&k={}&co={}"
     client = requests.Session()
@@ -746,7 +911,6 @@ def RecaptchaV3(ANCHOR_URL):
 
 
 # code from https://github.com/xcscxr/ouo-bypass/
-ANCHOR_URL = 'https://www.google.com/recaptcha/api2/anchor?ar=1&k=6Lcr1ncUAAAAAH3cghg6cOTPGARa8adOf-y9zv2x&co=aHR0cHM6Ly9vdW8uaW86NDQz&hl=en&v=1B_yv3CBEV10KtI2HJ6eEXhJ&size=invisible&cb=4xnsug1vufyr'
 def ouo(url):
     client = requests.Session()
     tempurl = url.replace("ouo.press", "ouo.io")
@@ -763,7 +927,7 @@ def ouo(url):
         inputs = bs4.form.findAll("input", {"name": re.compile(r"token$")})
         data = { input.get('name'): input.get('value') for input in inputs }
         
-        ans = RecaptchaV3(ANCHOR_URL)
+        ans = RecaptchaV3()
         data['x-token'] = ans
         h = {
             'content-type': 'application/x-www-form-urlencoded'

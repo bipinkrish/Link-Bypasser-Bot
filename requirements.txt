@@ -2,7 +2,8 @@ requests
 cloudscraper
 bs4 
 python-dotenv
-pyTelegramBotAPI
+pyrogram
+tgcrypto
 lxml
 lk21
 cfscrape
