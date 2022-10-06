@@ -804,12 +804,10 @@ def gplinks(url: str):
     final_url = f"{p.scheme}://{p.netloc}/links/go"
     res = client.head(url)
     header_loc = res.headers["location"]
-    param = header_loc.split("postid=")[-1]
-    req_url = f"{p.scheme}://{p.netloc}/{param}"
     p = urlparse(header_loc)
     ref_url = f"{p.scheme}://{p.netloc}/"
     h = {"referer": ref_url}
-    res = client.get(req_url, headers=h, allow_redirects=False)
+    res = client.get(url, headers=h, allow_redirects=False)
     bs4 = BeautifulSoup(res.content, "html.parser")
     inputs = bs4.find_all("input")
     time.sleep(10) # !important
