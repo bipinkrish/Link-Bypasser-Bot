@@ -727,12 +727,12 @@ def sharer_pw(url,Laravel_Session, XSRF_TOKEN, forced_login=False):
 #################################################################
 # gdtot
 
-def gdtot(url,GDTot_Crypt):
-    client = cloudscraper.create_scraper(allow_brotli=False)
-    match = re.findall(r"https?://(.+)\.gdtot\.(.+)\/\S+\/\S+", url)[0]
-    client.cookies.update({ "crypt": GDTot_Crypt })
+def gdtot(url: str, GDTot_Crypt: str) -> str:
+    client = requests.Session()
+    client.cookies.update({"crypt": GDTot_Crypt})
     res = client.get(url)
-    res = client.get(f"https://{match[0]}.gdtot.{match[1]}/dld?id={url.split('/')[-1]}")
+    base_url = re.match('^.+?[^\/:](?=[?\/]|$\n)', url).group(0)
+    res = client.get(f"{base_url}/dld?id={url.split('/')[-1]}")
     url = re.findall(r'URL=(.*?)"', res.text)[0]
     info = {}
     info["error"] = False
@@ -750,7 +750,7 @@ def gdtot(url,GDTot_Crypt):
     if not info["error"]:
         return info["gdrive_link"]
     else:
-        return "Could not generate GDrive URL for your GDTot Link :("
+        return f"{info['message']}"
 
 
 ##################################################################
