@@ -227,7 +227,10 @@ def mainthread(cmd,message):
     # finnaly
     print("bypassed:",link)
     try:
-        app.edit_message_text(message.chat.id, msg.id, f'__{link}__')
+        n = 4096
+        split = [link[i:i+n] for i in range(0, len(link), n)]
+        for ele in split:
+            app.edit_message_text(message.chat.id, msg.id, f'__{ele}__')
     except:
         app.edit_message_text(message.chat.id, msg.id, "__Failed to Bypass__")
 
