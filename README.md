@@ -49,5 +49,6 @@ hd - HubDrive
 kd - KatDrive
 sc - Script Links
 ol - OlaMovies
+ig - IGG Games
 ```
 

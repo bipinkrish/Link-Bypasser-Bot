@@ -12,6 +12,100 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+################################################
+# igg games
+
+def decodeKey(encoded):
+        key = ''
+
+        i = len(encoded) // 2 - 5
+        while i >= 0:
+            key += encoded[i]
+            i = i - 2
+        
+        i = len(encoded) // 2 + 4
+        while i < len(encoded):
+            key += encoded[i]
+            i = i + 2
+
+        return key
+
+def bypassBluemediafiles(url, torrent=False):
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:103.0) Gecko/20100101 Firefox/103.0',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'Alt-Used': 'bluemediafiles.com',
+        'Connection': 'keep-alive',
+        'Upgrade-Insecure-Requests': '1',
+        'Sec-Fetch-Dest': 'document',
+        'Sec-Fetch-Mode': 'navigate',
+        'Sec-Fetch-Site': 'none',
+        'Sec-Fetch-User': '?1',
+
+    }
+
+    res = requests.get(url, headers=headers)
+    soup = BeautifulSoup(res.text, 'html.parser')
+    script = str(soup.findAll('script')[3])
+    encodedKey = script.split('Create_Button("')[1].split('");')[0]
+
+
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:103.0) Gecko/20100101 Firefox/103.0',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'Referer': url,
+        'Alt-Used': 'bluemediafiles.com',
+        'Connection': 'keep-alive',
+        'Upgrade-Insecure-Requests': '1',
+        'Sec-Fetch-Dest': 'document',
+        'Sec-Fetch-Mode': 'navigate',
+        'Sec-Fetch-Site': 'same-origin',
+        'Sec-Fetch-User': '?1',
+    }
+
+    params = { 'url': decodeKey(encodedKey) }
+    
+    if torrent:
+        res = requests.get('https://dl.pcgamestorrents.org/get-url.php', params=params, headers=headers)
+        soup = BeautifulSoup(res.text,"html.parser")
+        furl = soup.find("a",class_="button").get("href")
+
+    else:
+        res = requests.get('https://bluemediafiles.com/get-url.php', params=params, headers=headers)
+        furl = res.url
+        if "mega.nz" in furl:
+            furl = furl.replace("mega.nz/%23!","mega.nz/file/").replace("!","#")
+
+    #print(furl)
+    return furl
+
+def igggames(url):
+    res = requests.get(url)
+    soup = BeautifulSoup(res.text,"html.parser")
+    soup = soup.find("div",class_="uk-margin-medium-top").findAll("a")
+
+    bluelist = []
+    for ele in soup:
+        bluelist.append(ele.get('href'))
+    bluelist = bluelist[6:-1]
+
+    links = ""
+    for ele in bluelist:
+        if "bluemediafiles" in ele:
+            links = links + bypassBluemediafiles(ele) + "\n"
+        elif "pcgamestorrents.com" in ele:
+            res = requests.get(ele)
+            soup = BeautifulSoup(res.text,"html.parser")
+            turl = soup.find("p",class_="uk-card uk-card-body uk-card-default uk-card-hover").find("a").get("href")
+            links = links + bypassBluemediafiles(turl,True) + "\n"
+        else:
+            links = links + ele + "\n"
+
+    return links[:-1]
+
+
 ###################################################
 # script links
 

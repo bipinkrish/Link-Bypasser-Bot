@@ -1,6 +1,7 @@
 import pyrogram
 from pyrogram import Client
 from pyrogram import filters
+from pyrogram.types import InlineKeyboardMarkup,InlineKeyboardButton
 import bypasser
 import os
 import ddl
@@ -34,6 +35,12 @@ def mainthread(cmd,message):
         except:
             app.send_message(message.chat.id, f"⚠️ __Invalid format, either__ **reply** __to a__ **link** __or use like this ->__ **{cmd} link**", reply_to_message_id=message.id)
             return
+
+    # igg games
+    if cmd == "/ig":
+        print("You Have Entered igg:",url)
+        msg = app.send_message(message.chat.id, "🔎 __bypassing...__", reply_to_message_id=message.id)
+        link = bypasser.igggames(url)
 
     # ola movies
     if cmd == "/ol":
@@ -218,14 +225,15 @@ def mainthread(cmd,message):
         link = bypasser.others(url)
 
     # finnaly
+    print("bypassed:",link)
     try:
         app.edit_message_text(message.chat.id, msg.id, f'__{link}__')
     except:
         app.edit_message_text(message.chat.id, msg.id, "__Failed to Bypass__")
 
 
-AvailableCommands = ['ol','sc','dl','kd','hd','df','ko','fc','su','sg','gy','pi','st','ps','sh','gt','af','gp','dp','lv','rl','ou','gd','ot']
 # commands
+AvailableCommands = ['ol','sc','dl','kd','hd','df','ko','fc','su','sg','gy','pi','st','ps','sh','gt','af','gp','dp','lv','rl','ou','gd','ot','ig']
 @app.on_message(filters.command(AvailableCommands))
 def receive(client: pyrogram.client.Client, message: pyrogram.types.messages_and_media.message.Message):
     bypass = threading.Thread(target=lambda:mainthread(message.text.split(" ")[0],message),daemon=True)
@@ -234,32 +242,40 @@ def receive(client: pyrogram.client.Client, message: pyrogram.types.messages_and
 
 # start command
 @app.on_message(filters.command(["start"]))
-def send_welcome(client: pyrogram.client.Client, message: pyrogram.types.messages_and_media.message.Message):
+def send_start(client: pyrogram.client.Client, message: pyrogram.types.messages_and_media.message.Message):
+    app.send_message(message.chat.id, f"__👋 Hi **{message.from_user.mention}**, i am Link Bypasser Bot, just send me any supported links with proper format and i will you give you results. use /help to veiw supported sites list.__",
+    reply_markup=InlineKeyboardMarkup([[ InlineKeyboardButton("🌐 Source Code", url="https://github.com/bipinkrish/Link-Bypasser-Bot")]]), reply_to_message_id=message.id)
+
+
+# help command
+@app.on_message(filters.command(["help"]))
+def send_help(client: pyrogram.client.Client, message: pyrogram.types.messages_and_media.message.Message):
     app.send_message(message.chat.id, "🔗 **Available Sites** \n\n  \
- `/dl` - __direct download link (/ddllist)__ \n  \
- `/af` - __adfly__ \n  \
- `/gp` - __gplinks__ \n  \
- `/dp` - __droplink__ \n  \
- `/lv` - __linkvertise__ \n  \
- `/rl` - __rocklinks__ \n  \
- `/gd` - __gdrive look-alike (/gdlist)__ \n  \
- `/ot` - __others (/otlist)__ \n  \
- `/ou` - __ouo__ \n  \
- `/gt` - __gdtot__ \n  \
- `/sh` - __sharer__ \n  \
- `/ps` - __psa__ \n  \
- `/st` - __shorte__ \n  \
- `/pi` - __pixl__ \n  \
- `/gy` - __gyanilinks__ \n  \
- `/sg` - __shortingly__ \n  \
- `/su` - __shareus__ \n  \
- `/fc` - __filecrypt__ \n  \
- `/ko` - __kolop__ \n  \
- `/df` - __drivefire__ \n  \
- `/hd` - __hubdrive__ \n  \
- `/kd` - __katdrive__ \n  \
- `/sc` - __script links__ \n  \
- `/ol` - __olamovies__ \n\n\
+ /dl - __direct download link (/ddllist)__ \n  \
+ /af - __adfly__ \n  \
+ /gp - __gplinks__ \n  \
+ /dp - __droplink__ \n  \
+ /lv - __linkvertise__ \n  \
+ /rl - __rocklinks__ \n  \
+ /gd - __gdrive look-alike (/gdlist)__ \n  \
+ /ot - __others (/otlist)__ \n  \
+ /ou - __ouo__ \n  \
+ /gt - __gdtot__ \n  \
+ /sh - __sharer__ \n  \
+ /ps - __psa__ \n  \
+ /st - __shorte__ \n  \
+ /pi - __pixl__ \n  \
+ /gy - __gyanilinks__ \n  \
+ /sg - __shortingly__ \n  \
+ /su - __shareus__ \n  \
+ /fc - __filecrypt__ \n  \
+ /ko - __kolop__ \n  \
+ /df - __drivefire__ \n  \
+ /hd - __hubdrive__ \n  \
+ /kd - __katdrive__ \n  \
+ /sc - __script links__ \n  \
+ /ol - __olamovies__ \n  \
+ /ig - __igg games__ \n\n\
 __reply to the link with command or use format /xx link__",
 reply_to_message_id=message.id)
 
@@ -333,6 +349,13 @@ def ddllis(client: pyrogram.client.Client, message: pyrogram.types.messages_and_
 - sbembed.com, watchsb.com, streamsb.net, sbplay.org
     __"""
     app.send_message(message.chat.id, list, reply_to_message_id=message.id)     
+
+
+# see help
+@app.on_message(filters.text)
+def short(client: pyrogram.client.Client, message: pyrogram.types.messages_and_media.message.Message):
+    if message.text[0] == "/":
+        app.send_message(message.chat.id, "__⏩ see /help__", reply_to_message_id=message.id)
 
 
 # server loop
