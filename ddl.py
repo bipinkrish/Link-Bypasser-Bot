@@ -468,4 +468,4 @@ def direct_link_generator(link: str):
     elif any(x in link for x in ['sbembed.com', 'watchsb.com', 'streamsb.net', 'sbplay.org']):
         return sbembed(link)
     else:
-        return f'No Direct link function found for {link}'
+        return f'No Direct link function found for\n\n{link}\n\nuse /ddllist'
