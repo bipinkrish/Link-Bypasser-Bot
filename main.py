@@ -74,8 +74,8 @@ def mainthread(cmd,message):
         if KATCRYPT == "":
             app.send_message(message.chat.id, "🚫 __You can't use this because__ **KATDRIVE_CRYPT** __ENV is not set__", reply_to_message_id=message.id)
             return
-        print("Entered Link katdrive:",url)
         
+        print("Entered Link katdrive:",url)
         link = bypasser.katdrive_dl(url, KATCRYPT)
         
 
