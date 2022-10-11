@@ -287,7 +287,7 @@ def olamovies(url):
             'Sec-Fetch-User': '?1',
         }
 
-    client = cloudscraper.create_scraper()
+    client = cloudscraper.create_scraper(allow_brotli=False)
     res = client.get(url)
     soup = BeautifulSoup(res.text,"html.parser")
     soup = soup.findAll("div", class_="wp-block-button")
