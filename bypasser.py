@@ -536,7 +536,6 @@ def getlinks(dlc,client):
     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:103.0) Gecko/20100101 Firefox/103.0',
     'Accept': 'application/json, text/javascript, */*',
     'Accept-Language': 'en-US,en;q=0.5',
-    # 'Accept-Encoding': 'gzip, deflate',
     'X-Requested-With': 'XMLHttpRequest',
     'Origin': 'http://dcrypt.it',
     'Connection': 'keep-alive',

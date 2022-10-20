@@ -26,13 +26,16 @@ a Telegram Bot that can Bypass Ad Links and Generate Direct Links. see the Bot i
 ```
 start - Welcome Message
 dl - Direct Download Link
+ddllist - List of Sites for /dl
 af - AdFly
 gp - GPlinks
 dp - DropLink
 lv - LinkVertise
 rl - RockLinks
 gd - Google Drive Look-Alike
+gdlist - List of Sites for /gd
 ot - Others
+otlist - List of Sites for /ot
 ou - Ouo
 gt - GdTot
 sh - Sharer.pw
