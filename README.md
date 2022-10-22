@@ -1,4 +1,4 @@
-# Link-Bypasser-Bot
+# Bypass-Bot
 
 a Telegram Bot that can Bypass Ad Links and Generate Direct Links. see the Bot in Action [@BypassLinkBot](https://t.me/BypassLinkBot)
 
@@ -6,19 +6,21 @@ a Telegram Bot that can Bypass Ad Links and Generate Direct Links. see the Bot i
 
 ## Variables
 
-- `TOKEN` Your bot token from @BotFather
-- `HASH` Your API Hash from my.telegram.org
-- `ID` Your API ID from my.telegram.org
+- `BOT_TOKEN` Your bot token from @BotFather
+- `API_HASH` Your API Hash from my.telegram.org
+- `API_ID` Your API ID from my.telegram.org
 
 ## Optional Variables
-- `CRYPT` Your GDTot Crypt! If you don't know how to get Crypt then [Learn Here](https://www.youtube.com/watch?v=EfZ29CotRSU)
+- `GD_CRYPT` Your GDTot Crypt! If you don't know how to get Crypt then [Learn Here](https://www.youtube.com/watch?v=EfZ29CotRSU)
 - `XSRF_TOKEN` and `Laravel_Session` XSRF_TOKEN and laravel_session cookies! If you don't know how to get then then watch [this Video](https://www.youtube.com/watch?v=EfZ29CotRSU) (for GDTOT) and do the same for sharer.pw
 - `KOLOP_CRYPT` Your KOLOP Crypt!
 - `DRIVEFIRE_CRYPT` Your DRIVEFIRE Crypt!
 - `HUBDRIVE_CRYPT` Your HUBDRIVE Crypt!
 - `KATDRIVE_CRYPT` Your KATDRIVE Crypt!
 - `UPTOBOX_TOKEN` your UPTOBOX Token
+- `UPSTREAM_REPO`: Your github repository link, if your repo is private add `https://username:{githubtoken}@github.com/{username}/{reponame}` format. Get token from [Github settings](https://github.com/settings/tokens). So you can update your bot from filled repository on each restart. `Str`.
 ---
+
 
 
 ## Commands to Set for the Bot @BotFather
