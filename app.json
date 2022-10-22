@@ -1,0 +1,39 @@
+{
+    "name": "Bypass Bot",
+    "description": "Bypass Bot that can Bypass Ad Links and Generate Direct Links",
+    "stack": "container",
+    "website": "https://github.com/bipinkrish/Link-Bypasser-Bot",
+    "repository": "https://github.com/bipinkrish/Link-Bypasser-Bot",
+    "env": {
+        "BOT_TOKEN": {
+            "description": "Your bot token.",
+            "required": true
+        },
+        "API_ID": {
+            "description": "Get this value from https://my.telegram.org",
+            "required": true
+        },
+        "API_HASH": {
+            "description": "Get this value from https://my.telegram.org",
+            "required": true
+        },
+        "GD_CRYPT": {
+            "description": "Your GDTot Crypt!",
+            "required": false
+        },
+        "UPSTREAM_REPO": {
+            "description": "",
+            "required": false
+        }
+    },
+    "addons": [],
+    "buildpacks": [{
+        "url": "heroku/python"
+    }],
+    "formation": {
+        "worker": {
+            "quantity": 1,
+            "size": "free"
+        }
+    }
+}
