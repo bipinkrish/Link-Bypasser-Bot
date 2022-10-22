@@ -2,8 +2,8 @@
     "name": "Bypass Bot",
     "description": "Bypass Bot that can Bypass Ad Links and Generate Direct Links",
     "stack": "container",
-    "website": "https://github.com/kccut/Bypass-Bot",
-    "repository": "https://github.com/kccut/Bypass-Bot",
+    "website": "https://github.com/bipinkrish/Link-Bypasser-Bot",
+    "repository": "https://github.com/bipinkrish/Link-Bypasser-Bot",
     "env": {
         "BOT_TOKEN": {
             "description": "Your bot token.",
@@ -23,7 +23,7 @@
         },
         "UPSTREAM_REPO": {
             "description": "",
-            "required": true
+            "required": false
         }
     },
     "addons": [],
