@@ -25,7 +25,7 @@ KATCRYPT = os.environ.get("KATDRIVE_CRYPT","")
 
 
 # main thread
-def mainthread(cmd,url,message):
+def mainthread(cmd,url,message,msg):
 
     # igg games
     if cmd == "/ig":
@@ -54,7 +54,7 @@ def mainthread(cmd,url,message):
     # katdrive
     elif cmd == "/kd":
         if KATCRYPT == "":
-            app.send_message(message.chat.id, "🚫 __You can't use this because__ **KATDRIVE_CRYPT** __ENV is not set__", reply_to_message_id=message.id)
+            app.edit_message_text(message.chat.id, msg.id, "🚫 __You can't use this because__ **KATDRIVE_CRYPT** __ENV is not set__")
             return "0"
         
         print("entered katdrive:",url)
@@ -64,7 +64,7 @@ def mainthread(cmd,url,message):
     # hubdrive
     elif cmd == "/hd":
         if HCRYPT == "":
-            app.send_message(message.chat.id, "🚫 __You can't use this because__ **HUBDRIVE_CRYPT** __ENV is not set__", reply_to_message_id=message.id)
+            app.edit_message_text(message.chat.id, msg.id, "🚫 __You can't use this because__ **HUBDRIVE_CRYPT** __ENV is not set__")
             return "0"
 
         print("entered hubdrive:",url)
@@ -74,7 +74,7 @@ def mainthread(cmd,url,message):
     # drivefire
     elif cmd == "/df":
         if DCRYPT == "":
-            app.send_message(message.chat.id, "🚫 __You can't use this because__ **DRIVEFIRE_CRYPT** __ENV is not set__", reply_to_message_id=message.id)
+            app.edit_message_text(message.chat.id, msg.id, "🚫 __You can't use this because__ **DRIVEFIRE_CRYPT** __ENV is not set__")
             return "0"
 
         print("entered drivefire:",url)
@@ -84,7 +84,7 @@ def mainthread(cmd,url,message):
     # kolop
     elif cmd == "/ko":
         if KCRYPT == "":
-            app.send_message(message.chat.id, "🚫 __You can't use this because__ **KOLOP_CRYPT** __ENV is not set__", reply_to_message_id=message.id)
+            app.edit_message_text(message.chat.id, msg.id, "🚫 __You can't use this because__ **KOLOP_CRYPT** __ENV is not set__")
             return "0"
 
         print("entered kolop:",url)
@@ -136,7 +136,7 @@ def mainthread(cmd,url,message):
     # sharer pw
     elif cmd == "/sh":
         if XSRF_TOKEN == "" or Laravel_Session == "":
-            app.send_message(message.chat.id, "🚫 __You can't use this because__ **XSRF_TOKEN** __and__ **Laravel_Session** __ENV is not set__", reply_to_message_id=message.id)
+            app.edit_message_text(message.chat.id, msg.id, "🚫 __You can't use this because__ **XSRF_TOKEN** __and__ **Laravel_Session** __ENV is not set__")
             return "0"
 
         print("entered sharer:",url)
@@ -213,7 +213,7 @@ def loopthread(cmd,message):
 
     link = ""
     for ele in url.split("\n"):
-        temp = mainthread(cmd,ele,message)
+        temp = mainthread(cmd,ele,message,msg)
         if temp != "0":
             print("bypassed:",temp)
             link = link + temp + "\n\n"
