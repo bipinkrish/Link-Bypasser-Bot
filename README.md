@@ -36,6 +36,7 @@ start - Welcome Message
 dl - Direct Download Link
 ddllist - List of Sites for /dl
 af - AdFly
+htp - HTPMovies
 gp - GPlinks
 dp - DropLink
 lv - LinkVertise
