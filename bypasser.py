@@ -9,6 +9,7 @@ from lxml import etree
 import hashlib
 import json
 from dotenv import load_dotenv
+from requests import get
 load_dotenv()
 
 
@@ -919,6 +920,28 @@ def adfly(url):
     out['bypassed_url'] = url
     return out
 
+###############################################################
+# htplinks
+
+def htp(url: str):
+    download = get(url, stream=True, allow_redirects=False) 
+    xurl =download.headers["location"]   
+    client = cloudscraper.create_scraper(allow_brotli=False)
+    param = xurl.split("/")[-1]
+    DOMAIN = "https://go.kinemaster.cc"
+    final_url = f"{DOMAIN}/{param}"
+    resp = client.get(final_url)
+    soup = BeautifulSoup(resp.content, "html.parser")    
+    try: inputs = soup.find(id="go-link").find_all(name="input")
+    except: return "Incorrect Link"
+    data = { input.get('name'): input.get('value') for input in inputs }
+    h = { "x-requested-with": "XMLHttpRequest" }
+    time.sleep(10)
+    r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
+    try:
+        return r.json()['url']
+    except: 
+	return "Something went wrong :("
 
 ##############################################################################################        
 # gplinks
