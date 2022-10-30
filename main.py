@@ -153,7 +153,12 @@ def mainthread(cmd,url,message):
         print("entered adfly:",url)
         out = bypasser.adfly(url)
         link = out['bypassed_url']
- 
+        
+     # htp
+    elif cmd == "/htp":
+        print("entered htplink:",url)
+        link = bypasser.htp(url) 
+        
     # gplinks
     elif cmd == "/gp":
         print("entered gplink:",url)
