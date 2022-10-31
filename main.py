@@ -231,7 +231,7 @@ def loopthread(cmd,message):
 
 
 # commands
-AvailableCommands = ['ol','sc','dl','kd','hd','df','ko','fc','su','sg','gy','pi','st','ps','sh','gt','af','gp','dp','lv','rl','ou','gd','ot','ig']
+AvailableCommands = ['ol','sc','dl','kd','hd','df','ko','fc','su','sg','gy','pi','st','ps','sh','gt','af','ht','gp','dp','lv','rl','ou','gd','ot','ig']
 @app.on_message(filters.command(AvailableCommands))
 def receive(client: pyrogram.client.Client, message: pyrogram.types.messages_and_media.message.Message):
     bypass = threading.Thread(target=lambda:loopthread(message.text.split(" ")[0],message),daemon=True)
@@ -269,6 +269,7 @@ def send_help(client: pyrogram.client.Client, message: pyrogram.types.messages_a
     app.send_message(message.chat.id, "🔗 **Available Sites** \n\n  \
  /dl - __direct download link (/ddllist)__ \n  \
  /af - __adfly__ \n  \
+ /ht - __htplinks__\n \
  /gp - __gplinks__ \n  \
  /dp - __droplink__ \n  \
  /lv - __linkvertise__ \n  \
