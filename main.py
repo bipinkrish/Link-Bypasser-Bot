@@ -190,6 +190,11 @@ def mainthread(cmd,url,message,msg):
         print("entered others:",url)
         link = bypasser.others(url)
 
+    # try2link
+    elif cmd == "/tl":
+        print("entered try2links:",url)
+        link = bypasser.try2link_bypass(url)
+
     return link
 
 
@@ -227,7 +232,7 @@ def loopthread(cmd,message):
 
 
 # commands
-AvailableCommands = ['ol','sc','dl','kd','hd','df','ko','fc','su','sg','gy','pi','st','ps','sh','gt','af','gp','dp','lv','rl','ou','gd','ot','ig']
+AvailableCommands = ['ol','sc','dl','kd','hd','df','ko','fc','su','sg','gy','pi','st','ps','sh','gt','af','gp','dp','lv','rl','ou','gd','ot','ig','tl']
 @app.on_message(filters.command(AvailableCommands))
 def receive(client: pyrogram.client.Client, message: pyrogram.types.messages_and_media.message.Message):
     bypass = threading.Thread(target=lambda:loopthread(message.text.split(" ")[0],message),daemon=True)
@@ -289,7 +294,8 @@ def send_help(client: pyrogram.client.Client, message: pyrogram.types.messages_a
  /kd - __katdrive__ \n  \
  /sc - __script links__ \n  \
  /ol - __olamovies__ \n  \
- /ig - __igg games__ \n\n\
+ /ig - __igg games__ \n  \
+ /tl - __try2link__ \n\n\
 __reply to the link with command or use format /xx link__",
 reply_to_message_id=message.id)
 
