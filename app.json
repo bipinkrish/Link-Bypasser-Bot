@@ -3,7 +3,7 @@
     "description": "Bypass Bot that can Bypass Ad Links and Generate Direct Links",
     "stack": "container",
     "website": "https://github.com/bipinkrish/Link-Bypasser-Bot",
-    "repository": "https://github.com/bipinkrish/Link-Bypasser-Bot",
+    "repository": "https://github.com/Heyboy2004/Link-Bypasser-Bot",
     "env": {
         "BOT_TOKEN": {
             "description": "Your bot token.",
