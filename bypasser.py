@@ -929,7 +929,7 @@ def htp(url: str):
     j = r.split('("')[-1]
     url = j.split('")')[0]
     param = url.split("/")[-1]
-    DOMAIN = "https://go.kinemaster.cc"
+    DOMAIN = "https://go.theforyou.in"
     final_url = f"{DOMAIN}/{param}"
     resp = client.get(final_url)
     soup = BeautifulSoup(resp.content, "html.parser")    
