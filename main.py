@@ -155,7 +155,7 @@ def mainthread(cmd,url,message):
         link = out['bypassed_url']
         
      # htp
-    elif cmd == "/htp":
+    elif cmd == "/ht":
         print("entered htplink:",url)
         link = bypasser.htp(url) 
         
