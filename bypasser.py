@@ -1,15 +1,156 @@
 import re
+from re import match as rematch, findall, sub as resub
 import requests
+from requests import get as rget
 import base64
 from urllib.parse import unquote, urlparse, parse_qs
 import time
 import cloudscraper
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, NavigableString, Tag
 from lxml import etree
 import hashlib
 import json
 from dotenv import load_dotenv
 load_dotenv()
+from asyncio import sleep as asleep
+import PyBypass
+import os
+
+
+##########################################################
+# ENVs
+
+GDTot_Crypt = os.environ.get("CRYPT","b0lDek5LSCt6ZjVRR2EwZnY4T1EvVndqeDRtbCtTWmMwcGNuKy8wYWpDaz0%3D")
+Laravel_Session = os.environ.get("Laravel_Session","")
+XSRF_TOKEN = os.environ.get("XSRF_TOKEN","")
+DCRYPT = os.environ.get("DRIVEFIRE_CRYPT","")
+KATCRYPT = os.environ.get("KATDRIVE_CRYPT","")
+
+
+############################################################
+# Lists
+
+others = ["exe.io","exey.io","sub2unlock.net","sub2unlock.com","rekonise.com","letsboost.net","ph.apps2app.com","mboost.me",
+"sub4unlock.com","ytsubme.com","bit.ly","social-unlock.com","boost.ink","goo.gl","shrto.ml","t.co","tinyurl.com"]
+
+gdlist = ["appdrive.in","driveapp.in","drivehub.in","gdflix.pro","drivesharer.in","drivebit.in","drivelinks.in","driveace.in",
+"drivepro.in"]
+
+ddllist = ["disk.yandex.com","mediafire.com","uptobox.com","osdn.net","github.com","hxfile.co","anonfiles.com","letsupload.io",
+"1drv.ms","pixeldrain.com","antfiles.com","streamtape.com","bayfiles.com","racaty.net","1fichier.com","solidfiles.com",
+"krakenfiles.com","upload.ee","mdisk.me","wetransfer.com","gofile.io","dropbox.com","zippyshare.com","megaup.net","fembed.net",
+"fembed.com","femax20.com","fcdn.stream","feurl.com","layarkacaxxi.icu","naniplay.nanime.in","naniplay.nanime.biz","naniplay.com",
+"mm9842.com","sbembed.com","watchsb.com","streamsb.net","sbplay.org"]
+
+
+###############################################################
+# htpmovies cinevood sharespark
+
+def htpmovies(link):
+    client = cloudscraper.create_scraper(allow_brotli=False)
+    r = client.get(link, allow_redirects=True).text
+    j = r.split('("')[-1]
+    url = j.split('")')[0]
+    param = url.split("/")[-1]
+    DOMAIN = "https://go.theforyou.in"
+    final_url = f"{DOMAIN}/{param}"
+    resp = client.get(final_url)
+    soup = BeautifulSoup(resp.content, "html.parser")    
+    try: inputs = soup.find(id="go-link").find_all(name="input")
+    except: return "Incorrect Link"
+    data = { input.get('name'): input.get('value') for input in inputs }
+    h = { "x-requested-with": "XMLHttpRequest" }
+    time.sleep(10)
+    r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
+    try:
+        return r.json()['url']
+    except: return "Something went Wrong !!"
+
+
+def scrapper(link):
+ 
+    try: link = rematch(r"((http|https)\:\/\/)?[a-zA-Z0-9\.\/\?\:@\-_=#]+\.([a-zA-Z]){2,6}([a-zA-Z0-9\.\&\/\?\:@\-_=#])*", link)[0]
+    except TypeError: return 'Not a Valid Link.'
+    links = []
+
+    if "sharespark" in link:
+        gd_txt = ""
+        res = rget("?action=printpage;".join(link.split('?')))
+        soup = BeautifulSoup(res.text, 'html.parser')
+        for br in soup.findAll('br'):
+            next_s = br.nextSibling
+            if not (next_s and isinstance(next_s,NavigableString)):
+                continue
+            next2_s = next_s.nextSibling
+            if next2_s and isinstance(next2_s,Tag) and next2_s.name == 'br':
+              text = str(next_s).strip()
+              if text:
+                  result = resub(r'(?m)^\(https://i.*', '', next_s)
+                  star = resub(r'(?m)^\*.*', ' ', result)
+                  extra = resub(r'(?m)^\(https://e.*', ' ', star)
+                  gd_txt += ', '.join(findall(r'(?m)^.*https://new1.gdtot.cfd/file/[0-9][^.]*', next_s)) + "\n\n"
+        return gd_txt
+  
+    elif "htpmovies" in link and "/exit.php" in link:
+        return htpmovies(link)
+        
+    elif "htpmovies" in link:
+        prsd = ""
+        links = []
+        res = rget(link)
+        soup = BeautifulSoup(res.text, 'html.parser')
+        x = soup.select('a[href^="/exit.php?url="]')
+        y = soup.select('h5')
+        z = unquote(link.split('/')[-2]).split('-')[0] if link.endswith('/') else unquote(link.split('/')[-1]).split('-')[0]
+
+        for a in x:
+            links.append(a['href'])
+            prsd = f"Total Links Found : {len(links)}\n\n"
+      
+        msdcnt = -1
+        for b in y:
+            if str(b.string).lower().startswith(z.lower()):
+                msdcnt += 1
+                url = f"https://htpmovies.lol"+links[msdcnt]
+                prsd += f"{msdcnt+1}. <b>{b.string}</b>\n{htpmovies(url)}\n\n"
+                asleep(5)
+        return prsd
+
+    elif "cinevood" in link:
+        prsd = ""
+        links = []
+        res = rget(link)
+        soup = BeautifulSoup(res.text, 'html.parser')
+        x = soup.select('a[href^="https://kolop.icu/file"]')
+        for a in x:
+            links.append(a['href'])
+        for o in links:
+            res = rget(o)
+            soup = BeautifulSoup(res.content, "html.parser")
+            title = soup.title.string
+            reftxt = resub(r'Kolop \| ', '', title)
+            prsd += f'{reftxt}\n{o}\n\n'
+        return prsd
+
+    elif "atishmkv" in link:
+        prsd = ""
+        links = []
+        res = rget(link)
+        soup = BeautifulSoup(res.text, 'html.parser')
+        x = soup.select('a[href^="https://gdflix.top/file"]')
+        for a in x:
+            links.append(a['href'])
+        for o in links:
+            prsd += o + '\n\n'
+        return prsd
+
+    else:
+        res = rget(link)
+        soup = BeautifulSoup(res.text, 'html.parser')
+        mystx = soup.select(r'a[href^="magnet:?xt=urn:btih:"]')
+        for hy in mystx:
+            links.append(hy['href'])
+        return links
 
 
 ###############################################################
@@ -1259,3 +1400,144 @@ def unified(url):
 
 
 #####################################################################################################        
+# helpers
+
+# check if present in list
+def ispresent(inlist,url):
+    for ele in inlist:
+        if ele in url:
+            return True
+    return False
+
+
+# shortners
+def shortners(url):
+    
+    # igg games
+    if "https://igg-games.com/" in url:
+        print("entered igg:",url)
+        return igggames(url)
+
+    # ola movies
+    elif "https://olamovies." in url:
+        print("entered ola movies:",url) 
+        return olamovies(url)
+        
+    # katdrive
+    elif "https://katdrive.net/" in url:
+        if KATCRYPT == "":
+            return "🚫 __You can't use this because__ **KATDRIVE_CRYPT** __ENV is not set__"
+        
+        print("entered katdrive:",url)
+        return katdrive_dl(url, KATCRYPT)
+
+    # drivefire
+    elif "https://drivefire.co/" in url:
+        if DCRYPT == "":
+            return "🚫 __You can't use this because__ **DRIVEFIRE_CRYPT** __ENV is not set__"
+
+        print("entered drivefire:",url)
+        return drivefire_dl(url, DCRYPT)
+        
+    # filecrypt
+    elif (("https://filecrypt.co/") in url or ("https://filecrypt.cc/" in url)):
+        print("entered filecrypt:",url)
+        return filecrypt(url)
+        
+    # shareus
+    elif "https://shareus.io/" in url:
+        print("entered shareus:",url)
+        return shareus(url)
+        
+    # shortingly
+    elif "https://shortingly.in/" in url:
+        print("entered shortingly:",url)
+        return shortlingly(url)
+
+    # gyanilinks
+    elif "https://gyanilinks.com/" in url:
+        print("entered gyanilinks:",url)
+        return gyanilinks(url)
+        
+    # shorte
+    elif "https://shorte.st/" in url:
+        print("entered shorte:",url)
+        return sh_st_bypass(url)
+        
+    # psa
+    elif "https://psa.pm/" in url:
+        print("entered psa:",url)
+        return psa_bypasser(url)
+        
+    # sharer pw
+    elif "https://sharer.pw/" in url:
+        if XSRF_TOKEN == "" or Laravel_Session == "":
+            return "🚫 __You can't use this because__ **XSRF_TOKEN** __and__ **Laravel_Session** __ENV is not set__"
+       
+        print("entered sharer:",url)
+        return sharer_pw(url, Laravel_Session, XSRF_TOKEN)
+
+    # gdtot url
+    elif "https://new1.gdtot.cfd/" in url:
+        print("entered gdtot:",url)
+        return gdtot(url,GDTot_Crypt)
+        
+    # adfly
+    elif "https://adf.ly/" in url:
+        print("entered adfly:",url)
+        out = adfly(url)
+        return out['bypassed_url']
+ 
+    # gplinks
+    elif "https://gplinks.in/" in url:
+        print("entered gplink:",url)
+        return gplinks(url)
+        
+    # droplink
+    elif "https://droplink.co/" in url:
+        print("entered droplink:",url)
+        return droplink(url)
+        
+    # linkvertise
+    elif "https://linkvertise.com/" in url:
+        print("entered linkvertise:",url)
+        return linkvertise(url)
+        
+    # rocklinks
+    elif "https://rocklinks.net/" in url:
+        print("entered rocklinks:",url)
+        return rocklinks(url)
+        
+    # ouo
+    elif "https://ouo.press/" in url:
+        print("entered ouo:",url)
+        return ouo(url)
+
+    # try2link
+    elif "https://try2link.com/" in url:
+        print("entered try2links:",url)
+        return try2link_bypass(url)
+
+    # gdrive look alike
+    elif ispresent(gdlist,url):
+        print("entered gdrive look alike:",url)
+        return unified(url)
+
+    # others
+    elif ispresent(others,url):
+        print("entered others:",url)
+        return others(url)
+
+    # htpmovies sharespark cinevood
+    elif "https://htpmovies." in url or 'https://sharespark.me/' in url or "https://cinevood." in url:
+        print("entered htpmovies sharespark cinevood:",url)
+        return scrapper(url)
+
+    # else
+    else:
+        temp = PyBypass.bypass(url)
+        if temp != None:
+            return temp
+        return "Not in Supported Links"
+    
+################################################################################################################################
