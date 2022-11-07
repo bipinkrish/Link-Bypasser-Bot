@@ -335,7 +335,6 @@ def mdisk(url):
     URL = f'https://diskuploader.entertainvideo.com/v1/file/cdnurl?param={id}'
     return requests.get(url=URL, headers=header).json()['source']
 
-
 def wetransfer(url):
     api = "https://api.emilyx.in/api/direct"
     client = cloudscraper.create_scraper(allow_brotli=False)
@@ -351,7 +350,6 @@ def wetransfer(url):
         return res["url"]
     else:
         return res["msg"]
-
 
 def gofile_dl(url,password=""):
     api_uri = 'https://api.gofile.io'
@@ -379,7 +377,6 @@ def gofile_dl(url,password=""):
 def dropbox(url):
     return url.replace("www.","").replace("dropbox.com","dl.dropboxusercontent.com").replace("?dl=0","")
 
-
 def zippyshare(url):
     requests = cloudscraper.create_scraper(allow_brotli=False)
     resp = requests.get(url).text
@@ -390,7 +387,6 @@ def zippyshare(url):
     burl = url.split("zippyshare.com")[0]
     furl = burl + "zippyshare.com" + surl[1] + val + surl[-2]
     return furl
-
 
 def megaup(url):
     api = "https://api.emilyx.in/api/direct"

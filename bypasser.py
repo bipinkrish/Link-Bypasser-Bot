@@ -24,6 +24,8 @@ GDTot_Crypt = os.environ.get("CRYPT","b0lDek5LSCt6ZjVRR2EwZnY4T1EvVndqeDRtbCtTWm
 Laravel_Session = os.environ.get("Laravel_Session","")
 XSRF_TOKEN = os.environ.get("XSRF_TOKEN","")
 DCRYPT = os.environ.get("DRIVEFIRE_CRYPT","")
+KCRYPT = os.environ.get("KOLOP_CRYPT","")
+HCRYPT = os.environ.get("HUBDRIVE_CRYPT","")
 KATCRYPT = os.environ.get("KATDRIVE_CRYPT","")
 
 
@@ -1430,6 +1432,22 @@ def shortners(url):
         
         print("entered katdrive:",url)
         return katdrive_dl(url, KATCRYPT)
+
+    # kolop
+    elif "https://kolop.net/" in url:
+        if KCRYPT  == "":
+            return "🚫 __You can't use this because__ **KOLOP_CRYPT** __ENV is not set__"
+        
+        print("entered kolop:",url)
+        return kolop_dl(url, KCRYPT)
+
+    # hubdrive
+    elif "https://hubdrive.in" in url:
+        if HCRYPT == "":
+            return "🚫 __You can't use this because__ **HUBDRIVE_CRYPT** __ENV is not set__"
+ 
+        print("entered hubdrive:",url)
+        return hubdrive_dl(url, HCRYPT)
 
     # drivefire
     elif "https://drivefire.co/" in url:

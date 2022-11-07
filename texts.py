@@ -61,6 +61,8 @@ shortnertext = """__- igg-games.com \n\
 - olamovies.ink \n\
 - katdrive.net \n\
 - drivefire.co \n\
+- kolop.net \n\
+- hubdrive.in \n\
 - filecrypt.co \n\
 - shareus.io \n\
 - shortingly.in \n\
@@ -83,8 +85,8 @@ __"""
 
 
 HELP_TEXT = f'**--Just Send me any Supported Links From Below Mentioned Sites--** \n\n\
-**List of Sites for DDL : ** \n{ddltext} \n\n\
-**List of Sites for Shortners : ** \n{shortnertext} \n\n\
-**List of Sites for GDrive Look-ALike : ** \n{gdrivetext} \n\n\
-**Other Supported Sites : ** \n{otherstext} \n\n\
+**List of Sites for DDL : ** \n{ddltext} \n\
+**List of Sites for Shortners : ** \n{shortnertext} \n\
+**List of Sites for GDrive Look-ALike : ** \n{gdrivetext} \n\
+**Other Supported Sites : ** \n{otherstext} \n\
 **+ [Pybypass Library Sites](https://github.com/sanjit-sinha/PyBypass)**'
