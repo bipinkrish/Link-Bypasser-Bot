@@ -337,7 +337,7 @@ def mdisk(url):
 
 
 def wetransfer(url):
-    api = "https://api.emilyx.in/api"
+    api = "https://api.emilyx.in/api/direct"
     client = cloudscraper.create_scraper(allow_brotli=False)
     resp = client.get(url)
     if resp.status_code == 404:
@@ -382,7 +382,7 @@ def dropbox(url):
 
 def zippyshare(url):
     resp = requests.get(url).text
-    surl = resp.split("document.getElementById('dlbutton').href = ")[1].split(";")[0]
+    surl = resp.split("document.getElementById('dlbutton').href = ")[-1].split(";")[0]
     parts = surl.split("(")[1].split(")")[0].split(" ")
     val = str(int(parts[0]) % int(parts[2]) + int(parts[4]) % int(parts[6]))
     surl = surl.split('"')
@@ -392,7 +392,7 @@ def zippyshare(url):
 
 
 def megaup(url):
-    api = "https://api.emilyx.in/api"
+    api = "https://api.emilyx.in/api/direct"
     client = cloudscraper.create_scraper(allow_brotli=False)
     resp = client.get(url)
     if resp.status_code == 404:
