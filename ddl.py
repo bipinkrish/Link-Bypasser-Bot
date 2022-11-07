@@ -320,21 +320,21 @@ def uploadee(url: str) -> str:
     except:
         return (f"ERROR: Failed to acquire download URL from upload.ee for : {url}")
 
+
 def mdisk(url):
-    api = "https://api.emilyx.in/api"
-    client = cloudscraper.create_scraper(allow_brotli=False)
-    resp = client.get(url)
-    if resp.status_code == 404:
-        return "File not found/The link you entered is wrong!"
-    try:
-        resp = client.post(api, json={"type": "mdisk", "url": url})
-        res = resp.json()
-    except BaseException:
-        return "API UnResponsive / Invalid Link !"
-    if res["success"] is True:
-        return res["url"]
-    else:
-        return res["msg"]
+    
+    header = {
+        'Accept': '*/*',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Referer': 'https://mdisk.me/',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36'
+    	 }
+
+    id = url.split("/")[-1]
+    URL = f'https://diskuploader.entertainvideo.com/v1/file/cdnurl?param={id}'
+    return requests.get(url=URL, headers=header).json()['source']
+
 
 def wetransfer(url):
     api = "https://api.emilyx.in/api"
@@ -351,6 +351,7 @@ def wetransfer(url):
         return res["url"]
     else:
         return res["msg"]
+
 
 def gofile_dl(url,password=""):
     api_uri = 'https://api.gofile.io'
@@ -379,31 +380,15 @@ def dropbox(url):
     return url.replace("www.","").replace("dropbox.com","dl.dropboxusercontent.com").replace("?dl=0","")
 
 
-def zippyshare(url:str)-> str:
-	client = requests.Session()
-	response = client.get(url)
-	
-	if (dlbutton := re.search(r'href = "([^"]+)" \+ \(([^)]+)\) \+ "([^"]+)', response.text)):
-	           folder, math_chall, filename = dlbutton.groups()
-	           math_chall = eval(math_chall)
-	           return "%s%s%s%s" % (re.search(r"https?://[^/]+", response.url).group(0), folder, math_chall, filename)
-	           
-	soup = BeautifulSoup(response, "html.parser")
-	if (script := soup.find("script", text=re.compile("(?si)\s*var a = \d+;"))):
-	           sc = str(script)
-	           var = re.findall(r"var [ab] = (\d+)", sc)
-	           omg = re.findall(r"\.omg (!?=) [\"']([^\"']+)", sc)
-	           file = re.findall(r'"(/[^"]+)', sc)
-	           
-	           if var and omg:
-	               a, b = var
-	               if eval(f"{omg[0][1]!r} {omg[1][0]} {omg[1][1]!r}") or 1: a = math.ceil(int(a) // 3)
-	               else: a = math.floor(int(a) // 3)
-	               divider = int(re.findall(f"(\d+)%b", sc)[0])
-	               
-	            
-	               return re.search(r"(^https://www\d+.zippyshare.com)", response.url).group(1) + \
-                    "".join([file[0], str(a + (divider % int(b))), file[1]])
+def zippyshare(url):
+    resp = requests.get(url).text
+    surl = resp.split("document.getElementById('dlbutton').href = ")[1].split(";")[0]
+    parts = surl.split("(")[1].split(")")[0].split(" ")
+    val = str(int(parts[0]) % int(parts[2]) + int(parts[4]) % int(parts[6]))
+    surl = surl.split('"')
+    burl = url.split("zippyshare.com")[0]
+    furl = burl + "zippyshare.com" + surl[1] + val + surl[-2]
+    return furl
 
 
 def megaup(url):
