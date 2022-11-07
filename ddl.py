@@ -381,6 +381,7 @@ def dropbox(url):
 
 
 def zippyshare(url):
+    requests = cloudscraper.create_scraper(allow_brotli=False)
     resp = requests.get(url).text
     surl = resp.split("document.getElementById('dlbutton').href = ")[-1].split(";")[0]
     parts = surl.split("(")[1].split(")")[0].split(" ")
