@@ -1094,7 +1094,7 @@ def gplinks(url: str):
 # droplink
 
 def droplink(url):
-    api = "https://api.emilyx.in/api"
+    api = "https://api.emilyx.in/api/direct"
     client = cloudscraper.create_scraper(allow_brotli=False)
     resp = client.get(url)
     if resp.status_code == 404:
@@ -1114,7 +1114,7 @@ def droplink(url):
 # link vertise
 
 def linkvertise(url):
-    api = "https://api.emilyx.in/api"
+    api = "https://api.emilyx.in/api/direct"
     client = cloudscraper.create_scraper(allow_brotli=False)
     resp = client.get(url)
     if resp.status_code == 404:
