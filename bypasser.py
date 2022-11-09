@@ -24,15 +24,15 @@ GDTot_Crypt = os.environ.get("CRYPT","b0lDek5LSCt6ZjVRR2EwZnY4T1EvVndqeDRtbCtTWm
 Laravel_Session = os.environ.get("Laravel_Session","")
 XSRF_TOKEN = os.environ.get("XSRF_TOKEN","")
 DCRYPT = os.environ.get("DRIVEFIRE_CRYPT","")
-KCRYPT = os.environ.get("KOLOP_CRYPT","")
-HCRYPT = os.environ.get("HUBDRIVE_CRYPT","")
+KCRYPT = os.environ.get("KOLOP_CRYPT","aWFicnVaNWh4TThRbzFqdkE2U2FKNmJOTWhvWkZmbWswaUFadTB5NXJ3RT0%3D")
+HCRYPT = os.environ.get("HUBDRIVE_CRYPT","Q29hdlpLUEZTSEJLUjVZRkZQSExLODFuWGVudUlNK0ZPZlZmS1hENWxZVT0%3D")
 KATCRYPT = os.environ.get("KATDRIVE_CRYPT","")
 
 
 ############################################################
 # Lists
 
-others = ["exe.io","exey.io","sub2unlock.net","sub2unlock.com","rekonise.com","letsboost.net","ph.apps2app.com","mboost.me",
+otherslist = ["exe.io","exey.io","sub2unlock.net","sub2unlock.com","rekonise.com","letsboost.net","ph.apps2app.com","mboost.me",
 "sub4unlock.com","ytsubme.com","bit.ly","social-unlock.com","boost.ink","goo.gl","shrto.ml","t.co","tinyurl.com"]
 
 gdlist = ["appdrive.in","driveapp.in","drivehub.in","gdflix.pro","drivesharer.in","drivebit.in","drivelinks.in","driveace.in",
@@ -521,7 +521,7 @@ def katdrive_dl(url,katcrypt):
     try:
         res = client.post(req_url, headers=headers, data=data).json()['file']
     except:
-        return {'error': True, 'src_url': url}
+        return "Error"#{'error': True, 'src_url': url}
     
     gd_id = re.findall('gd=(.*)', res, re.DOTALL)[0]
     info_parsed['gdrive_url'] = f"https://drive.google.com/open?id={gd_id}"
@@ -559,7 +559,7 @@ def hubdrive_dl(url,hcrypt):
     try:
         res = client.post(req_url, headers=headers, data=data).json()['file']
     except:
-        return {'error': True, 'src_url': url}
+        return "Error"#{'error': True, 'src_url': url}
     
     gd_id = re.findall('gd=(.*)', res, re.DOTALL)[0]
     info_parsed['gdrive_url'] = f"https://drive.google.com/open?id={gd_id}"
@@ -597,7 +597,7 @@ def drivefire_dl(url,dcrypt):
     try:
         res = client.post(req_url, headers=headers, data=data).json()['file']
     except:
-        return {'error': True, 'src_url': url}
+        return "Error"#{'error': True, 'src_url': url}
     
     decoded_id = res.rsplit('/', 1)[-1]
     info_parsed = f"https://drive.google.com/file/d/{decoded_id}"
@@ -634,7 +634,7 @@ def kolop_dl(url,kcrypt):
     try:
         res = client.post(req_url, headers=headers, data=data).json()['file']
     except:
-        return {'error': True, 'src_url': url}
+        return "Error"#{'error': True, 'src_url': url}
     
     gd_id = re.findall('gd=(.*)', res, re.DOTALL)[0]
     info_parsed['gdrive_url'] = f"https://drive.google.com/open?id={gd_id}"
@@ -1426,7 +1426,7 @@ def shortners(url):
         return olamovies(url)
         
     # katdrive
-    elif "https://katdrive.net/" in url:
+    elif "https://katdrive." in url:
         if KATCRYPT == "":
             return "🚫 __You can't use this because__ **KATDRIVE_CRYPT** __ENV is not set__"
         
@@ -1434,7 +1434,7 @@ def shortners(url):
         return katdrive_dl(url, KATCRYPT)
 
     # kolop
-    elif "https://kolop.net/" in url:
+    elif "https://kolop." in url:
         if KCRYPT  == "":
             return "🚫 __You can't use this because__ **KOLOP_CRYPT** __ENV is not set__"
         
@@ -1442,7 +1442,7 @@ def shortners(url):
         return kolop_dl(url, KCRYPT)
 
     # hubdrive
-    elif "https://hubdrive.in" in url:
+    elif "https://hubdrive." in url:
         if HCRYPT == "":
             return "🚫 __You can't use this because__ **HUBDRIVE_CRYPT** __ENV is not set__"
  
@@ -1450,7 +1450,7 @@ def shortners(url):
         return hubdrive_dl(url, HCRYPT)
 
     # drivefire
-    elif "https://drivefire.co/" in url:
+    elif "https://drivefire." in url:
         if DCRYPT == "":
             return "🚫 __You can't use this because__ **DRIVEFIRE_CRYPT** __ENV is not set__"
 
@@ -1542,7 +1542,7 @@ def shortners(url):
         return unified(url)
 
     # others
-    elif ispresent(others,url):
+    elif ispresent(otherslist,url):
         print("entered others:",url)
         return others(url)
 
