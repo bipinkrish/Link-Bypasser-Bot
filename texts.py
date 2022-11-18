@@ -1,7 +1,7 @@
-gdrivetext = """__- appdrive.in \n\
+gdrivetext = """__- appdrive.info \n\
 - driveapp.in \n\
 - drivehub.in \n\
-- gdflix.pro \n\
+- gdflix.top \n\
 - drivesharer.in \n\
 - drivebit.in \n\
 - drivelinks.in \n\
@@ -81,6 +81,7 @@ shortnertext = """__- igg-games.com \n\
 - htpmovies.lol \n\
 - sharespark.me \n\
 - cinevood.skin \n\
+- atishmkv.asia \n\
 __"""
 
 

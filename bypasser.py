@@ -35,7 +35,7 @@ KATCRYPT = os.environ.get("KATDRIVE_CRYPT","")
 otherslist = ["exe.io","exey.io","sub2unlock.net","sub2unlock.com","rekonise.com","letsboost.net","ph.apps2app.com","mboost.me",
 "sub4unlock.com","ytsubme.com","bit.ly","social-unlock.com","boost.ink","goo.gl","shrto.ml","t.co","tinyurl.com"]
 
-gdlist = ["appdrive.in","driveapp.in","drivehub.in","gdflix.pro","drivesharer.in","drivebit.in","drivelinks.in","driveace.in",
+gdlist = ["appdrive.info","driveapp.in","drivehub.in","gdflix.top","drivesharer.in","drivebit.in","drivelinks.in","driveace.in",
 "drivepro.in"]
 
 ddllist = ["disk.yandex.com","mediafire.com","uptobox.com","osdn.net","github.com","hxfile.co","anonfiles.com","letsupload.io",
@@ -46,7 +46,7 @@ ddllist = ["disk.yandex.com","mediafire.com","uptobox.com","osdn.net","github.co
 
 
 ###############################################################
-# htpmovies cinevood sharespark
+# htpmovies cinevood sharespark atishmkv
 
 def htpmovies(link):
     client = cloudscraper.create_scraper(allow_brotli=False)
@@ -1357,7 +1357,7 @@ def unified(url):
                 "//a[contains(@class,'btn')]/@href"
             )[0]
             info_parsed["gdrive_link"] = drive_link
-        if urlparse(url).netloc == "gdflix.pro" and not info_parsed["error"]:
+        if urlparse(url).netloc == "gdflix.top" and not info_parsed["error"]:
             res = client.get(info_parsed["gdrive_link"])
             drive_link = etree.HTML(res.content).xpath(
                 "//a[contains(@class,'btn')]/@href"
@@ -1547,8 +1547,8 @@ def shortners(url):
         return others(url)
 
     # htpmovies sharespark cinevood
-    elif "https://htpmovies." in url or 'https://sharespark.me/' in url or "https://cinevood." in url:
-        print("entered htpmovies sharespark cinevood:",url)
+    elif "https://htpmovies." in url or 'https://sharespark.me/' in url or "https://cinevood." in url or "https://atishmkv." in url:
+        print("entered htpmovies sharespark cinevood atishmkv:",url)
         return scrapper(url)
 
     # else
