@@ -4,11 +4,17 @@ a Telegram Bot that can Bypass Ad Links and Generate Direct Links. see the Bot i
 
 ---
 
+[![Deploy to Koyeb](https://www.koyeb.com/static/images/deploy/button.svg)](https://app.koyeb.com/deploy?type=git&repository=github.com/BUDDY1609/Link-Bypasser-Bot&branch=main&name=nvslinkbypassbot)
+
+## Run Cmd
+`gunicorn app:app & python3 main.py`
+
 ## Variables
 
 - `TOKEN` Your bot token from @BotFather
 - `HASH` Your API Hash from my.telegram.org
 - `ID` Your API ID from my.telegram.org
+- `PORT` PORT IS 8000
 
 ## Optional Variables
 - `CRYPT` Your GDTot Crypt! If you don't know how to get Crypt then [Learn Here](https://www.youtube.com/watch?v=EfZ29CotRSU)
