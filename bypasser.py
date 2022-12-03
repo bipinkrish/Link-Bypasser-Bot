@@ -995,9 +995,9 @@ def sharer_pw(url,Laravel_Session, XSRF_TOKEN, forced_login=False):
 #################################################################
 # gdtot
 
-def gdtot(url: str, GDTot_Crypt: str) -> str:
+def gdtot(url: str, GdTot_Crypt: str) -> str:
     client = requests.Session()
-    client.cookies.update({"crypt": GDTot_Crypt})
+    client.cookies.update({"crypt": GdTot_Crypt})
     res = client.get(url)
     base_url = re.match('^.+?[^\/:](?=[?\/]|$\n)', url).group(0)
     res = client.get(f"{base_url}/dld?id={url.split('/')[-1]}")
@@ -1496,7 +1496,7 @@ def shortners(url):
         return sharer_pw(url, Laravel_Session, XSRF_TOKEN)
 
     # gdtot url
-    elif "https://new1.gdtot.cfd/" in url:
+    elif "gdtot.cfd/" in url:
         print("entered gdtot:",url)
         return gdtot(url,GDTot_Crypt)
         
