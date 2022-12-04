@@ -82,6 +82,15 @@ shortnertext = """__- igg-games.com \n\
 - sharespark.me \n\
 - cinevood.skin \n\
 - atishmkv.asia \n\
+- urlsopen.com \n\
+- xpshort.com / push.bdnewsx.com / techymozo.com \n\
+- dulink.in \n\
+- ez4short.com \n\
+- krownlinks.me \n\
+- teluguflix.xyz \n\
+- taemovies.xyz \n\
+- toonworld4all.me \n\
+- animeremux.xyz \n\
 __"""
 
 
