@@ -91,6 +91,7 @@ shortnertext = """__- igg-games.com \n\
 - taemovies.xyz \n\
 - toonworld4all.me \n\
 - animeremux.xyz \n\
+- adrinolinks.in \n\
 __"""
 
 

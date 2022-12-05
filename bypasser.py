@@ -1554,6 +1554,26 @@ def krownlinks(url):
     except: return "Something went wrong :("
 
 
+####################################################################################################
+# adrinolink
+
+def adrinolink (url):
+    if "https://adrinolinks.in/" not in url: url = "https://adrinolinks.in/" + url.split("/")[-1]
+    client = cloudscraper.create_scraper(allow_brotli=False)
+    DOMAIN = "https://adrinolinks.in"
+    ref = "https://wikitraveltips.com/"
+    h = {"referer": ref}
+    resp = client.get(url,headers=h)
+    soup = BeautifulSoup(resp.content, "html.parser")
+    inputs = soup.find_all("input")
+    data = { input.get('name'): input.get('value') for input in inputs }
+    h = { "x-requested-with": "XMLHttpRequest" }
+    time.sleep(8)
+    r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
+    try: return r.json()['url']
+    except: return "Something went wrong :("
+
+
 #####################################################################################################        
 # helpers
 
@@ -1713,7 +1733,12 @@ def shortners(url):
     elif "https://krownlinks.me/" in url:
         print("entered krownlinks:",url)
         return krownlinks(url)
-
+    
+    # adrinolink
+    elif "https://adrinolinks." in url:
+        print("entered adrinolink:",url)
+        return adrinolink(url)
+        
     # htpmovies sharespark cinevood
     elif "https://htpmovies." in url or 'https://sharespark.me/' in url or "https://cinevood." in url or "https://atishmkv." in url \
         or "https://teluguflix" in url or 'https://taemovies' in url or "https://toonworld4all" in url or "https://animeremux" in url:
