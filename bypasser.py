@@ -868,21 +868,16 @@ def gyanilinks(url):
         return "Incorrect Link"
 
     url = url[:-1] if url[-1] == '/' else url
-
     code = url.split("/")[-1]
-    
     final_url = f"{DOMAIN}/{code}"
-
     resp = client.get(final_url)
     soup = BeautifulSoup(resp.content, "html.parser")
-    
+
     try: inputs = soup.find(id="go-link").find_all(name="input")
     except: return "Incorrect Link"
     
     data = { input.get('name'): input.get('value') for input in inputs }
-
     h = { "x-requested-with": "XMLHttpRequest" }
-    
     time.sleep(5)
     r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
     try:
@@ -1164,46 +1159,41 @@ def gplinks(url: str):
 # droplink
 
 def droplink(url):
-    api = "https://api.emilyx.in/api/bypass"
-    client = cloudscraper.create_scraper(allow_brotli=False)
-    resp = client.get(url)
-    if resp.status_code == 404:
-        return "File not found/The link you entered is wrong!"
-    try:
-        resp = client.post(api, json={"type": "droplink", "url": url})
-        res = resp.json()
-    except BaseException:
-        return "API UnResponsive / Invalid Link !"
-    if res["success"] is True:
-        return res["url"]
-    else:
-        return res["msg"]
+    client = requests.Session()
+    res = client.get(url, timeout=5)
+    
+    ref = re.findall("action[ ]{0,}=[ ]{0,}['|\"](.*?)['|\"]", res.text)[0]
+    h = {"referer": ref}
+    res = client.get(url, headers=h)
+
+    bs4 = BeautifulSoup(res.content, "html.parser")
+    inputs = bs4.find_all("input")
+    data = {input.get("name"): input.get("value") for input in inputs}
+    h = {
+            "content-type": "application/x-www-form-urlencoded",
+            "x-requested-with": "XMLHttpRequest",
+        }
+    
+    p = urlparse(url)
+    final_url = f"{p.scheme}://{p.netloc}/links/go"
+    time.sleep(3.1)
+    res = client.post(final_url, data=data, headers=h).json()
+
+    if res["status"] == "success": return res["url"]
+    return 'Something went wrong :('
 
 
 #####################################################################################################################
 # link vertise
 
 def linkvertise(url):
-    api = "https://api.emilyx.in/api/bypass"
-    client = cloudscraper.create_scraper(allow_brotli=False)
-    resp = client.get(url)
-    if resp.status_code == 404:
-        return "File not found/The link you entered is wrong!"
     try:
-        resp = client.post(api, json={"type": "linkvertise", "url": url})
-        res = resp.json()
-    except BaseException:
-        return "API UnResponsive / Invalid Link !"
-    if res["success"] is True:
-        return res["url"]
-    else:
-        try:
-            payload = {"url": url}
-            url_bypass = requests.post("https://api.bypass.vip/", data=payload).json()
-            bypassed = url_bypass["destination"]
-            return bypassed
-        except:
-            return "Could not Bypass your URL :("
+        payload = {"url": url}
+        url_bypass = requests.post("https://api.bypass.vip/", data=payload).json()
+        bypassed = url_bypass["destination"]
+        return bypassed
+    except:
+        return "Could not Bypass your URL :("
 
 
 ###################################################################################################################
@@ -1276,80 +1266,21 @@ def ouo(url):
 # mdisk
 
 def mdisk(url):
-    api = "https://api.emilyx.in/api"
-    client = cloudscraper.create_scraper(allow_brotli=False)
-    resp = client.get(url)
-    if resp.status_code == 404:
-        return "File not found/The link you entered is wrong!"
-    try:
-        resp = client.post(api, json={"type": "mdisk", "url": url})
-        res = resp.json()
-    except BaseException:
-        return "API UnResponsive / Invalid Link !"
-    if res["success"] is True:
-        return res["url"]
-    else:
-        return res["msg"]
+    header = {
+        'Accept': '*/*',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Referer': 'https://mdisk.me/',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36'
+    	 }
+    
+    inp = url 
+    fxl = inp.split("/")
+    cid = fxl[-1]
 
-
-###################################################################################################################
-# pixeldrain
-
-def pixeldrain(url):
-    api = "https://api.emilyx.in/api"
-    client = cloudscraper.create_scraper(allow_brotli=False)
-    resp = client.get(url)
-    if resp.status_code == 404:
-        return "File not found/The link you entered is wrong!"
-    try:
-        resp = client.post(api, json={"type": "pixeldrain", "url": url})
-        res = resp.json()
-    except BaseException:
-        return "API UnResponsive / Invalid Link !"
-    if res["success"] is True:
-        return res["url"]
-    else:
-        return res["msg"]
-
-
-####################################################################################################################
-# we transfer
-
-def wetransfer(url):
-    api = "https://api.emilyx.in/api"
-    client = cloudscraper.create_scraper(allow_brotli=False)
-    resp = client.get(url)
-    if resp.status_code == 404:
-        return "File not found/The link you entered is wrong!"
-    try:
-        resp = client.post(api, json={"type": "wetransfer", "url": url})
-        res = resp.json()
-    except BaseException:
-        return "API UnResponsive / Invalid Link !"
-    if res["success"] is True:
-        return res["url"]
-    else:
-        return res["msg"]
-
-
-##################################################################################################################
-# megaup
-
-def megaup(url):
-    api = "https://api.emilyx.in/api"
-    client = cloudscraper.create_scraper(allow_brotli=False)
-    resp = client.get(url)
-    if resp.status_code == 404:
-        return "File not found/The link you entered is wrong!"
-    try:
-        resp = client.post(api, json={"type": "megaup", "url": url})
-        res = resp.json()
-    except BaseException:
-        return "API UnResponsive / Invalid Link !"
-    if res["success"] is True:
-        return res["url"]
-    else:
-        return res["msg"]
+    URL = f'https://diskuploader.entertainvideo.com/v1/file/cdnurl?param={cid}'
+    res = requests.get(url=URL, headers=header).json()
+    return res['source']
 
 
 ##################################################################################################################        
