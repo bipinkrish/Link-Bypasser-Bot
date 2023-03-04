@@ -3,7 +3,7 @@ from re import match as rematch, findall, sub as resub
 import requests
 from requests import get as rget
 import base64
-from urllib.parse import unquote, urlparse, parse_qs
+from urllib.parse import unquote, urlparse, parse_qs, quote
 import time
 import cloudscraper
 from bs4 import BeautifulSoup, NavigableString, Tag
@@ -42,7 +42,95 @@ ddllist = ["disk.yandex.com","mediafire.com","uptobox.com","osdn.net","github.co
 "1drv.ms","pixeldrain.com","antfiles.com","streamtape.com","bayfiles.com","racaty.net","1fichier.com","solidfiles.com",
 "krakenfiles.com","upload.ee","mdisk.me","wetransfer.com","gofile.io","dropbox.com","zippyshare.com","megaup.net","fembed.net",
 "fembed.com","femax20.com","fcdn.stream","feurl.com","layarkacaxxi.icu","naniplay.nanime.in","naniplay.nanime.biz","naniplay.com",
-"mm9842.com","sbembed.com","watchsb.com","streamsb.net","sbplay.org"]
+"mm9842.com","sbembed.com","watchsb.com","streamsb.net","sbplay.org","workers.dev/0:/"]
+
+
+###############################################################
+# index scrapper
+
+def scrapeIndex(url, username="none", password="none"):
+
+    def authorization_token(username, password):
+        user_pass = f"{username}:{password}"
+        return f"Basic {base64.b64encode(user_pass.encode()).decode()}"
+
+          
+    def decrypt(string): 
+        return base64.b64decode(string[::-1][24:-20]).decode('utf-8')  
+
+    
+    def func(payload_input, url, username, password): 
+        next_page = False
+        next_page_token = "" 
+
+        url = f"{url}/" if url[-1] != '/' else url
+
+        try: headers = {"authorization":authorization_token(username,password)}
+        except: return "username/password combination is wrong", None, None
+
+        encrypted_response = requests.post(url, data=payload_input, headers=headers)
+        if encrypted_response.status_code == 401: return "username/password combination is wrong", None, None
+
+        try: decrypted_response = json.loads(decrypt(encrypted_response.text))
+        except: return "something went wrong. check index link/username/password field again", None, None
+
+        page_token = decrypted_response["nextPageToken"]
+        if page_token is None: 
+            next_page = False
+        else: 
+            next_page = True 
+            next_page_token = page_token 
+
+
+        if list(decrypted_response.get("data").keys())[0] != "error":
+            file_length = len(decrypted_response["data"]["files"])
+            result = ""
+
+            for i, _ in enumerate(range(file_length)):
+                files_type   = decrypted_response["data"]["files"][i]["mimeType"]
+                if files_type != "application/vnd.google-apps.folder":
+                        files_name   = decrypted_response["data"]["files"][i]["name"] 
+
+                        direct_download_link = url + quote(files_name)
+                        result += f"• {files_name} :\n{direct_download_link}\n\n"
+            return result, next_page, next_page_token
+
+    def format(result):
+        long_string = ''.join(result)
+        new_list = []
+
+        while len(long_string) > 0:
+            if len(long_string) > 4000:
+                split_index = long_string.rfind("\n\n", 0, 4000)
+                if split_index == -1:
+                    split_index = 4000
+            else:
+                split_index = len(long_string)
+                
+            new_list.append(long_string[:split_index])
+            long_string = long_string[split_index:].lstrip("\n\n")
+        
+        return new_list
+
+    # main
+    x = 0
+    next_page = False
+    next_page_token = "" 
+    result = []
+
+    payload = {"page_token":next_page_token, "page_index": x}	
+    print(f"Index Link: {url}\n")
+    temp, next_page, next_page_token = func(payload, url, username, password)
+    if temp is not None: result.append(temp)
+    
+    while next_page == True:
+        payload = {"page_token":next_page_token, "page_index": x}
+        temp, next_page, next_page_token = func(payload, url, username, password)
+        if temp is not None: result.append(temp)
+        x += 1
+        
+    if len(result)==0: return None
+    return format(result)
 
 
 ###############################################################
@@ -1159,7 +1247,7 @@ def gplinks(url: str):
 # droplink
 
 def droplink(url):
-    client = requests.Session()
+    client = cloudscraper.create_scraper(allow_brotli=False)
     res = client.get(url, timeout=5)
     
     ref = re.findall("action[ ]{0,}=[ ]{0,}['|\"](.*?)['|\"]", res.text)[0]

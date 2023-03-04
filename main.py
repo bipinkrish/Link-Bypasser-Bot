@@ -18,14 +18,22 @@ api_id = os.environ.get("ID", "")
 app = Client("my_bot",api_id=api_id, api_hash=api_hash,bot_token=bot_token)  
 
 
+# handle ineex
+def handleIndex(ele,message,msg):
+    result = bypasser.scrapeIndex(ele)
+    try: app.delete_messages(message.chat.id, msg.id)
+    except: pass
+    for page in result: app.send_message(message.chat.id, page, reply_to_message_id=message.id, disable_web_page_preview=True)
+
+
 # loop thread
 def loopthread(message):
+
     urls = []
     for ele in message.text.split():
         if "http://" in ele or "https://" in ele:
             urls.append(ele)
-    if len(urls) == 0:
-        return
+    if len(urls) == 0: return
 
     if bypasser.ispresent(ddllist,urls[0]):
         msg = app.send_message(message.chat.id, "⚡ __generating...__", reply_to_message_id=message.id)
@@ -37,7 +45,10 @@ def loopthread(message):
 
     link = ""
     for ele in urls:
-        if bypasser.ispresent(ddllist,ele):
+        if "workers.dev/0:/" in ele:
+            handleIndex(ele,message,msg)
+            return
+        elif bypasser.ispresent(ddllist,ele):
             try: temp = ddl.direct_link_generator(ele)
             except Exception as e: temp = "**Error**: " + str(e)
         else:    
@@ -47,7 +58,12 @@ def loopthread(message):
         link = link + temp + "\n\n"
         
     try: app.edit_message_text(message.chat.id, msg.id, f'__{link}__', disable_web_page_preview=True)
-    except: app.edit_message_text(message.chat.id, msg.id, "__Failed to Bypass__")
+    except:
+        try: app.edit_message_text(message.chat.id, msg.id, "__Failed to Bypass__")
+        except:
+            try: app.delete_messages(message.chat.id, msg.id)
+            except: pass
+            app.send_message(message.chat.id, "__Failed to Bypass__")
 
 
 # start command
@@ -81,6 +97,7 @@ def docthread(message):
         link = bypasser.getlinks(dlccont,sess)
         app.edit_message_text(message.chat.id, msg.id, f'__{link}__')
         os.remove(file)
+
 
 # doc
 @app.on_message(filters.document)
