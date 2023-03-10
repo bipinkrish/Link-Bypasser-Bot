@@ -1275,27 +1275,17 @@ def droplink(url):
 # link vertise
 
 def linkvertise(url):
-    try:
-        payload = {"url": url}
-        url_bypass = requests.post("https://api.bypass.vip/", data=payload).json()
-        bypassed = url_bypass["destination"]
-        return bypassed
-    except:
-        return "Could not Bypass your URL :("
+    params = {'url': url,}
+    response = requests.get('https://bypass.pm/bypass2', params=params).json()
+    if response["success"]: return response["destination"]
+    else: return response["msg"]
 
 
 ###################################################################################################################
 # others
 
-# api from https://github.com/bypass-vip/bypass.vip
 def others(url):
-    try:
-        payload = {"url": url}
-        url_bypass = requests.post("https://api.bypass.vip/", data=payload).json()
-        bypassed = url_bypass["destination"]
-        return bypassed
-    except:
-        return "Could not Bypass your URL :("
+    return "API Currently not Available"
 
 
 #################################################################################################################
