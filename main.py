@@ -45,7 +45,7 @@ def loopthread(message):
 
     link = ""
     for ele in urls:
-        if "workers.dev/0:/" in ele:
+        if ele.split("/")[3] == "0:":
             handleIndex(ele,message,msg)
             return
         elif bypasser.ispresent(ddllist,ele):
