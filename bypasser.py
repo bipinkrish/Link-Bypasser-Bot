@@ -949,12 +949,8 @@ def shortlingly(url):
 # Gyanilinks - gtlinks.me
 
 def gyanilinks(url):
+    DOMAIN = "https://go.bloggertheme.xyz"
     client = cloudscraper.create_scraper(allow_brotli=False)
-    if 'gtlinks.me' in url:
-        DOMAIN = "https://go.bloggertheme.xyz"
-    else:
-        return "Incorrect Link"
-
     url = url[:-1] if url[-1] == '/' else url
     code = url.split("/")[-1]
     final_url = f"{DOMAIN}/{code}"
@@ -1482,10 +1478,10 @@ def unified(url):
 
 def urlsopen(url):
     client = cloudscraper.create_scraper(allow_brotli=False)
-    DOMAIN = "https://short.url2go.in/RJOVAq30CU7lINo9AwG4oT3eISn7"
+    DOMAIN = "https://blogpost.viewboonposts.com/go"
     url = url[:-1] if url[-1] == '/' else url
     code = url.split("/")[-1]
-    final_url = f"{DOMAIN}/{code}"    
+    final_url = f"{DOMAIN}/{code}"
     ref = "https://blog.textpage.xyz/"
     h = {"referer": ref}
     resp = client.get(final_url,headers=h)
@@ -1493,7 +1489,7 @@ def urlsopen(url):
     inputs = soup.find_all("input")
     data = { input.get('name'): input.get('value') for input in inputs }
     h = { "x-requested-with": "XMLHttpRequest" }
-    time.sleep(8)
+    time.sleep(2)
     r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
     try: return r.json()['url']
     except: return "Something went wrong :("
@@ -1655,7 +1651,7 @@ def shortners(url):
         return shortlingly(url)
 
     # gyanilinks
-    elif "https://gyanilinks.com/" in url:
+    elif "https://gyanilinks.com/" in url or "https://gtlinks.me/" in url:
         print("entered gyanilinks:",url)
         return gyanilinks(url)
         
@@ -1719,7 +1715,7 @@ def shortners(url):
         return try2link_bypass(url)
 
     # urlsopen
-    elif "https://urlsopen.com/" in url:
+    elif "https://urlsopen." in url:
         print("entered urlsopen:",url)
         return urlsopen(url)
 
