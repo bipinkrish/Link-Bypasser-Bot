@@ -17,14 +17,16 @@ from requests import get
 
 UPTOBOX_TOKEN = environ.get("UPTOBOX_TOKEN",None)
 try: TERA_COOKIE = loads(environ.get("TERA_COOKIE",None).replace("'", '"'))
-except: TERA_COOKIE = None
+except Exception as e: 
+    print(e)
+    TERA_COOKIE = None
 
 
 ddllist = ['yadi.sk','disk.yandex.com','mediafire.com','uptobox.com','osdn.net','github.com',
 'hxfile.co','1drv.ms','pixeldrain.com','antfiles.com','streamtape.com','racaty','1fichier.com',
 'solidfiles.com','krakenfiles.com','mdisk.me','upload.ee','akmfiles','linkbox','shrdsk','letsupload.io',
 'zippyshare.com','wetransfer.com','we.tl','terabox','nephobox','4funbox','mirrobox','momerybox',
-'teraboxapp','sbembed.com','watchsb.com','streamsb.net','sbplay.org','gdtot','filepress','appdrive',
+'teraboxapp','sbembed.com','watchsb.com','streamsb.net','sbplay.org','filepress',
 'fembed.net', 'fembed.com', 'femax20.com', 'fcdn.stream', 'feurl.com', 'layarkacaxxi.icu',
 'naniplay.nanime.in', 'naniplay.nanime.biz', 'naniplay.com', 'mm9842.com','anonfiles.com', 
 'hotfile.io', 'bayfiles.com', 'megaupload.nz', 'letsupload.cc','filechan.org', 'myfile.is', 
@@ -526,7 +528,10 @@ def terabox(url) -> str:
     try:
         res = session.request('GET', url)
         key = res.url.split('?surl=')[-1]
-        if TERA_COOKIE is None: return "Terabox Cookie is not Set"
+        if TERA_COOKIE is None:
+            try: err = loads(environ.get("TERA_COOKIE",None).replace("'", '"'))
+            except Exception as e: err = str(e)
+            return f"Terabox Cookie is not Set or {err}"
         jar = TERA_COOKIE
         session.cookies.update(jar)
         res = session.request(

@@ -1,99 +1,96 @@
-gdrivetext = """__- appdrive.info \n\
-- driveapp.in \n\
-- drivehub.in \n\
-- gdflix.top \n\
-- drivesharer.in \n\
-- drivebit.in \n\
-- drivelinks.in \n\
-- driveace.in \n\
-- drivepro.in \n\
+gdrivetext = """__- appdrive \n\
+- driveapp \n\
+- drivehub \n\
+- gdflix \n\
+- drivesharer \n\
+- drivebit \n\
+- drivelinks \n\
+- driveace \n\
+- drivepro \n\
           __"""
 
 
-otherstext = """__- exe.io/exey.io \n\
-- sub2unlock.net/sub2unlock.com \n\
-- rekonise.com \n\
-- letsboost.net \n\
-- ph.apps2app.com \n\
-- mboost.me	\n\
-- sub4unlock.com \n\
-- ytsubme.com \n\
-- bit.ly \n\
-- social-unlock.com	\n\
-- boost.ink	\n\
-- goo.gl \n\
-- shrto.ml \n\
-- t.co \n\
-- tinyurl.com
+otherstext = """__- exe, exey \n\
+- sub2unlock, sub2unlock \n\
+- rekonise \n\
+- letsboost \n\
+- ph.apps2app \n\
+- mboost	\n\
+- sub4unlock \n\
+- ytsubme \n\
+- bit \n\
+- social-unlock	\n\
+- boost	\n\
+- goo \n\
+- shrto \n\
+- tinyurl
     __"""
 
 
-ddltext = """__- disk.yandex.com \n\
-- mediafire.com \n\
-- uptobox.com \n\
-- osdn.net \n\
-- github.com \n\
-- hxfile.co \n\
-- 1drv.ms \n\
-- pixeldrain.com \n\
-- antfiles.com \n\
-- streamtape.com \n\
+ddltext = """__- disk.yandex \n\
+- mediafire \n\
+- uptobox \n\
+- osdn \n\
+- github \n\
+- hxfile \n\
+- 1drv (onedrive) \n\
+- pixeldrain \n\
+- antfiles \n\
+- streamtape \n\
 - racaty \n\
-- 1fichier.com \n\
-- solidfiles.com \n\
-- krakenfiles.com \n\
-- upload.ee \n\
+- 1fichier \n\
+- solidfiles \n\
+- krakenfiles \n\
+- upload \n\
 - akmfiles \n\
 - linkbox \n\
 - shrdsk \n\
 - letsupload.io \n\
-- zippyshare.com \n\
-- wetransfer.com, we.tl \n\
+- zippyshare \n\
+- wetransfer \n\
 - terabox, teraboxapp, 4funbox, mirrobox, nephobox, momerybox \n\
-- gdtot \n\
 - filepress \n\
-- appdrive \n\
-- anonfiles.com, hotfile.io, bayfiles.com, megaupload.nz, letsupload.cc, filechan.org, myfile.is, vshare.is, rapidshare.nu, lolabits.se, openload.cc, share-online.is, upvid.cc \n\
-- fembed.net, fembed.com, femax20.com, fcdn.stream, feurl.com, layarkacaxxi.icu, naniplay.nanime.in, naniplay.nanime.biz, naniplay.com, mm9842.com \n\
-- sbembed.com, watchsb.com, streamsb.net, sbplay.org
+- anonfiles, hotfile, bayfiles, megaupload.nz, letsupload, filechan, myfile, vshare, rapidshare, lolabits, openload, share-online, upvid \n\
+- fembed, fembed, femax20, fcdn, feurl, layarkacaxxi, naniplay, nanime, naniplay, mm9842 \n\
+- sbembed, watchsb, streamsb, sbplay.org
     __"""
 
 
-shortnertext = """__- igg-games.com \n\
-- olamovies.ink \n\
-- katdrive.net \n\
-- drivefire.co \n\
-- kolop.net \n\
-- hubdrive.in \n\
-- filecrypt.co \n\
-- shareus.io \n\
-- shortingly.in \n\
-- gyanilinks.com \n\
-- shorte.st \n\
-- psa.pm \n\
-- sharer.pw \n\
-- new1.gdtot.cfd \n\
-- adf.ly \n\
-- gplinks.in \n\
-- droplink.co \n\
-- linkvertise.com \n\
-- rocklinks.net \n\
-- ouo.press \n\
-- try2link.com \n\
-- htpmovies.lol \n\
-- sharespark.me \n\
-- cinevood.skin \n\
-- atishmkv.asia \n\
-- urlsopen.com \n\
-- xpshort.com / push.bdnewsx.com / techymozo.com \n\
-- dulink.in \n\
-- ez4short.com \n\
-- krownlinks.me \n\
-- teluguflix.xyz \n\
-- taemovies.xyz \n\
-- toonworld4all.me \n\
-- animeremux.xyz \n\
-- adrinolinks.in \n\
+shortnertext = """__- igg-games \n\
+- olamovies\n\
+- katdrive \n\
+- drivefire\n\
+- kolop \n\
+- hubdrive \n\
+- filecrypt \n\
+- shareus \n\
+- shortingly \n\
+- gyanilinks \n\
+- shorte \n\
+- psa \n\
+- sharer \n\
+- new1.gdtot \n\
+- adf\n\
+- gplinks\n\
+- droplink \n\
+- linkvertise \n\
+- rocklinks \n\
+- ouo \n\
+- try2link \n\
+- htpmovies \n\
+- sharespark \n\
+- cinevood\n\
+- atishmkv \n\
+- urlsopen \n\
+- xpshort  / techymozo \n\
+- dulink \n\
+- ez4short \n\
+- krownlinks \n\
+- teluguflix \n\
+- taemovies \n\
+- toonworld4all \n\
+- animeremux \n\
+- adrinolinks \n\
 __"""
 
 
