@@ -17,9 +17,7 @@ from requests import get
 
 UPTOBOX_TOKEN = environ.get("UPTOBOX_TOKEN",None)
 try: TERA_COOKIE = loads(environ.get("TERA_COOKIE",None).replace("'", '"'))
-except Exception as e: 
-    print(e)
-    TERA_COOKIE = None
+except: TERA_COOKIE = None
 
 
 ddllist = ['yadi.sk','disk.yandex.com','mediafire.com','uptobox.com','osdn.net','github.com',
@@ -528,10 +526,7 @@ def terabox(url) -> str:
     try:
         res = session.request('GET', url)
         key = res.url.split('?surl=')[-1]
-        if TERA_COOKIE is None:
-            try: err = loads(environ.get("TERA_COOKIE",None).replace("'", '"'))
-            except Exception as e: err = str(e)
-            return f"Terabox Cookie is not Set or {err}"
+        if TERA_COOKIE is None: return f"Terabox Cookie is not Set"
         jar = TERA_COOKIE
         session.cookies.update(jar)
         res = session.request(

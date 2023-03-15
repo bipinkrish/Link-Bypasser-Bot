@@ -27,7 +27,7 @@ otherstext = """__- exe, exey \n\
     __"""
 
 
-ddltext = """__- disk.yandex \n\
+ddltext = """__- yandex \n\
 - mediafire \n\
 - uptobox \n\
 - osdn \n\
@@ -45,14 +45,14 @@ ddltext = """__- disk.yandex \n\
 - akmfiles \n\
 - linkbox \n\
 - shrdsk \n\
-- letsupload.io \n\
+- letsupload \n\
 - zippyshare \n\
 - wetransfer \n\
 - terabox, teraboxapp, 4funbox, mirrobox, nephobox, momerybox \n\
 - filepress \n\
-- anonfiles, hotfile, bayfiles, megaupload.nz, letsupload, filechan, myfile, vshare, rapidshare, lolabits, openload, share-online, upvid \n\
+- anonfiles, hotfile, bayfiles, megaupload, letsupload, filechan, myfile, vshare, rapidshare, lolabits, openload, share-online, upvid \n\
 - fembed, fembed, femax20, fcdn, feurl, layarkacaxxi, naniplay, nanime, naniplay, mm9842 \n\
-- sbembed, watchsb, streamsb, sbplay.org
+- sbembed, watchsb, streamsb, sbplay.
     __"""
 
 

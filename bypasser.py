@@ -35,7 +35,7 @@ KATCRYPT = os.environ.get("KATDRIVE_CRYPT","")
 otherslist = ["exe.io","exey.io","sub2unlock.net","sub2unlock.com","rekonise.com","letsboost.net","ph.apps2app.com","mboost.me",
 "sub4unlock.com","ytsubme.com","bit.ly","social-unlock.com","boost.ink","goo.gl","shrto.ml","t.co","tinyurl.com"]
 
-gdlist = ["appdrive.info","driveapp.in","drivehub.in","gdflix.top","drivesharer.in","drivebit.in","drivelinks.in","driveace.in",
+gdlist = ["appdrive.pro","driveapp.in","drivehub.in","gdflix.top","drivesharer.in","drivebit.in","drivelinks.in","driveace.in",
 "drivepro.in"]
 
 
