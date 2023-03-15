@@ -8,7 +8,7 @@ import ddl
 import requests
 import threading
 from texts import HELP_TEXT
-from bypasser import ddllist
+from ddl import ddllist
 
 
 # bot
@@ -48,7 +48,7 @@ def loopthread(message):
         if ele.split("/")[3] == "0:":
             handleIndex(ele,message,msg)
             return
-        elif bypasser.ispresent(ddllist,ele):
+        elif bypasser.ispresent(ddllist,ele) or ddl.is_share_link(ele):
             try: temp = ddl.direct_link_generator(ele)
             except Exception as e: temp = "**Error**: " + str(e)
         else:    

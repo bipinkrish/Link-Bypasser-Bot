@@ -34,24 +34,26 @@ ddltext = """__- disk.yandex.com \n\
 - osdn.net \n\
 - github.com \n\
 - hxfile.co \n\
-- anonfiles.com \n\
-- letsupload.io \n\
-- 1drv.ms (onedrive) \n\
+- 1drv.ms \n\
 - pixeldrain.com \n\
 - antfiles.com \n\
 - streamtape.com \n\
-- bayfiles.com \n\
-- racaty.net \n\
+- racaty \n\
 - 1fichier.com \n\
 - solidfiles.com \n\
 - krakenfiles.com \n\
 - upload.ee \n\
-- mdisk.me \n\
-- wetransfer.com \n\
-- gofile.io \n\
-- dropbox.com \n\
+- akmfiles \n\
+- linkbox \n\
+- shrdsk \n\
+- letsupload.io \n\
 - zippyshare.com \n\
-- megaup.net \n\
+- wetransfer.com, we.tl \n\
+- terabox, teraboxapp, 4funbox, mirrobox, nephobox, momerybox \n\
+- gdtot \n\
+- filepress \n\
+- appdrive \n\
+- anonfiles.com, hotfile.io, bayfiles.com, megaupload.nz, letsupload.cc, filechan.org, myfile.is, vshare.is, rapidshare.nu, lolabits.se, openload.cc, share-online.is, upvid.cc \n\
 - fembed.net, fembed.com, femax20.com, fcdn.stream, feurl.com, layarkacaxxi.icu, naniplay.nanime.in, naniplay.nanime.biz, naniplay.com, mm9842.com \n\
 - sbembed.com, watchsb.com, streamsb.net, sbplay.org
     __"""
@@ -99,5 +101,4 @@ HELP_TEXT = f'**--Just Send me any Supported Links From Below Mentioned Sites--*
 **List of Sites for DDL : ** \n{ddltext} \n\
 **List of Sites for Shortners : ** \n{shortnertext} \n\
 **List of Sites for GDrive Look-ALike : ** \n{gdrivetext} \n\
-**Other Supported Sites : ** \n{otherstext} \n\
-**+ [Pybypass Library Sites](https://github.com/sanjit-sinha/PyBypass)**'
+**Other Supported Sites : ** \n{otherstext}'

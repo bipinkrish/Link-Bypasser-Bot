@@ -38,12 +38,6 @@ otherslist = ["exe.io","exey.io","sub2unlock.net","sub2unlock.com","rekonise.com
 gdlist = ["appdrive.info","driveapp.in","drivehub.in","gdflix.top","drivesharer.in","drivebit.in","drivelinks.in","driveace.in",
 "drivepro.in"]
 
-ddllist = ["disk.yandex.com","mediafire.com","uptobox.com","osdn.net","github.com","hxfile.co","anonfiles.com","letsupload.io",
-"1drv.ms","pixeldrain.com","antfiles.com","streamtape.com","bayfiles.com","racaty.net","1fichier.com","solidfiles.com",
-"krakenfiles.com","upload.ee","mdisk.me","wetransfer.com","gofile.io","dropbox.com","zippyshare.com","megaup.net","fembed.net",
-"fembed.com","femax20.com","fcdn.stream","feurl.com","layarkacaxxi.icu","naniplay.nanime.in","naniplay.nanime.biz","naniplay.com",
-"mm9842.com","sbembed.com","watchsb.com","streamsb.net","sbplay.org","workers.dev/0:/"]
-
 
 ###############################################################
 # index scrapper
