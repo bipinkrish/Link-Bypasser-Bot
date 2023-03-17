@@ -15,6 +15,7 @@ load_dotenv()
 from asyncio import sleep as asleep
 import PyBypass
 import os
+import ddl
 
 
 ##########################################################
@@ -35,7 +36,7 @@ KATCRYPT = os.environ.get("KATDRIVE_CRYPT","")
 otherslist = ["exe.io","exey.io","sub2unlock.net","sub2unlock.com","rekonise.com","letsboost.net","ph.apps2app.com","mboost.me",
 "sub4unlock.com","ytsubme.com","bit.ly","social-unlock.com","boost.ink","goo.gl","shrto.ml","t.co","tinyurl.com"]
 
-gdlist = ["appdrive.pro","driveapp.in","drivehub.in","gdflix.top","drivesharer.in","drivebit.in","drivelinks.in","driveace.in",
+gdlist = ["appdrive","driveapp.in","drivehub.in","gdflix.top","drivesharer.in","drivebit.in","drivelinks.in","driveace.in",
 "drivepro.in"]
 
 
@@ -1181,10 +1182,8 @@ def gdtot(url: str, GdTot_Crypt: str) -> str:
         decoded_id = base64.b64decode(str(params["gd"][0])).decode("utf-8")
         drive_link = f"https://drive.google.com/open?id={decoded_id}"
         info["gdrive_link"] = drive_link
-    if not info["error"]:
-        return info["gdrive_link"]
-    else:
-        return f"{info['message']}"
+    if not info["error"]: return info["gdrive_link"]
+    else: return ddl.gdtot(url)
 
 
 ##################################################################
@@ -1376,8 +1375,11 @@ def mdisk(url):
 
 def unified(url):
 
-    try:
+    if ddl.is_share_link(url):
+        if 'https://gdtot' in url: return ddl.gdtot(url)
+        else: return ddl.sharer_scraper(url)
 
+    try:
         Email = "OPTIONAL"
         Password = "OPTIONAL"
 
@@ -1486,6 +1488,7 @@ def unified(url):
         return info_parsed["gdrive_link"]
     except BaseException:
         return "Unable to Extract GDrive Link"
+
 
 #####################################################################################################
 # urls open
