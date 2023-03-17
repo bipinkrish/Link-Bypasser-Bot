@@ -165,8 +165,8 @@ def uptobox(url: str) -> str:
         link = findall(r'\bhttps?://.*uptobox\.com\S+', url)[0]
     except IndexError:
         return ("No Uptobox links found")
-    if link := findall(r'\bhttps?://.*\.uptobox\.com/dl\S+', url):
-        return link[0]
+    link = findall(r'\bhttps?://.*\.uptobox\.com/dl\S+', url)
+    if link: return link[0]
     cget = create_scraper().request
     try:
         file_id = findall(r'\bhttps?://.*uptobox\.com/(\w+)', url)[0]
@@ -196,16 +196,16 @@ def uptobox(url: str) -> str:
 
 
 def mediafire(url: str) -> str:
-    if final_link := findall(r'https?:\/\/download\d+\.mediafire\.com\/\S+\/\S+\/\S+', url):
-        return final_link[0]
+    final_link = findall(r'https?:\/\/download\d+\.mediafire\.com\/\S+\/\S+\/\S+', url)
+    if final_link: return final_link[0]
     cget = create_scraper().request
     try:
         url = cget('get', url).url
         page = cget('get', url).text
     except Exception as e:
         return (f"ERROR: {e.__class__.__name__}")
-    if not (final_link := findall(r"\'(https?:\/\/download\d+\.mediafire\.com\/\S+\/\S+\/\S+)\'", page)):
-        return ("ERROR: No links found in this page")
+    final_link = findall(r"\'(https?:\/\/download\d+\.mediafire\.com\/\S+\/\S+\/\S+)\'", page)
+    if not final_link:return ("ERROR: No links found in this page")
     return final_link[0]
 
 
@@ -262,8 +262,8 @@ def letsupload(url: str) -> str:
         res = cget("POST", url)
     except Exception as e:
         return (f'ERROR: {e.__class__.__name__}')
-    if direct_link := findall(r"(https?://letsupload\.io\/.+?)\'", res.text):
-        return direct_link[0]
+    direct_link = findall(r"(https?://letsupload\.io\/.+?)\'", res.text)
+    if direct_link: return direct_link[0]
     else:
         return ('ERROR: Direct Link not found')
 
@@ -274,8 +274,8 @@ def anonfilesBased(url: str) -> str:
         soup = BeautifulSoup(cget('get', url).content, 'lxml')
     except Exception as e:
         return (f"ERROR: {e.__class__.__name__}")
-    if sa := soup.find(id="download-url"):
-        return sa['href']
+    sa = soup.find(id="download-url")
+    if sa: return sa['href']
     return ("ERROR: File not found!")
 
 
@@ -378,7 +378,9 @@ def racaty(url: str) -> str:
         res = cget('POST', url, data=json_data)
     except Exception as e:
         return (f'ERROR: {e.__class__.__name__}')
-    if (direct_link := etree.HTML(res.text).xpath("//a[contains(@id,'uniqueExpirylink')]/@href")):
+    html_tree = etree.HTML(res.text)
+    direct_link = html_tree.xpath("//a[contains(@id,'uniqueExpirylink')]/@href")
+    if direct_link:
         return direct_link[0]
     else:
         return ('ERROR: Direct link not found')
@@ -413,15 +415,15 @@ def fichier(link: str) -> str:
             "ERROR: File not found/The link you entered is wrong!")
     soup = BeautifulSoup(req.content, 'lxml')
     if soup.find("a", {"class": "ok btn-general btn-orange"}):
-        if dl_url := soup.find("a", {"class": "ok btn-general btn-orange"})["href"]:
-            return dl_url
+        dl_url = soup.find("a", {"class": "ok btn-general btn-orange"})["href"]
+        if dl_url: return dl_url
         return (
             "ERROR: Unable to generate Direct Link 1fichier!")
     elif len(soup.find_all("div", {"class": "ct_warn"})) == 3:
         str_2 = soup.find_all("div", {"class": "ct_warn"})[-1]
         if "you must wait" in str(str_2).lower():
-            if numbers := [int(word) for word in str(str_2).split() if word.isdigit()]:
-                return (
+            numbers = [int(word) for word in str(str_2).split() if word.isdigit()]
+            if numbers:  return (
                     f"ERROR: 1fichier is on a limit. Please wait {numbers[0]} minute.")
             else:
                 return (
@@ -436,8 +438,8 @@ def fichier(link: str) -> str:
         str_1 = soup.find_all("div", {"class": "ct_warn"})[-2]
         str_3 = soup.find_all("div", {"class": "ct_warn"})[-1]
         if "you must wait" in str(str_1).lower():
-            if numbers := [int(word) for word in str(str_1).split() if word.isdigit()]:
-                return (
+            numbers = [int(word) for word in str(str_1).split() if word.isdigit()]
+            if numbers: return (
                     f"ERROR: 1fichier is on a limit. Please wait {numbers[0]} minute.")
             else:
                 return (
@@ -579,7 +581,8 @@ def gdtot(url):
                 "GET", f"{p_url.scheme}://{p_url.hostname}/ddl/{url.split('/')[-1]}")
         except Exception as e:
             return (f'ERROR: {e.__class__.__name__}')
-        if (drive_link := findall(r"myDl\('(.*?)'\)", res.text)) and "drive.google.com" in drive_link[0]:
+        drive_link = findall(r"myDl\('(.*?)'\)", res.text)
+        if drive_link and "drive.google.com" in drive_link[0]:
             return drive_link[0]
         else:
             return (
@@ -641,7 +644,9 @@ def sharer_scraper(url):
         res = cget('GET', res["url"])
     except Exception as e:
         return (f'ERROR: {e.__class__.__name__}')
-    if (drive_link := etree.HTML(res.content).xpath("//a[contains(@class,'btn')]/@href")) and "drive.google.com" in drive_link[0]:
+    html_tree = etree.HTML(res.content)
+    drive_link = html_tree.xpath("//a[contains(@class,'btn')]/@href")
+    if drive_link and "drive.google.com" in drive_link[0]:
         return drive_link[0]
     else:
         return (
@@ -681,7 +686,9 @@ def akmfiles(url):
         res = cget('POST', url, data=json_data)
     except Exception as e:
         return (f'ERROR: {e.__class__.__name__}')
-    if (direct_link := etree.HTML(res.content).xpath("//a[contains(@class,'btn btn-dow')]/@href")):
+    html_tree = etree.HTML(res.content)
+    direct_link = html_tree.xpath("//a[contains(@class,'btn btn-dow')]/@href")
+    if direct_link:
         return direct_link[0]
     else:
         return ('ERROR: Direct link not found')
@@ -751,31 +758,36 @@ def zippyshare(url):
     uri1 = None
     uri2 = None
     method = ''
-    if omg := findall(r"\.omg.=.(.*?);", js_script):
+    omg = findall(r"\.omg.=.(.*?);", js_script)
+    var_a = findall(r"var.a.=.(\d+)", js_script)
+    var_ab = findall(r"var.[ab].=.(\d+)", js_script)
+    unknown = findall(r"\+\((.*?).\+", js_script)
+    unknown1 = findall(r"\+.\((.*?)\).\+", js_script)
+    if omg:
         omg = omg[0]
         method = f'omg = {omg}'
         mtk = (eval(omg) * (int(omg.split("%")[0]) % 3)) + 18
         uri1 = findall(r'"/(d/\S+)/"', js_script)
         uri2 = findall(r'\/d.*?\+"/(\S+)";', js_script)
-    elif var_a := findall(r"var.a.=.(\d+)", js_script):
+    elif var_a:
         var_a = var_a[0]
         method = f'var_a = {var_a}'
         mtk = int(pow(int(var_a), 3) + 3)
         uri1 = findall(r"\.href.=.\"/(.*?)/\"", js_script)
         uri2 = findall(r"\+\"/(.*?)\"", js_script)
-    elif var_ab := findall(r"var.[ab].=.(\d+)", js_script):
+    elif var_ab:
         a = var_ab[0]
         b = var_ab[1]
         method = f'a = {a}, b = {b}'
         mtk = eval(f"{floor(int(a)/3) + int(a) % int(b)}")
         uri1 = findall(r"\.href.=.\"/(.*?)/\"", js_script)
         uri2 = findall(r"\)\+\"/(.*?)\"", js_script)
-    elif unknown := findall(r"\+\((.*?).\+", js_script):
+    elif unknown:
         method = f'unknown = {unknown[0]}'
         mtk = eval(f"{unknown[0]}+ 11")
         uri1 = findall(r"\.href.=.\"/(.*?)/\"", js_script)
         uri2 = findall(r"\)\+\"/(.*?)\"", js_script)
-    elif unknown1 := findall(r"\+.\((.*?)\).\+", js_script):
+    elif unknown1:
         method = f'unknown1 = {unknown1[0]}'
         mtk = eval(unknown1[0])
         uri1 = findall(r"\.href.=.\"/(.*?)/\"", js_script)
