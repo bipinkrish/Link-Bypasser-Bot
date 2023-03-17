@@ -14,14 +14,14 @@ otherstext = """__- exe, exey \n\
 - sub2unlock, sub2unlock \n\
 - rekonise \n\
 - letsboost \n\
-- ph.apps2app \n\
+- phapps2app \n\
 - mboost	\n\
 - sub4unlock \n\
 - ytsubme \n\
-- bit \n\
+- bitly \n\
 - social-unlock	\n\
 - boost	\n\
-- goo \n\
+- gooly \n\
 - shrto \n\
 - tinyurl
     __"""
@@ -70,7 +70,7 @@ shortnertext = """__- igg-games \n\
 - psa \n\
 - sharer \n\
 - new1.gdtot \n\
-- adf\n\
+- adfly\n\
 - gplinks\n\
 - droplink \n\
 - linkvertise \n\
@@ -82,7 +82,7 @@ shortnertext = """__- igg-games \n\
 - cinevood\n\
 - atishmkv \n\
 - urlsopen \n\
-- xpshort  / techymozo \n\
+- xpshort, techymozo \n\
 - dulink \n\
 - ez4short \n\
 - krownlinks \n\
@@ -91,6 +91,7 @@ shortnertext = """__- igg-games \n\
 - toonworld4all \n\
 - animeremux \n\
 - adrinolinks \n\
+- tnlink \n\
 __"""
 
 

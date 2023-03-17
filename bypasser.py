@@ -127,6 +127,29 @@ def scrapeIndex(url, username="none", password="none"):
     return format(result)
 
 
+##############################################################
+# tnlink
+
+def tnlink(url):
+    client = requests.session()
+    DOMAIN = "https://internet.usanewstoday.club"
+    url = url[:-1] if url[-1] == '/' else url
+    code = url.split("/")[-1]
+    final_url = f"{DOMAIN}/{code}"
+    ref = "https://usanewstoday.club/"
+    h = {"referer": ref}
+    input(final_url)
+    resp = client.get(final_url,headers=h)
+    soup = BeautifulSoup(resp.content, "html.parser")
+    inputs = soup.find_all("input")
+    data = { input.get('name'): input.get('value') for input in inputs }
+    h = { "x-requested-with": "XMLHttpRequest" }
+    time.sleep(8)
+    r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
+    try: return r.json()['url']
+    except: return "Something went wrong :("
+
+
 ###############################################################
 # psa 
 
@@ -943,23 +966,20 @@ def shortlingly(url):
 # Gyanilinks - gtlinks.me
 
 def gyanilinks(url):
-    DOMAIN = "https://go.bloggertheme.xyz"
+    DOMAIN = "https://go.theforyou.in/"
     client = cloudscraper.create_scraper(allow_brotli=False)
     url = url[:-1] if url[-1] == '/' else url
     code = url.split("/")[-1]
     final_url = f"{DOMAIN}/{code}"
     resp = client.get(final_url)
     soup = BeautifulSoup(resp.content, "html.parser")
-
     try: inputs = soup.find(id="go-link").find_all(name="input")
     except: return "Incorrect Link"
-    
     data = { input.get('name'): input.get('value') for input in inputs }
     h = { "x-requested-with": "XMLHttpRequest" }
     time.sleep(5)
     r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
-    try:
-        return r.json()['url']
+    try: return r.json()['url']
     except: return "Something went wrong :("
 
 
@@ -1472,7 +1492,7 @@ def unified(url):
 
 def urlsopen(url):
     client = cloudscraper.create_scraper(allow_brotli=False)
-    DOMAIN = "https://blogpost.viewboonposts.com/go"
+    DOMAIN = "https://blogpost.viewboonposts.com/sssss"
     url = url[:-1] if url[-1] == '/' else url
     code = url.split("/")[-1]
     final_url = f"{DOMAIN}/{code}"
@@ -1737,6 +1757,11 @@ def shortners(url):
     elif "https://adrinolinks." in url:
         print("entered adrinolink:",url)
         return adrinolink(url)
+    
+    # tnlink
+    elif "https://link.tnlink.in/" in url:
+        print("entered tnlink:",url)
+        return tnlink(url)
         
     # htpmovies sharespark cinevood
     elif "https://htpmovies." in url or 'https://sharespark.me/' in url or "https://cinevood." in url or "https://atishmkv." in url \
@@ -1760,4 +1785,5 @@ def shortners(url):
         if temp != None: return temp
         else: return "Not in Supported Links"
     
+
 ################################################################################################################################

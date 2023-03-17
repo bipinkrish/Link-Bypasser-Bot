@@ -16,8 +16,9 @@ from requests import get
 
 
 UPTOBOX_TOKEN = environ.get("UPTOBOX_TOKEN",None)
-try: TERA_COOKIE = loads(environ.get("TERA_COOKIE",None).replace("'", '"'))
-except: TERA_COOKIE = None
+ndus = environ.get("TERA_COOKIE",None)
+if ndus is None: TERA_COOKIE = None
+else: TERA_COOKIE = {"ndus": ndus}
 
 
 ddllist = ['yadi.sk','disk.yandex.com','mediafire.com','uptobox.com','osdn.net','github.com',
