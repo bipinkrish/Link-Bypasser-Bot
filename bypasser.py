@@ -13,7 +13,6 @@ import json
 from dotenv import load_dotenv
 load_dotenv()
 from asyncio import sleep as asleep
-import PyBypass
 import os
 import ddl
 
@@ -1783,10 +1782,7 @@ def shortners(url):
         return others(url)
 
     # else
-    else:
-        temp = PyBypass.bypass(url)
-        if temp != None: return temp
-        else: return "Not in Supported Links"
+    else: return "Not in Supported Sites"
     
 
 ################################################################################################################################
