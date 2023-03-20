@@ -19,7 +19,7 @@ a Telegram Bot that can Bypass Ad Links and Generate Direct Links. see the Bot i
 - `HUBDRIVE_CRYPT` Hubdrive Crypt
 - `KATDRIVE_CRYPT` Katdrive Crypt
 - `UPTOBOX_TOKEN` Uptobox Token
-- `TERA_COOKIE` Terobox Cookie (only `ndus` value) (see [Help](#help))
+- `TERA_COOKIE` Terabox Cookie (only `ndus` value) (see [Help](#help))
 
 ---
 

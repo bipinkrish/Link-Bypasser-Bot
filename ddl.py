@@ -530,8 +530,7 @@ def terabox(url) -> str:
         res = session.request('GET', url)
         key = res.url.split('?surl=')[-1]
         if TERA_COOKIE is None: return f"Terabox Cookie is not Set"
-        jar = TERA_COOKIE
-        session.cookies.update(jar)
+        session.cookies.update(TERA_COOKIE)
         res = session.request(
             'GET', f'https://www.terabox.com/share/list?app_id=250528&shorturl={key}&root=1')
         result = res.json()['list']
