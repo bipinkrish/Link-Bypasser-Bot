@@ -984,6 +984,44 @@ def gyanilinks(url):
 
 
 #######################################################
+# Flashlink
+
+def flashlink(url):
+  DOMAIN = "https://files.cordtpoint.co.in"
+  url = url[:-1] if url[-1] == '/' else url
+  code = url.split("/")[-1]
+  final_url = f"{DOMAIN}/{code}"
+  client = cloudscraper.create_scraper(allow_brotli=False)
+  resp = client.get(final_url)
+  soup = BeautifulSoup(resp.content, "html.parser")
+  inputs = soup.find(id="go-link").find_all(name="input")
+  data = { input.get('name'): input.get('value') for input in inputs }
+  h = { "x-requested-with": "XMLHttpRequest" }
+  time.sleep(15)
+  r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
+  return r.json()['url']
+
+
+#######################################################
+# short2url
+
+def short2url(url):
+  DOMAIN = "https://techyuth.xyz/blog"
+  url = url[:-1] if url[-1] == '/' else url
+  code = url.split("/")[-1]
+  final_url = f"{DOMAIN}/{code}"
+  client = cloudscraper.create_scraper(allow_brotli=False)
+  resp = client.get(final_url)
+  soup = BeautifulSoup(resp.content, "html.parser")
+  inputs = soup.find(id="go-link").find_all(name="input")
+  data = { input.get('name'): input.get('value') for input in inputs }
+  h = { "x-requested-with": "XMLHttpRequest" }
+  time.sleep(10)
+  r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
+  return r.json()['url']
+
+
+#######################################################
 # anonfiles
 
 def anonfile(url):
@@ -1512,7 +1550,7 @@ def urlsopen(url):
     
 
 ####################################################################################################
-# xpshort
+# URLShortX - xpshort
 
 def xpshort(url):
     client = cloudscraper.create_scraper(allow_brotli=False)
@@ -1520,7 +1558,7 @@ def xpshort(url):
     url = url[:-1] if url[-1] == '/' else url
     code = url.split("/")[-1]
     final_url = f"{DOMAIN}/{code}"
-    ref = "https://m.kongutoday.com"
+    ref = "https://m.cupze.com/"
     h = {"referer": ref}
     resp = client.get(final_url,headers=h)
     soup = BeautifulSoup(resp.content, "html.parser")
@@ -1538,13 +1576,11 @@ def xpshort(url):
 
 def dulink(url):
     client = cloudscraper.create_scraper(allow_brotli=False)
-    DOMAIN = "https://cac.teckypress.in/"
+    DOMAIN = "https://du-link.in"
     url = url[:-1] if url[-1] == '/' else url
-    code = url.split("/")[-1]    
-    final_url = f"{DOMAIN}/{code}"
-    ref = "https://teckypress.in/"
+    ref = "https://profitshort.com/"
     h = {"referer": ref}
-    resp = client.get(final_url, headers=h)
+    resp = client.get(url, headers=h)
     soup = BeautifulSoup(resp.content, "html.parser")
     inputs = soup.find_all("input")
     data = { input.get('name'): input.get('value') for input in inputs }
@@ -1552,7 +1588,6 @@ def dulink(url):
     r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
     try: return r.json()['url']
     except: return "Something went wrong :("
-
 
 #####################################################################################################
 # krownlinks
@@ -1670,6 +1705,16 @@ def shortners(url):
     elif "https://gyanilinks.com/" in url or "https://gtlinks.me/" in url:
         print("entered gyanilinks:",url)
         return gyanilinks(url)
+
+    # flashlink
+    elif "https://go.flashlink.in/" in url:
+        print("entered flashlink:",url)
+        return flashlink(url)
+
+    # short2url
+    elif "https://link.short2url.in/" in url:
+        print("entered short2url:",url)
+        return short2url(url)
         
     # shorte
     elif "https://shorte.st/" in url:
@@ -1741,7 +1786,7 @@ def shortners(url):
         return xpshort(url)
 
     # dulink
-    elif "https://dulink.in/" in url:
+    elif "https://du-link.in/" in url:
         print("entered dulink:",url)
         return dulink(url)
 
