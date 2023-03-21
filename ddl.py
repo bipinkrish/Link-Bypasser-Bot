@@ -1,4 +1,3 @@
-
 from base64 import standard_b64encode
 from json import loads
 from math import floor, pow
@@ -21,16 +20,7 @@ if ndus is None: TERA_COOKIE = None
 else: TERA_COOKIE = {"ndus": ndus}
 
 
-ddllist = ['yadi.sk','disk.yandex.com','mediafire.com','uptobox.com','osdn.net','github.com',
-'hxfile.co','1drv.ms','pixeldrain.com','antfiles.com','streamtape.com','racaty','1fichier.com',
-'solidfiles.com','krakenfiles.com','mdisk.me','upload.ee','akmfiles','linkbox','shrdsk','letsupload.io',
-'zippyshare.com','wetransfer.com','we.tl','terabox','nephobox','4funbox','mirrobox','momerybox',
-'teraboxapp','sbembed.com','watchsb.com','streamsb.net','sbplay.org','filepress',
-'fembed.net', 'fembed.com', 'femax20.com', 'fcdn.stream', 'feurl.com', 'layarkacaxxi.icu',
-'naniplay.nanime.in', 'naniplay.nanime.biz', 'naniplay.com', 'mm9842.com','anonfiles.com', 
-'hotfile.io', 'bayfiles.com', 'megaupload.nz', 'letsupload.cc','filechan.org', 'myfile.is', 
-'vshare.is', 'rapidshare.nu', 'lolabits.se','openload.cc', 'share-online.is', 'upvid.cc']
-
+ddllist = ['1drv.ms', '1fichier.com', '4funbox', 'akmfiles', 'anonfiles.com', 'antfiles.com', 'appdrive', 'bayfiles.com', 'disk.yandex.com', 'dropbox.com', 'fcdn.stream', 'femax20.com', 'fembed.com', 'fembed.net', 'feurl.com', 'filechan.org', 'filepress', 'gdflix', 'gdtot', 'github.com', 'gofile.io', 'hotfile.io', 'hxfile.co', 'krakenfiles.com', 'layarkacaxxi.icu', 'letsupload', 'letsupload.cc', 'letsupload.io', 'linkbox', 'lolabits.se', 'mdisk.me', 'mediafire.com', 'megaup.net', 'megaupload.nz', 'mirrobox', 'mm9842.com', 'momerybox', 'myfile.is', 'naniplay.com', 'naniplay.nanime.biz', 'naniplay.nanime.in', 'nephobox', 'openload.cc', 'osdn.net', 'pixeldrain.com', 'racaty', 'racaty.net', 'rapidshare.nu', 'sbembed.com', 'sbplay.org', 'share-online.is', 'shrdsk', 'solidfiles.com', 'streamsb.net', 'streamtape.com', 'terabox', 'terabox.com', 'teraboxapp', 'teraboxappmm9842.com', 'upload.ee', 'uptobox.com', 'upvid.cc', 'vshare.is', 'watchsb.com', 'we.tl', 'wetransfer.com', 'yadi.sk', 'zippyshare.com']
 
 def is_share_link(url):
     return bool(match(r'https?:\/\/.+\.gdtot\.\S+|https?:\/\/(filepress|filebee|appdrive|gdflix)\.\S+', url))
