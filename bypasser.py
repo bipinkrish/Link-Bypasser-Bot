@@ -35,8 +35,8 @@ KATCRYPT = os.environ.get("KATDRIVE_CRYPT","")
 otherslist = ["exe.io","exey.io","sub2unlock.net","sub2unlock.com","rekonise.com","letsboost.net","ph.apps2app.com","mboost.me",
 "sub4unlock.com","ytsubme.com","bit.ly","social-unlock.com","boost.ink","goo.gl","shrto.ml","t.co","tinyurl.com"]
 
-gdlist = ["appdrive","driveapp.in","drivehub.in","gdflix.top","drivesharer.in","drivebit.in","drivelinks.in","driveace.in",
-"drivepro.in"]
+gdlist = ["appdrive","driveapp","drivehub","gdflix","drivesharer","drivebit","drivelinks","driveace",
+"drivepro"]
 
 
 ###############################################################
@@ -1470,51 +1470,51 @@ def unified(url):
             info_parsed["error_message"] = "Something went wrong :("
         if info_parsed["error"]:
             return info_parsed
-        if urlparse(url).netloc == "driveapp.in" and not info_parsed["error"]:
+        if "driveapp" in urlparse(url).netloc and not info_parsed["error"]:
             res = client.get(info_parsed["gdrive_link"])
             drive_link = etree.HTML(res.content).xpath(
                 "//a[contains(@class,'btn')]/@href"
             )[0]
             info_parsed["gdrive_link"] = drive_link
         info_parsed["src_url"] = url
-        if urlparse(url).netloc == "drivehub.in" and not info_parsed["error"]:
+        if "drivehub" in urlparse(url).netloc and not info_parsed["error"]:
             res = client.get(info_parsed["gdrive_link"])
             drive_link = etree.HTML(res.content).xpath(
                 "//a[contains(@class,'btn')]/@href"
             )[0]
             info_parsed["gdrive_link"] = drive_link
-        if urlparse(url).netloc == "gdflix.top" and not info_parsed["error"]:
+        if "gdflix" in urlparse(url).netloc and not info_parsed["error"]:
             res = client.get(info_parsed["gdrive_link"])
             drive_link = etree.HTML(res.content).xpath(
                 "//a[contains(@class,'btn')]/@href"
             )[0]
             info_parsed["gdrive_link"] = drive_link
 
-        if urlparse(url).netloc == "drivesharer.in" and not info_parsed["error"]:
+        if "drivesharer" in urlparse(url).netloc and not info_parsed["error"]:
             res = client.get(info_parsed["gdrive_link"])
             drive_link = etree.HTML(res.content).xpath(
                 "//a[contains(@class,'btn')]/@href"
             )[0]
             info_parsed["gdrive_link"] = drive_link
-        if urlparse(url).netloc == "drivebit.in" and not info_parsed["error"]:
+        if "drivebit" in urlparse(url).netloc and not info_parsed["error"]:
             res = client.get(info_parsed["gdrive_link"])
             drive_link = etree.HTML(res.content).xpath(
                 "//a[contains(@class,'btn')]/@href"
             )[0]
             info_parsed["gdrive_link"] = drive_link
-        if urlparse(url).netloc == "drivelinks.in" and not info_parsed["error"]:
+        if "drivelinks" in urlparse(url).netloc and not info_parsed["error"]:
             res = client.get(info_parsed["gdrive_link"])
             drive_link = etree.HTML(res.content).xpath(
                 "//a[contains(@class,'btn')]/@href"
             )[0]
             info_parsed["gdrive_link"] = drive_link
-        if urlparse(url).netloc == "driveace.in" and not info_parsed["error"]:
+        if "driveace" in urlparse(url).netloc and not info_parsed["error"]:
             res = client.get(info_parsed["gdrive_link"])
             drive_link = etree.HTML(res.content).xpath(
                 "//a[contains(@class,'btn')]/@href"
             )[0]
             info_parsed["gdrive_link"] = drive_link
-        if urlparse(url).netloc == "drivepro.in" and not info_parsed["error"]:
+        if "drivepro" in urlparse(url).netloc and not info_parsed["error"]:
             res = client.get(info_parsed["gdrive_link"])
             drive_link = etree.HTML(res.content).xpath(
                 "//a[contains(@class,'btn')]/@href"
