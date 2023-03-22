@@ -33,7 +33,7 @@ ddllist = ['yadi.sk','disk.yandex.com','mediafire.com','uptobox.com','osdn.net',
 
 
 def is_share_link(url):
-    return bool(match(r'https?:\/\/.+\.gdtot\.\S+|https?:\/\/(filepress|filebee|appdrive|gdflix)\.\S+', url))
+    return bool(match(r'https?:\/\/.+\.gdtot\.\S+|https?:\/\/(filepress|filebee|appdrive|gdflix|driveseed)\.\S+', url))
 
 
 def get_readable_time(seconds):

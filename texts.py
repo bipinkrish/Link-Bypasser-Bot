@@ -7,7 +7,8 @@ gdrivetext = """__- appdrive \n\
 - drivelinks \n\
 - driveace \n\
 - drivepro \n\
-          __"""
+- driveseed \n\
+    __"""
 
 
 otherstext = """__- exe, exey \n\

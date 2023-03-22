@@ -36,7 +36,7 @@ otherslist = ["exe.io","exey.io","sub2unlock.net","sub2unlock.com","rekonise.com
 "sub4unlock.com","ytsubme.com","bit.ly","social-unlock.com","boost.ink","goo.gl","shrto.ml","t.co","tinyurl.com"]
 
 gdlist = ["appdrive","driveapp","drivehub","gdflix","drivesharer","drivebit","drivelinks","driveace",
-"drivepro"]
+"drivepro","driveseed"]
 
 
 ###############################################################
@@ -138,8 +138,9 @@ def tnlink(url):
     final_url = f"{DOMAIN}/{code}"
     ref = "https://usanewstoday.club/"
     h = {"referer": ref}
-    input(final_url)
-    resp = client.get(final_url,headers=h)
+    while len(client.cookies) == 0:
+        resp = client.get(final_url,headers=h)
+        time.sleep(2)
     soup = BeautifulSoup(resp.content, "html.parser")
     inputs = soup.find_all("input")
     data = { input.get('name'): input.get('value') for input in inputs }
@@ -1269,8 +1270,7 @@ def gplinks(url: str):
     bs4 = BeautifulSoup(res.content, 'html.parser')
     inputs = bs4.find_all('input')
     data = { input.get('name'): input.get('value') for input in inputs }
-    h = { 'referer': ref_url,
-          'x-requested-with': 'XMLHttpRequest', }
+    h = { 'referer': ref_url, 'x-requested-with': 'XMLHttpRequest', }
     time.sleep(10)
     res = client.post(final_url, headers=h, data=data)
     try: return res.json()['url'].replace('\/','/')
@@ -1546,7 +1546,7 @@ def xpshort(url):
     url = url[:-1] if url[-1] == '/' else url
     code = url.split("/")[-1]
     final_url = f"{DOMAIN}/{code}"
-    ref = "https://m.cupze.com/"
+    ref = "https://m.permanentt.in/"
     h = {"referer": ref}
     resp = client.get(final_url,headers=h)
     soup = BeautifulSoup(resp.content, "html.parser")
@@ -1734,7 +1734,7 @@ def shortners(url):
         return out['bypassed_url']
  
     # gplinks
-    elif "https://gplinks.in/" in url:
+    elif "https://gplinks." in url:
         print("entered gplink:",url)
         return gplinks(url)
         
