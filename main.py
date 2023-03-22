@@ -9,6 +9,7 @@ import requests
 import threading
 from texts import HELP_TEXT
 from ddl import ddllist
+import re
 
 
 # bot
@@ -45,7 +46,7 @@ def loopthread(message):
 
     link = ""
     for ele in urls:
-        if ele.split("/")[3] == "0:":
+        if re.search(r"https?:\/\/(?:[\w.-]+)?\.\w+\/\d+:", ele):
             handleIndex(ele,message,msg)
             return
         elif bypasser.ispresent(ddllist,ele):
