@@ -932,35 +932,23 @@ def shareus(url):
 #######################################################
 # shortingly
 
-def shortlingly(url):
+def shortingly(url):
     client = cloudscraper.create_scraper(allow_brotli=False)
-    if 'shortingly.me' in url:
-        DOMAIN = "https://go.techyjeeshan.xyz"
-    else:
-        return "Incorrect Link"
-
+    DOMAIN = "https://shortingly.in"
     url = url[:-1] if url[-1] == '/' else url
-
     code = url.split("/")[-1]
-    
     final_url = f"{DOMAIN}/{code}"
-
-    resp = client.get(final_url)
+    ref = "https://tech.gyanitheme.com/"
+    h = {"referer": ref}
+    resp = client.get(final_url,headers=h)
     soup = BeautifulSoup(resp.content, "html.parser")
-    
-    try: inputs = soup.find(id="go-link").find_all(name="input")
-    except: return "Incorrect Link"
-    
+    inputs = soup.find_all("input")
     data = { input.get('name'): input.get('value') for input in inputs }
-
     h = { "x-requested-with": "XMLHttpRequest" }
-    
     time.sleep(5)
     r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
-    try:
-        return r.json()['url']
+    try: return r.json()['url']
     except: return "Something went wrong :("
-
 
 #######################################################
 # Gyanilinks - gtlinks.me
@@ -1699,7 +1687,7 @@ def shortners(url):
     # shortingly
     elif "https://shortingly.in/" in url:
         print("entered shortingly:",url)
-        return shortlingly(url)
+        return shortingly(url)
 
     # gyanilinks
     elif "https://gyanilinks.com/" in url or "https://gtlinks.me/" in url:
