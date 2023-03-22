@@ -1392,7 +1392,7 @@ def mdisk(url):
 
     URL = f'https://diskuploader.entertainvideo.com/v1/file/cdnurl?param={cid}'
     res = requests.get(url=URL, headers=header).json()
-    return res['source']
+    return res['download'] + '\n\n' + res['source']
 
 
 ##################################################################################################################        
