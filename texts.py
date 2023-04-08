@@ -95,6 +95,17 @@ shortnertext = """__- igg-games \n\
 - tnlink \n\
 - flashlink \n\
 - short2url \n\
+- tinyfy \n\
+- mdiskshortners \n\
+- earnl \n\
+- moneykamalo \n\
+- easysky \n\
+- indiurl \n\
+- linkbnao \n\
+- mdiskpro \n\
+- rslinks \n\
+- bitly, tinyurl \n\
+- thinfi \n\
 __"""
 
 
