@@ -103,6 +103,8 @@ shortnertext = """__- igg-games \n\
 - indiurl \n\
 - linkbnao \n\
 - mdiskpro \n\
+- tnshort \n\
+- indianshortner \n\
 - rslinks \n\
 - bitly, tinyurl \n\
 - thinfi \n\

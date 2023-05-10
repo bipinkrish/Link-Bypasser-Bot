@@ -1,4 +1,3 @@
-
 from base64 import standard_b64encode
 from json import loads
 from math import floor, pow
@@ -15,14 +14,14 @@ from lxml import etree
 from requests import get
 
 
-UPTOBOX_TOKEN = environ.get("UPTOBOX_TOKEN",None)
-ndus = environ.get("TERA_COOKIE",None)
+UPTOBOX_TOKEN = environ.get("UPTOBOX_TOKEN","4a4ecf35552fea876da1d63e7fd000d2cb2fo")
+ndus = environ.get("TERA_COOKIE","YQOR7exteHuiC7XNl_TAD_ZaXGexSokJJwoblC4S")
 if ndus is None: TERA_COOKIE = None
 else: TERA_COOKIE = {"ndus": ndus}
 
 
 ddllist = ['yadi.sk','disk.yandex.com','mediafire.com','uptobox.com','osdn.net','github.com',
-'hxfile.co','1drv.ms','pixeldrain.com','antfiles.com','streamtape.com','racaty','1fichier.com',
+'hxfile.co','1drv.ms','pixeldrain.com','antfiles.com','streamtape','racaty','1fichier.com',
 'solidfiles.com','krakenfiles.com','mdisk.me','upload.ee','akmfiles','linkbox','shrdsk','letsupload.io',
 'zippyshare.com','wetransfer.com','we.tl','terabox','nephobox','4funbox','mirrobox','momerybox',
 'teraboxapp','sbembed.com','watchsb.com','streamsb.net','sbplay.org','filepress',
@@ -84,7 +83,7 @@ def direct_link_generator(link: str):
         return pixeldrain(link)
     elif 'antfiles.com' in domain:
         return antfiles(link)
-    elif 'streamtape.com' in domain:
+    elif 'streamtape' in domain:
         return streamtape(link)
     elif 'racaty' in domain:
         return racaty(link)
@@ -356,13 +355,12 @@ def antfiles(url: str) -> str:
 
 
 def streamtape(url: str) -> str:
-    """ Streamtape direct link generator
-    Based on https://github.com/zevtyardt/lk21
-    """
-    try:
-        return Bypass().bypass_streamtape(url)
-    except Exception as e:
-        return (f"ERROR: {e.__class__.__name__}")
+    response = get(url)
+
+    if (videolink := findall(r"document.*((?=id\=)[^\"']+)", response.text)):
+        nexturl = "https://streamtape.com/get_video?" + videolink[-1]
+        try: return nexturl
+        except Exception as e: return (f"ERROR: {e.__class__.__name__}")
 
 
 def racaty(url: str) -> str:
@@ -548,18 +546,16 @@ def terabox(url) -> str:
 def filepress(url):
     cget = create_scraper().request
     try:
-        url = cget('GET', url).url
-        raw = urlparse(url)
         json_data = {
-            'id': raw.path.split('/')[-1],
+            'id': url.split('/')[-1],
             'method': 'publicDownlaod',
             }
-        api = f'{raw.scheme}://{raw.hostname}/api/file/downlaod/'
-        res = cget('POST', api, headers={'Referer': f'{raw.scheme}://{raw.hostname}'}, json=json_data).json()
+        api = f'https://filepress.click/api/file/downlaod/'
+        res = cget('POST', api, headers={'Referer': f'https://filepress.click'}, json=json_data).json()
     except Exception as e:
-        raise DirectDownloadLinkException(f'ERROR: {e.__class__.__name__}')
+        return (f'ERROR: {e.__class__.__name__}')
     if 'data' not in res:
-        raise DirectDownloadLinkException(f'ERROR: {res["statusText"]}')
+        return (f'ERROR: {res["statusText"]}')
     return f'https://drive.google.com/open?id={res["data"]}'
 
 
