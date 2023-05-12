@@ -114,7 +114,7 @@ __"""
 START_MSG =  """🤗 Hi <b>{}</b>,
 ✨ I'm a Link Bypasser Bot, Just Send Me Any Supported Links & I Will Get Your Results.
 Checkout /help to Read More"""
-ABOUT_MSG = """My Name:- @BypassLinkBot
+ABOUT_MSG = """My Name:- @Short2DirectLink_bot
 Library:- Pyrogram
 Language:- Python3 
 VERSION:- 4.0 [stable]
