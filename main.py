@@ -1,13 +1,13 @@
 import pyrogram
 from pyrogram import Client
 from pyrogram import filters
-from pyrogram.types import InlineKeyboardMarkup,InlineKeyboardButton
+from pyrogram.types import InlineKeyboardMarkup,InlineKeyboardButton,CallbackQuery
 import bypasser
 import os
 import ddl
 import requests
 import threading
-from texts import HELP_TEXT
+from texts import HELP_TEXT, START_MSG, ABOUT_MSG
 from ddl import ddllist
 import re
 
@@ -68,17 +68,102 @@ def loopthread(message):
 
 
 # start command
-@app.on_message(filters.command(["start"]))
-def send_start(client: pyrogram.client.Client, message: pyrogram.types.messages_and_media.message.Message):
-    app.send_message(message.chat.id, f"__👋 Hi **{message.from_user.mention}**, i am Link Bypasser Bot, just send me any supported links and i will you get you results.\nCheckout /help to Read More__",
-    reply_markup=InlineKeyboardMarkup([[ InlineKeyboardButton("🌐 Source Code", url="https://github.com/bipinkrish/Link-Bypasser-Bot")]]), reply_to_message_id=message.id)
+START_BUTTONS = InlineKeyboardMarkup(
+    [
+        [
+            InlineKeyboardButton('UPDATE CHANNEL', url='https://telegram.me/technofoxYT'), 
+            InlineKeyboardButton('YouTube CHANNEL', url='https://youtube.com/channel/UCngpKD7UkgXICp32m_h-RQQ')
+        ], 
+        [
+            InlineKeyboardButton('💝 Donate Us For Keeping Our Service Free', callback_data='donate')
+        ],
+        
+        [
+            InlineKeyboardButton('⚙ HELP', callback_data='help'),
+            InlineKeyboardButton('📕 ABOUT', callback_data='about'),
+            InlineKeyboardButton('CLOSE ❌', callback_data='close')
+        ]
+    ]
+)
+
+HELP_BUTTONS = InlineKeyboardMarkup(
+    [
+        [
+            InlineKeyboardButton('SUPPORT GROUP', url='https://telegram.me/webcoderhub'), 
+            InlineKeyboardButton('DEVELOPER', url='https://t.me/OwnersContact_bot')
+        ],
+        [
+            InlineKeyboardButton('🏠HOME', callback_data='home'),
+            InlineKeyboardButton('📕 ABOUT', callback_data='about'), 
+            InlineKeyboardButton('CLOSE ❌', callback_data='close')
+        ]
+    ]
+)
+
+ABOUT_BUTTONS = InlineKeyboardMarkup(
+    [
+        [
+            InlineKeyboardButton('GITHUB', url='https://github.com/ScripterSaurav'), 
+            InlineKeyboardButton('DEVELOPER', url='https://t.me/OwnersContact_bot')
+        ],
+        [
+            InlineKeyboardButton('🏠 HOME', callback_data='home'),
+            InlineKeyboardButton('⚙ HELP', callback_data='help'), 
+            InlineKeyboardButton('CLOSE ❌', callback_data='close')
+        ]
+    ]
+)
+
+@app.on_callback_query() 
+async def cb_handler(bot, update): 
+    if update.data == "home": 
+        await update.message.edit_text(
+            text=START_MSG.format(update.from_user.mention), 
+            reply_markup=START_BUTTONS, 
+            disable_web_page_preview=True
+        ) 
+    elif update.data == "help": 
+        await update.message.edit_text(
+            text=HELP_TEXT, 
+            reply_markup=HELP_BUTTONS, 
+            disable_web_page_preview=True
+        ) 
+    elif update.data == "about": 
+        await update.message.edit_text(
+            text=ABOUT_MSG, 
+            reply_markup=ABOUT_BUTTONS, 
+            disable_web_page_preview=True
+        ) 
+    elif update.data == "donate": 
+        await update.message.reply_photo("https://cdn.discordapp.com/attachments/772320931749953546/1096420532292964423/20230414_182207.jpg", caption=" ❓Do You Like This Bot & Want To Support It?\n\n You can help with server costs by donating to our wallet 😢 Use Above Qr Code Scanner For Donating Us. \n\n❤️Thank you.\n\n<b>Note:-</b> If You Face Any Problem Related Or While Donating Us Please Contact Us Here\n @OwnersContact_bot")
+    else:
+        await update.message.delete() 
 
 
-# help command
-@app.on_message(filters.command(["help"]))
-def send_help(client: pyrogram.client.Client, message: pyrogram.types.messages_and_media.message.Message):
-    app.send_message(message.chat.id, HELP_TEXT, reply_to_message_id=message.id, disable_web_page_preview=True)
+@app.on_message(filters.private & filters.command(["start"])) 
+async def start(bot, update): 
+    await update.reply_text(
+        text=START_MSG.format(update.from_user.mention),
+        disable_web_page_preview=True, 
+        reply_markup=START_BUTTONS)
 
+@app.on_message(filters.private & filters.command(["help"])) 
+async def help(bot, update): 
+    await update.reply_text(
+        text=HELP_TEXT, 
+        disable_web_page_preview=True, 
+        reply_markup=HELP_BUTTONS)
+
+@app.on_message(filters.private & filters.command(["about"])) 
+async def about(bot, update): 
+    await update.reply_text(
+        text=ABOUT_MSG, 
+        disable_web_page_preview=True, 
+        reply_markup=ABOUT_BUTTONS)
+
+@app.on_message(filters.command(["donate"]) & filters.private) 
+async def donate(bot, message): 
+    await message.reply_photo("https://cdn.discordapp.com/attachments/772320931749953546/1096420532292964423/20230414_182207.jpg", caption=" ❓Do You Like This Bot & Want To Support It?\n\n You can help with server costs by donating to our wallet 😢 Use Above Qr Code Scanner For Donating Us. \n\n❤️Thank you.\n\n<b>Note:-</b> If You Face Any Problem Related Or While Donating Us Please Contact Us Here\n @OwnersContact_bot")
 
 # links
 @app.on_message(filters.text)
