@@ -28,6 +28,7 @@ a Telegram Bot that can Bypass Ad Links and Generate Direct Links. see the Bot i
 ```
 start - Welcome Message
 help - List of All Supported Sites
+donate - Donate for Server Cost
 ```
 
 ---
