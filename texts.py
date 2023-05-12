@@ -111,7 +111,17 @@ shortnertext = """__- igg-games \n\
 __"""
 
 
-HELP_TEXT = f'**--Just Send me any Supported Links From Below Mentioned Sites--** \n\n\
+START_MSG =  """🤗 Hi <b>{}</b>,
+✨ I'm a Link Bypasser Bot, Just Send Me Any Supported Links & I Will Get Your Results.
+Checkout /help to Read More"""
+ABOUT_MSG = """My Name:- @BypassLinkBot
+Library:- Pyrogram
+Language:- Python3 
+VERSION:- 4.0 [stable]
+Made with ❤ by @TechnoFoxYT"""
+
+
+HELP_TEXT = f'**--Just Send me any Supported Links From 👇 Below Mentioned Sites--** \n\n\
 **List of Sites for DDL : ** \n\n{ddltext} \n\
 **List of Sites for Shortners : ** \n\n{shortnertext} \n\
 **List of Sites for GDrive Look-ALike : ** \n\n{gdrivetext} \n\
