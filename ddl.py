@@ -546,17 +546,20 @@ def terabox(url) -> str:
 def filepress(url):
     cget = create_scraper().request
     try:
+        url = cget('GET', url).url
+        raw = urlparse(url)
         json_data = {
-            'id': url.split('/')[-1],
+            'id': raw.path.split('/')[-1],
             'method': 'publicDownlaod',
-            }
-        api = f'https://filepress.click/api/file/downlaod/'
-        res = cget('POST', api, headers={'Referer': f'https://filepress.click'}, json=json_data).json()
+        }
+        api = f'{raw.scheme}://{raw.hostname}/api/file/downlaod/'
+        res = cget('POST', api, headers={
+                   'Referer': f'{raw.scheme}://{raw.hostname}'}, json=json_data).json()
     except Exception as e:
         return (f'ERROR: {e.__class__.__name__}')
     if 'data' not in res:
         return (f'ERROR: {res["statusText"]}')
-    return f'https://drive.google.com/open?id={res["data"]}'
+    return f'https://drive.google.com/uc?id={res["data"]}'
 
 
 def gdtot(url):
