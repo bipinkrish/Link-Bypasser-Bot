@@ -9,6 +9,9 @@ a Telegram Bot that can Bypass Ad Links and Generate Direct Links. see the Bot i
 - `TOKEN` Bot Token from @BotFather
 - `HASH` API Hash from my.telegram.org
 - `ID` API ID from my.telegram.org
+- `OWNER_ID` Owner's User ID
+- `OWNER_USERNAME` Username of Bot Owner Without "@"
+- `PERMANENT_GROUP` Telegram New Or Old Group ID starts with -100, members of this group no need to join updates channel
 
 ## Optional Variables
 
@@ -20,6 +23,9 @@ a Telegram Bot that can Bypass Ad Links and Generate Direct Links. see the Bot i
 - `KATDRIVE_CRYPT` Katdrive Crypt
 - `UPTOBOX_TOKEN` Uptobox Token
 - `TERA_COOKIE` Terabox Cookie (only `ndus` value) (see [Help](#help))
+- `UPDATES_CHANNEL` Updates channel username Without "@"
+- `ADMIN_LIST` User ID's of Bot Admins seperatend by space
+- `GROUP_ID` Telegram New Or Old Group ID's starts with -100 seperated by space, members of this group no need to join updates channel
 
 ---
 
@@ -28,6 +34,11 @@ a Telegram Bot that can Bypass Ad Links and Generate Direct Links. see the Bot i
 ```
 start - Welcome Message
 help - List of All Supported Sites
+addsudo - Add admins to Bot [Owner Command]
+remsudo - Remove admins from Bot [Owner Command]
+authorize - authorize Bot to the Group [Admin Command]
+unauthorize - unauthorize Bot in that Group [Admin Command]
+users - Authorized Group ID's and Admin ID's [Admin Command]
 ```
 
 ---
