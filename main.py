@@ -56,7 +56,7 @@ def loopthread(message):
             try: temp = bypasser.shortners(ele)
             except Exception as e: temp = "**Error**: " + str(e)
         print("bypassed:",temp)
-        link = link + temp + "\n\n"
+        if temp != None: link = link + temp + "\n\n"
         
     try: app.edit_message_text(message.chat.id, msg.id, f'__{link}__', disable_web_page_preview=True)
     except:

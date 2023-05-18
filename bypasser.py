@@ -42,6 +42,16 @@ gdlist = ["appdrive","driveapp","drivehub","gdflix","drivesharer","drivebit","dr
 
 
 ###############################################################
+# pdisk
+
+def pdisk(url):
+    r = get(url).text
+    try: return r.split("<!-- ")[-1].split(" -->")[0]
+    except:
+        try:return BeautifulSoup(r,"html.parser").find('video').find("source").get("src")
+        except: return None
+
+###############################################################
 # index scrapper
 
 def scrapeIndex(url, username="none", password="none"):
@@ -873,7 +883,7 @@ def getlinks(dlc,client):
     response = client.post('http://dcrypt.it/decrypt/paste', headers=headers, data=data).json()["success"]["links"]
     links = ""
     for link in response:
-        links = links + link + "\n"
+        links = links + link + "\n\n"
     return links[:-1]
 
 
@@ -2154,6 +2164,11 @@ def shortners(url):
     elif "bit.ly" in url or "tinyurl.com" in url:
         print("entered bitly_tinyurl:",url)
         return bitly_tinyurl(url)
+
+    # pdisk
+    elif "pdisk.pro" in url:
+        print("entered pdisk:",url)
+        return pdisk(url)
 
     # thinfi
     elif "thinfi.com" in url:

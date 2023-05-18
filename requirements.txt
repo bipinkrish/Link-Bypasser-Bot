@@ -8,3 +8,4 @@ lxml
 lk21
 cfscrape
 urllib3==1.26
+flask==2.0.1
