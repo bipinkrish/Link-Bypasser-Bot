@@ -28,10 +28,10 @@ def handleIndex(ele,message,msg):
 
 
 # loop thread
-def loopthread(message,photo=False):
+def loopthread(message,otherss=False):
 
     urls = []
-    if photo: texts = message.caption
+    if otherss: texts = message.caption
     else: texts = message.text
 
     if texts in [None,""]: return
@@ -90,12 +90,6 @@ def receive(client: pyrogram.client.Client, message: pyrogram.types.messages_and
     bypass = threading.Thread(target=lambda:loopthread(message),daemon=True)
     bypass.start()
 
-# photo
-@app.on_message(filters.photo)
-def preceive(client: pyrogram.client.Client, message: pyrogram.types.messages_and_media.message.Message):
-    bypass = threading.Thread(target=lambda:loopthread(message,True),daemon=True)
-    bypass.start()
-
 
 # doc thread
 def docthread(message):
@@ -110,10 +104,18 @@ def docthread(message):
         os.remove(file)
 
 
-# doc
-@app.on_message(filters.document)
+# files
+@app.on_message([filters.document,filters.photo,filters.video])
 def docfile(client: pyrogram.client.Client, message: pyrogram.types.messages_and_media.message.Message):
-    bypass = threading.Thread(target=lambda:docthread(message),daemon=True)
+    
+    try:
+        if message.document.file_name.endswith("dlc"):
+            bypass = threading.Thread(target=lambda:docthread(message),daemon=True)
+            bypass.start()
+            return
+    except: pass
+
+    bypass = threading.Thread(target=lambda:loopthread(message,True),daemon=True)
     bypass.start()
 
 
