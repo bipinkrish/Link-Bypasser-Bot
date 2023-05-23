@@ -28,10 +28,14 @@ def handleIndex(ele,message,msg):
 
 
 # loop thread
-def loopthread(message):
+def loopthread(message,photo=False):
 
     urls = []
-    for ele in message.text.split():
+    if photo: texts = message.caption
+    else: texts = message.text
+
+    if texts in [None,""]: return
+    for ele in texts.split():
         if "http://" in ele or "https://" in ele:
             urls.append(ele)
     if len(urls) == 0: return
@@ -84,6 +88,12 @@ def send_help(client: pyrogram.client.Client, message: pyrogram.types.messages_a
 @app.on_message(filters.text)
 def receive(client: pyrogram.client.Client, message: pyrogram.types.messages_and_media.message.Message):
     bypass = threading.Thread(target=lambda:loopthread(message),daemon=True)
+    bypass.start()
+
+# photo
+@app.on_message(filters.photo)
+def preceive(client: pyrogram.client.Client, message: pyrogram.types.messages_and_media.message.Message):
+    bypass = threading.Thread(target=lambda:loopthread(message,True),daemon=True)
     bypass.start()
 
 

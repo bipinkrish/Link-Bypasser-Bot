@@ -3,7 +3,7 @@ from re import match as rematch, findall, sub as resub
 import requests
 from requests import get as rget
 import base64
-from urllib.parse import unquote, urlparse, parse_qs, quote
+from urllib.parse import unquote, urlparse, quote
 import time
 import cloudscraper
 from bs4 import BeautifulSoup, NavigableString, Tag
@@ -16,7 +16,6 @@ from asyncio import sleep as asleep
 import os
 import ddl
 from cfscrape import create_scraper
-from uuid import uuid4
 
 
 ##########################################################
@@ -45,7 +44,7 @@ gdlist = ["appdrive","driveapp","drivehub","gdflix","drivesharer","drivebit","dr
 # pdisk
 
 def pdisk(url):
-    r = get(url).text
+    r = rget(url).text
     try: return r.split("<!-- ")[-1].split(" -->")[0]
     except:
         try:return BeautifulSoup(r,"html.parser").find('video').find("source").get("src")
