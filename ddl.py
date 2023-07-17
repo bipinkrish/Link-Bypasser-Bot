@@ -522,38 +522,51 @@ def uploadee(url: str) -> str:
             f"ERROR: Failed to acquire download URL from upload.ee for : {url}")
 
 
-def terabox(url):
+def terabox(url) -> str:
     sess = session()
-    # if TERA_COOKIE is not None: session.cookies.update(TERA_COOKIE)
-    sess.get(url)
+    while True:
+          try: 
+              res = sess.get(url)
+              print("connected")
+              break
+          except: print("retrying")
+    url = res.url
 
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/112.0',
-        'Accept': 'application/json, text/plain, */*',
-        'Accept-Language': 'en-US,en;q=0.5',
-        'Content-Type': 'application/json',
-        'Origin': 'https://3es.vercel.app',
-        'Connection': 'keep-alive',
-        'Referer': 'https://3es.vercel.app/',
-    }
+    key = url.split('?surl=')[-1]
+    url = f'http://www.terabox.com/wap/share/filelist?surl={key}'
+    sess.cookies.update(TERA_COOKIE)
 
-    json_data = {'url': url}
-    response = sess.post('https://3es.vercel.app/api/getDetail', headers=headers, json=json_data).json()
+    while True:
+        try: 
+            res = sess.get(url)
+            print("connected")
+            break
+        except Exception as e: print("retrying")
 
-    if response["result"]:response = response["data"]
-    else: return None
+    key = res.url.split('?surl=')[-1]
+    soup = BeautifulSoup(res.content, 'lxml')
+    jsToken = None
 
-    json_data = {
-        'shareid': response["shareid"],
-        'uk': response["uk"],
-        'sign': response["sign"],
-        'timestamp': response["timestamp"],
-        'fid': response["list"][0]['fs_id'],
-    }
+    for fs in soup.find_all('script'):
+        fstring = fs.string
+        if fstring and fstring.startswith('try {eval(decodeURIComponent'):
+            jsToken = fstring.split('%22')[1]
 
-    res = sess.post('https://3es.vercel.app/api/getDownloadUrl', headers=headers, json=json_data).json()
-    if res["result"]: return res["data"]
-    else: return 'ERROR: Link not found'
+    while True:
+        try:
+            res = sess.get(f'https://www.terabox.com/share/list?app_id=250528&jsToken={jsToken}&shorturl={key}&root=1')
+            print("connected")
+            break
+        except: print("retrying")
+    result = res.json()
+
+    if result['errno'] != 0: return f"ERROR: '{result['errmsg']}' Check cookies"
+    result = result['list']
+    if len(result) > 1: return "ERROR: Can't download mutiple files"
+    result = result[0]
+
+    if result['isdir'] != '0':return "ERROR: Can't download folder"
+    return result.get('dlink',"Error")
 
 
 def filepress(url):
