@@ -8,7 +8,6 @@ from uuid import uuid4
 
 from bs4 import BeautifulSoup
 from cfscrape import create_scraper
-from lk21 import Bypass
 from lxml import etree
 from requests import get, session
 
@@ -251,11 +250,30 @@ def github(url: str) -> str:
 
 
 def hxfile(url: str) -> str:
-    """ Hxfile direct link generator
-    Based on https://github.com/zevtyardt/lk21
-    """
+    sess = session()
     try:
-        return Bypass().bypass_filesIm(url)
+        headers = {
+            'content-type': 'application/x-www-form-urlencoded',
+            'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.152 Safari/537.36',
+        }
+
+        data = {
+            'op': 'download2',
+            'id': urlparse(url).path.strip("/")(url),
+            'rand': '',
+            'referer': '',
+            'method_free': '',
+            'method_premium': '',
+        }
+
+        response = sess.post(url, headers=headers, data=data)
+        soup = BeautifulSoup(response,"html.parser")
+
+        if (btn := soup.find(class_="btn btn-dow")):
+            return btn["href"]
+        if (unique := soup.find(id="uniqueExpirylink")):
+            return unique["href"]
+        
     except Exception as e:
         return (f"ERROR: {e.__class__.__name__}")
 
@@ -284,11 +302,22 @@ def anonfilesBased(url: str) -> str:
 
 
 def fembed(link: str) -> str:
-    """ Fembed direct link generator
-    Based on https://github.com/zevtyardt/lk21
-    """
+    sess = session()
     try:
-        dl_url = Bypass().bypass_fembed(link)
+        url = url.replace("/v/", "/f/")
+        raw = session.get(url)
+        api = search(r"(/api/source/[^\"']+)", raw.text)
+        if api is not None:
+            result = {}
+            raw = sess.post(
+                "https://layarkacaxxi.icu" + api.group(1)).json()
+            for d in raw["data"]:
+                f = d["file"]
+                head = sess.head(f)
+                direct = head.headers.get("Location", url)
+                result[f"{d['label']}/{d['type']}"] = direct
+            dl_url = result
+
         count = len(dl_url)
         lst_link = [dl_url[i] for i in dl_url]
         return lst_link[count-1]
@@ -297,14 +326,28 @@ def fembed(link: str) -> str:
 
 
 def sbembed(link: str) -> str:
-    """ Sbembed direct link generator
-    Based on https://github.com/zevtyardt/lk21
-    """
-    try:
-        dl_url = Bypass().bypass_sbembed(link)
+    sess = session()
+    try: 
+        raw = sess.get(link)
+        soup = BeautifulSoup(raw,"html.parser")
+
+        result = {}
+        for a in soup.findAll("a", onclick=compile(r"^download_video[^>]+")):
+            data = dict(zip(["id", "mode", "hash"], findall(
+                r"[\"']([^\"']+)[\"']", a["onclick"])))
+            data["op"] = "download_orig"
+
+            raw = sess.get("https://sbembed.com/dl", params=data)
+            soup = BeautifulSoup(raw,"html.parser")
+
+            if (direct := soup.find("a", text=compile("(?i)^direct"))):
+                result[a.text] = direct["href"]
+        dl_url = result
+
         count = len(dl_url)
         lst_link = [dl_url[i] for i in dl_url]
         return lst_link[count-1]
+    
     except Exception as e:
         return (f"ERROR: {e.__class__.__name__}")
 
@@ -350,11 +393,14 @@ def pixeldrain(url: str) -> str:
 
 
 def antfiles(url: str) -> str:
-    """ Antfiles direct link generator
-    Based on https://github.com/zevtyardt/lk21
-    """
+    sess = session()
     try:
-        return Bypass().bypass_antfiles(url)
+        raw = sess.get(url)
+        soup = BeautifulSoup(raw,"html.parser")
+
+        if (a := soup.find(class_="main-btn", href=True)):
+            return "{0.scheme}://{0.netloc}/{1}".format(urlparse(url), a["href"])
+
     except Exception as e:
         return (f"ERROR: {e.__class__.__name__}")
 
