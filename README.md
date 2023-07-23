@@ -40,7 +40,7 @@ To see the list of supported sites see [texts.py](https://github.com/bipinkrish/
 
 ## Help
 
-* If you are deploying on VPS, watch videos on how to set/export Environment Variables.
+* If you are deploying on VPS, watch videos on how to set/export Environment Variables. OR you can set in `config.json` file
 
 * Terabox Cookie
 

@@ -1,7 +1,6 @@
 from base64 import standard_b64encode
 from json import loads
 from math import floor, pow
-from os import environ
 from re import findall, match, search, sub
 from time import sleep
 from urllib.parse import quote, unquote, urlparse
@@ -13,9 +12,15 @@ from lk21 import Bypass
 from lxml import etree
 from requests import get, session
 
+from json import load
+from os import environ
 
-UPTOBOX_TOKEN = environ.get("UPTOBOX_TOKEN","4a4ecf35552fea876da1d63e7fd000d2cb2fo")
-ndus = environ.get("TERA_COOKIE","YQOR7exteHuiC7XNl_TAD_ZaXGexSokJJwoblC4S")
+with open('config.json', 'r') as f: DATA = load(f)
+def getenv(var): return environ.get(var) or DATA.get(var, None)
+
+
+UPTOBOX_TOKEN = getenv("UPTOBOX_TOKEN")
+ndus = getenv("TERA_COOKIE")
 if ndus is None: TERA_COOKIE = None
 else: TERA_COOKIE = {"ndus": ndus}
 

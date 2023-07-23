@@ -109,6 +109,8 @@ shortnertext = """__- igg-games \n\
 - bitly, tinyurl \n\
 - thinfi \n\
 - pdisk \n\
+- vnshortener \n\
+- onepagelink \n\
 __"""
 
 

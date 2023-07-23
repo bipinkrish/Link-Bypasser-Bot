@@ -1,7 +1,5 @@
 import re
-from re import match as rematch, findall, sub as resub
 import requests
-from requests import get as rget
 import base64
 from urllib.parse import unquote, urlparse, quote
 import time
@@ -10,24 +8,26 @@ from bs4 import BeautifulSoup, NavigableString, Tag
 from lxml import etree
 import hashlib
 import json
-from dotenv import load_dotenv
-load_dotenv()
 from asyncio import sleep as asleep
-import os
 import ddl
 from cfscrape import create_scraper
+from json import load
+from os import environ
+
+with open('config.json', 'r') as f: DATA = load(f)
+def getenv(var): return environ.get(var) or DATA.get(var, None)
 
 
 ##########################################################
 # ENVs
 
-GDTot_Crypt = os.environ.get("CRYPT","b0lDek5LSCt6ZjVRR2EwZnY4T1EvVndqeDRtbCtTWmMwcGNuKy8wYWpDaz0%3D")
-Laravel_Session = os.environ.get("Laravel_Session","")
-XSRF_TOKEN = os.environ.get("XSRF_TOKEN","")
-DCRYPT = os.environ.get("DRIVEFIRE_CRYPT","cnhXOGVQNVlpeFZlM2lvTmN6Z2FPVWJiSjVBbWdVN0dWOEpvR3hHbHFLVT0%3D")
-KCRYPT = os.environ.get("KOLOP_CRYPT","a1V1ZWllTnNNNEZtbkU4Y0RVd3pkRG5UREFJZFlUaC9GRko5NUNpTHNFcz0%3D")
-HCRYPT = os.environ.get("HUBDRIVE_CRYPT","N25hV1pxMXZWUTdFWEh6L2Q2WFJyQWo2NGJEcWN6R2E5ci91aG8zSFF5Zz0%3D")
-KATCRYPT = os.environ.get("KATDRIVE_CRYPT","bzQySHVKSkY0bEczZHlqOWRsSHZCazBkOGFDak9HWXc1emRTL1F6Rm9ubz0%3D")
+GDTot_Crypt = getenv("CRYPT")
+Laravel_Session = getenv("Laravel_Session")
+XSRF_TOKEN = getenv("XSRF_TOKEN")
+DCRYPT = getenv("DRIVEFIRE_CRYPT")
+KCRYPT = getenv("KOLOP_CRYPT")
+HCRYPT = getenv("HUBDRIVE_CRYPT")
+KATCRYPT = getenv("KATDRIVE_CRYPT")
 
 
 ############################################################
@@ -44,7 +44,7 @@ gdlist = ["appdrive","driveapp","drivehub","gdflix","drivesharer","drivebit","dr
 # pdisk
 
 def pdisk(url):
-    r = rget(url).text
+    r = requests.get(url).text
     try: return r.split("<!-- ")[-1].split(" -->")[0]
     except:
         try:return BeautifulSoup(r,"html.parser").find('video').find("source").get("src")
@@ -362,13 +362,13 @@ def htpmovies(link):
 
 def scrappers(link):
  
-    try: link = rematch(r"((http|https)\:\/\/)?[a-zA-Z0-9\.\/\?\:@\-_=#]+\.([a-zA-Z]){2,6}([a-zA-Z0-9\.\&\/\?\:@\-_=#])*", link)[0]
+    try: link = re.match(r"((http|https)\:\/\/)?[a-zA-Z0-9\.\/\?\:@\-_=#]+\.([a-zA-Z]){2,6}([a-zA-Z0-9\.\&\/\?\:@\-_=#])*", link)[0]
     except TypeError: return 'Not a Valid Link.'
     links = []
 
     if "sharespark" in link:
         gd_txt = ""
-        res = rget("?action=printpage;".join(link.split('?')))
+        res = requests.get("?action=printpage;".join(link.split('?')))
         soup = BeautifulSoup(res.text, 'html.parser')
         for br in soup.findAll('br'):
             next_s = br.nextSibling
@@ -378,10 +378,10 @@ def scrappers(link):
             if next2_s and isinstance(next2_s,Tag) and next2_s.name == 'br':
               text = str(next_s).strip()
               if text:
-                  result = resub(r'(?m)^\(https://i.*', '', next_s)
-                  star = resub(r'(?m)^\*.*', ' ', result)
-                  extra = resub(r'(?m)^\(https://e.*', ' ', star)
-                  gd_txt += ', '.join(findall(r'(?m)^.*https://new1.gdtot.cfd/file/[0-9][^.]*', next_s)) + "\n\n"
+                  result = re.sub(r'(?m)^\(https://i.*', '', next_s)
+                  star = re.sub(r'(?m)^\*.*', ' ', result)
+                  extra = re.sub(r'(?m)^\(https://e.*', ' ', star)
+                  gd_txt += ', '.join(re.findall(r'(?m)^.*https://new1.gdtot.cfd/file/[0-9][^.]*', next_s)) + "\n\n"
         return gd_txt
   
     elif "htpmovies" in link and "/exit.php" in link:
@@ -390,7 +390,7 @@ def scrappers(link):
     elif "htpmovies" in link:
         prsd = ""
         links = []
-        res = rget(link)
+        res = requests.get(link)
         soup = BeautifulSoup(res.text, 'html.parser')
         x = soup.select('a[href^="/exit.php?url="]')
         y = soup.select('h5')
@@ -412,23 +412,23 @@ def scrappers(link):
     elif "cinevood" in link:
         prsd = ""
         links = []
-        res = rget(link)
+        res = requests.get(link)
         soup = BeautifulSoup(res.text, 'html.parser')
         x = soup.select('a[href^="https://kolop.icu/file"]')
         for a in x:
             links.append(a['href'])
         for o in links:
-            res = rget(o)
+            res = requests.get(o)
             soup = BeautifulSoup(res.content, "html.parser")
             title = soup.title.string
-            reftxt = resub(r'Kolop \| ', '', title)
+            reftxt = re.sub(r'Kolop \| ', '', title)
             prsd += f'{reftxt}\n{o}\n\n'
         return prsd
 
     elif "atishmkv" in link:
         prsd = ""
         links = []
-        res = rget(link)
+        res = requests.get(link)
         soup = BeautifulSoup(res.text, 'html.parser')
         x = soup.select('a[href^="https://gdflix.top/file"]')
         for a in x:
@@ -439,13 +439,13 @@ def scrappers(link):
 
     elif "teluguflix" in link:
         gd_txt = ""
-        r = rget(link)
+        r = requests.get(link)
         soup = BeautifulSoup (r.text, "html.parser")
         links = soup.select('a[href*="gdtot"]')
         gd_txt = f"Total Links Found : {len(links)}\n\n"
         for no, link in enumerate(links, start=1):
             gdlk = link['href']
-            t = rget(gdlk)
+            t = requests.get(gdlk)
             soupt = BeautifulSoup(t.text, "html.parser")
             title = soupt.select('meta[property^="og:description"]')
             gd_txt += f"{no}. <code>{(title[0]['content']).replace('Download ' , '')}</code>\n{gdlk}\n\n"
@@ -454,13 +454,13 @@ def scrappers(link):
     
     elif "taemovies" in link:
         gd_txt, no = "", 0
-        r = rget(link)
+        r = requests.get(link)
         soup = BeautifulSoup (r.text, "html.parser")
         links = soup.select('a[href*="shortingly"]')
         gd_txt = f"Total Links Found : {len(links)}\n\n"
         for a in links:
             glink = rocklinks(a["href"]) 
-            t = rget(glink)
+            t = requests.get(glink)
             soupt = BeautifulSoup(t.text, "html.parser")
             title = soupt.select('meta[property^="og:description"]')
             no += 1
@@ -469,15 +469,15 @@ def scrappers(link):
     
     elif "toonworld4all" in link:
         gd_txt, no = "", 0
-        r = rget(link)
+        r = requests.get(link)
         soup = BeautifulSoup(r.text, "html.parser")
         links = soup.select('a[href*="redirect/main.php?"]')
         for a in links:
-            down = rget(a['href'], stream=True, allow_redirects=False)
+            down = requests.get(a['href'], stream=True, allow_redirects=False)
             link = down.headers["location"]
             glink = rocklinks(link)
             if glink and "gdtot" in glink:
-                t = rget(glink)
+                t = requests.get(glink)
                 soupt = BeautifulSoup(t.text, "html.parser")
                 title = soupt.select('meta[property^="og:description"]')
                 no += 1
@@ -486,14 +486,14 @@ def scrappers(link):
     
     elif "animeremux" in link:
         gd_txt, no = "", 0
-        r = rget(link)
+        r = requests.get(link)
         soup = BeautifulSoup (r.text, "html.parser")
         links = soup.select('a[href*="urlshortx.com"]')
         gd_txt = f"Total Links Found : {len(links)}\n\n"
         for a in links:
             link = a["href"]
             x = link.split("url=")[-1]
-            t = rget(x)
+            t = requests.get(x)
             soupt = BeautifulSoup(t.text, "html.parser")
             title = soupt.title
             no += 1
@@ -502,7 +502,7 @@ def scrappers(link):
         return gd_txt
 
     else:
-        res = rget(link)
+        res = requests.get(link)
         soup = BeautifulSoup(res.text, 'html.parser')
         mystx = soup.select(r'a[href^="magnet:?xt=urn:btih:"]')
         for hy in mystx:
@@ -864,7 +864,7 @@ def zippyshare(url):
 ####################################################
 # filercrypt
 
-def getlinks(dlc,client):
+def getlinks(dlc):
     headers = {
     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:103.0) Gecko/20100101 Firefox/103.0',
     'Accept': 'application/json, text/javascript, */*',
@@ -879,7 +879,7 @@ def getlinks(dlc,client):
         'content': dlc,
     }
 
-    response = client.post('http://dcrypt.it/decrypt/paste', headers=headers, data=data).json()["success"]["links"]
+    response = requests.post('http://dcrypt.it/decrypt/paste', headers=headers, data=data).json()["success"]["links"]
     links = ""
     for link in response:
         links = links + link + "\n\n"
@@ -1222,7 +1222,7 @@ def gdtot(url):
                 "GET", f"{p_url.scheme}://{p_url.hostname}/ddl/{url.split('/')[-1]}")
         except Exception as e:
             return (f'ERROR: {e.__class__.__name__}')
-        if (drive_link := findall(r"myDl\('(.*?)'\)", res.text)) and "drive.google.com" in drive_link[0]:
+        if (drive_link := re.findall(r"myDl\('(.*?)'\)", res.text)) and "drive.google.com" in drive_link[0]:
             return drive_link[0]
         else:
             return (
@@ -1233,7 +1233,7 @@ def gdtot(url):
     except Exception as e:
         return (
             f'ERROR: {e.__class__.__name__} with {token_url}')
-    path = findall('\("(.*?)"\)', token_page.text)
+    path = re.findall('\("(.*?)"\)', token_page.text)
     if not path:
         return ('ERROR: Cannot bypass this')
     path = path[0]
@@ -1451,7 +1451,7 @@ def unified(url):
         info = re.findall(">(.*?)<\/li>", res.text)
         info_parsed = {}
         for item in info:
-            kv = [s.strip() for s in item.split(":", maxsplit=1)]
+            kv = [s.strip() for s in item.split(": ", maxsplit=1)]
             info_parsed[kv[0].lower()] = kv[1]
         info_parsed = info_parsed
         info_parsed["error"] = False
@@ -1585,6 +1585,8 @@ def xpshort(url):
     r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
     try: return r.json()['url']
     except: return "Something went wrong :("
+
+
 ####################################################################################################
 # Vnshortner- 
 
@@ -1606,6 +1608,31 @@ def vnshortener(url):
     try: return r.json()['url']
     except: return "Something went wrong :("
 
+
+#####################################################################################################
+# onepagelink
+
+def onepagelink(url):
+    client = cloudscraper.create_scraper(allow_brotli=False)
+    DOMAIN = "go.onepagelink.in"
+    url = url[:-1] if url[-1] == "/" else url
+    code = url.split("/")[-1]
+    final_url = f"https://{DOMAIN}/{code}"
+    ref = "gorating.in"
+    h = {"referer": ref}
+    response = client.get(final_url, headers=h)
+    soup = BeautifulSoup(response.text, "html.parser")
+    inputs = soup.find_all("input")
+    data = {input.get("name"): input.get("value") for input in inputs}
+    h = {"x-requested-with": "XMLHttpRequest"}
+    time.sleep(9)
+    r = client.post(f"https://{DOMAIN}/links/go", data=data, headers=h)
+    try:
+        return r.json()["url"]
+    except BaseException:
+        return "Something went wrong :("
+
+
 #####################################################################################################
 # dulink
 
@@ -1623,6 +1650,7 @@ def dulink(url):
     r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
     try: return r.json()['url']
     except: return "Something went wrong :("
+
 
 #####################################################################################################
 # krownlinks
@@ -1913,7 +1941,7 @@ def mdisklink(url):
 
 def rslinks(url):
       client = requests.session()
-      download = rget(url, stream=True, allow_redirects=False)
+      download = requests.get(url, stream=True, allow_redirects=False)
       v = download.headers["location"]
       code = v.split('ms9')[-1]
       final = f"http://techyproio.blogspot.com/p/short.html?{code}=="
@@ -1954,12 +1982,12 @@ def shortners(url):
     
     # igg games
     if "https://igg-games.com/" in url:
-        print("entered igg:",url)
+        print("entered igg: ",url)
         return igggames(url)
 
     # ola movies
     elif "https://olamovies." in url:
-        print("entered ola movies:",url) 
+        print("entered ola movies: ",url) 
         return olamovies(url)
         
     # katdrive
@@ -1967,7 +1995,7 @@ def shortners(url):
         if KATCRYPT == "":
             return "🚫 __You can't use this because__ **KATDRIVE_CRYPT** __ENV is not set__"
         
-        print("entered katdrive:",url)
+        print("entered katdrive: ",url)
         return katdrive_dl(url, KATCRYPT)
 
     # kolop
@@ -1975,7 +2003,7 @@ def shortners(url):
         if KCRYPT  == "":
             return "🚫 __You can't use this because__ **KOLOP_CRYPT** __ENV is not set__"
         
-        print("entered kolop:",url)
+        print("entered kolop: ",url)
         return kolop_dl(url, KCRYPT)
 
     # hubdrive
@@ -1983,7 +2011,7 @@ def shortners(url):
         if HCRYPT == "":
             return "🚫 __You can't use this because__ **HUBDRIVE_CRYPT** __ENV is not set__"
  
-        print("entered hubdrive:",url)
+        print("entered hubdrive: ",url)
         return hubdrive_dl(url, HCRYPT)
 
     # drivefire
@@ -1991,47 +2019,57 @@ def shortners(url):
         if DCRYPT == "":
             return "🚫 __You can't use this because__ **DRIVEFIRE_CRYPT** __ENV is not set__"
 
-        print("entered drivefire:",url)
+        print("entered drivefire: ",url)
         return drivefire_dl(url, DCRYPT)
         
     # filecrypt
     elif (("https://filecrypt.co/") in url or ("https://filecrypt.cc/" in url)):
-        print("entered filecrypt:",url)
+        print("entered filecrypt: ",url)
         return filecrypt(url)
         
     # shareus
     elif "shareus.io" in url or "shareus.in" in url:
-        print("entered shareus:",url)
+        print("entered shareus: ",url)
         return shareus(url)
         
     # shortingly
     elif "https://shortingly.in/" in url:
-        print("entered shortingly:",url)
+        print("entered shortingly: ",url)
         return shortingly(url)
+
+    # vnshortner
+    elif "https://vnshortener.com/" in url:
+        print("entered vnshortener: ",url)
+        return vnshortener(url)
+    
+    # onepagelink
+    elif "https://onepagelink.in/" in url:
+        print("entered onepagelink: ",url)
+        return onepagelink(url)
 
     # gyanilinks
     elif "https://gyanilinks.com/" in url or "https://gtlinks.me/" in url:
-        print("entered gyanilinks:",url)
+        print("entered gyanilinks: ",url)
         return gyanilinks(url)
 
     # flashlink
     elif "https://go.flashlink.in" in url:
-        print("entered flashlink:",url)
+        print("entered flashlink: ",url)
         return flashl(url)
 
     # short2url
     elif "https://short2url.in/" in url:
-        print("entered short2url:",url)
+        print("entered short2url: ",url)
         return short2url(url)
         
     # shorte
     elif "https://shorte.st/" in url:
-        print("entered shorte:",url)
+        print("entered shorte: ",url)
         return sh_st_bypass(url)
         
     # psa
     elif "https://psa.pm/" in url:
-        print("entered psa:",url)
+        print("entered psa: ",url)
         return psa_bypasser(url)
         
     # sharer pw
@@ -2039,174 +2077,174 @@ def shortners(url):
         if XSRF_TOKEN == "" or Laravel_Session == "":
             return "🚫 __You can't use this because__ **XSRF_TOKEN** __and__ **Laravel_Session** __ENV is not set__"
        
-        print("entered sharer:",url)
+        print("entered sharer: ",url)
         return sharer_pw(url, Laravel_Session, XSRF_TOKEN)
 
     # gdtot url
     elif "gdtot.cfd" in url:
-        print("entered gdtot:",url)
+        print("entered gdtot: ",url)
         return gdtot(url)
         
     # adfly
     elif "https://adf.ly/" in url:
-        print("entered adfly:",url)
+        print("entered adfly: ",url)
         out = adfly(url)
         return out['bypassed_url']
  
     # gplinks
     elif "https://gplinks.co/" in url:
-        print("entered gplink:",url)
+        print("entered gplink: ",url)
         return gplinks(url)
         
     # droplink
     elif "https://droplink.co/" in url:
-        print("entered droplink:",url)
+        print("entered droplink: ",url)
         return droplink(url)
         
     # linkvertise
     elif "https://linkvertise.com/" in url:
-        print("entered linkvertise:",url)
+        print("entered linkvertise: ",url)
         return linkvertise(url)
         
     # rocklinks
     elif "https://rocklinks.net/" in url:
-        print("entered rocklinks:",url)
+        print("entered rocklinks: ",url)
         return rocklinks(url)
         
     # ouo
     elif "https://ouo.press/" in url:
-        print("entered ouo:",url)
+        print("entered ouo: ",url)
         return ouo(url)
 
     # try2link
     elif "https://try2link.com/" in url:
-        print("entered try2links:",url)
+        print("entered try2links: ",url)
         return try2link_bypass(url)
 
     # urlsopen
     elif "https://urlsopen." in url:
-        print("entered urlsopen:",url)
+        print("entered urlsopen: ",url)
         return urlsopen(url)
 
     # xpshort
     elif "https://xpshort.com/" in url or "https://push.bdnewsx.com/" in url or "https://techymozo.com/" in url:
-        print("entered xpshort:",url)
+        print("entered xpshort: ",url)
         return xpshort(url)
 
     # dulink
     elif "https://du-link.in/" in url:
-        print("entered dulink:",url)
+        print("entered dulink: ",url)
         return dulink(url)
 
     # ez4short
     elif "https://ez4short.com/" in url:
-        print("entered ez4short:",url)
+        print("entered ez4short: ",url)
         return ez4(url)
     
     # krownlinks
     elif "https://krownlinks.me/" in url:
-        print("entered krownlinks:",url)
+        print("entered krownlinks: ",url)
         return krownlinks(url)
     
     # adrinolink
     elif "https://adrinolinks." in url:
-        print("entered adrinolink:",url)
+        print("entered adrinolink: ",url)
         return adrinolink(url)
     
     # tnlink
     elif "https://link.tnlink.in/" in url:
-        print("entered tnlink:",url)
+        print("entered tnlink: ",url)
         return tnlink(url)
 
     # mdiskshortners
     elif "https://mdiskshortners.in/" in url:
-        print("entered mdiskshortners:",url)
+        print("entered mdiskshortners: ",url)
         return mdiskshortners(url)
 
     # tinyfy
     elif "tinyfy.in" in url:
-        print("entered tinyfy:",url)
+        print("entered tinyfy: ",url)
         return tiny(url)
 
     # earnl
     elif "go.earnl.xyz" in url:
-        print("entered earnl:",url)
+        print("entered earnl: ",url)
         return earnl(url)
 
     # moneykamalo
     elif "earn.moneykamalo.com" in url:
-        print("entered moneykamalo:",url)
+        print("entered moneykamalo: ",url)
         return moneykamalo(url)
 
     # easysky
     elif "m.easysky.in" in url:
-        print("entered easysky:",url)
+        print("entered easysky: ",url)
         return easysky(url)
 
     # indiurl
     elif "go.indiurl.in.net" in url:
-        print("entered indiurl:",url)
+        print("entered indiurl: ",url)
         return indi(url)
 
     # linkbnao
     elif "linkbnao.com" in url:
-        print("entered linkbnao:",url)
+        print("entered linkbnao: ",url)
         return linkbnao(url)
 
     # omegalinks
     elif "mdisk.pro" in url:
-        print("entered mdiskpro:",url)
+        print("entered mdiskpro: ",url)
         return mdiskpro(url)
 
     # tnshort
     elif "tnshort.in" in url:
-        print("entered tnshort:",url)
+        print("entered tnshort: ",url)
         return tnshort(url)
 
     # indianshortner
     elif "indianshortner.in" in url:
-        print("entered indianshortner:",url)
+        print("entered indianshortner: ",url)
         return indshort(url)
 
     # mdisklink
     elif "mdisklink.link" in url:
-        print("entered mdisklink:",url)
+        print("entered mdisklink: ",url)
         return mdisklink(url)
 
     # rslinks
     elif "rslinks.net" in url:
-        print("entered rslinks:",url)
+        print("entered rslinks: ",url)
         return rslinks(url)
 
     # bitly + tinyurl
     elif "bit.ly" in url or "tinyurl.com" in url:
-        print("entered bitly_tinyurl:",url)
+        print("entered bitly_tinyurl: ",url)
         return bitly_tinyurl(url)
 
     # pdisk
     elif "pdisk.pro" in url:
-        print("entered pdisk:",url)
+        print("entered pdisk: ",url)
         return pdisk(url)
 
     # thinfi
     elif "thinfi.com" in url:
-        print("entered thinfi:",url)
+        print("entered thinfi: ",url)
         return thinfi(url)
         
     # htpmovies sharespark cinevood
     elif "https://htpmovies." in url or 'https://sharespark.me/' in url or "https://cinevood." in url or "https://atishmkv." in url \
         or "https://teluguflix" in url or 'https://taemovies' in url or "https://toonworld4all" in url or "https://animeremux" in url:
-        print("entered htpmovies sharespark cinevood atishmkv:",url)
+        print("entered htpmovies sharespark cinevood atishmkv: ",url)
         return scrappers(url)
 
     # gdrive look alike
     elif ispresent(gdlist,url):
-        print("entered gdrive look alike:",url)
+        print("entered gdrive look alike: ",url)
         return unified(url)
 
     # others
     elif ispresent(otherslist,url):
-        print("entered others:",url)
+        print("entered others: ",url)
         return others(url)
 
     # else
