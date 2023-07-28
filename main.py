@@ -83,7 +83,7 @@ def loopthread(message,otherss=False):
             if len(tmp) > 4000:
                 final.append(tmp)
                 tmp = ""
-        tmp += "Took " + "{:.2f}".format(end-strt) + "sec"
+        if links.split("\n"): tmp += "Took " + "{:.2f}".format(end-strt) + "sec"
         final.append(tmp)
         app.delete_messages(message.chat.id, msg.id)
         tmsgid = message.id
@@ -92,9 +92,9 @@ def loopthread(message,otherss=False):
             tmsgid = tmsg.id
     except Exception as e:
         print(e)
-        try: app.edit_message_text(message.chat.id, msg.id, "__Failed to Bypass__")
+        try: app.send_message(message.chat.id, "__Failed to Bypass__" + "\n\nTook " + "{:.2f}".format(end-strt) + "sec", reply_to_message_id=msg.id)
         except:
-            app.send_message(message.chat.id, "__Failed to Bypass__")
+            app.send_message(message.chat.id, "__Failed to Bypass__" + "\n\nTook " + "{:.2f}".format(end-strt) + "sec", reply_to_message_id=msg.id)
 
 
 # start command
