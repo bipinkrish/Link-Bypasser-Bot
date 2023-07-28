@@ -345,7 +345,7 @@ def igggames(url):
 
     links = ""
     for ele in bluelist:
-        if "bluemediafiles" in ele:
+        if "bluemediafile" in ele:
             links = links + bypassBluemediafiles(ele) + "\n"
         elif "pcgamestorrents.com" in ele:
             res = requests.get(ele)
