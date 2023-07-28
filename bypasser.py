@@ -28,7 +28,7 @@ DCRYPT = getenv("DRIVEFIRE_CRYPT")
 KCRYPT = getenv("KOLOP_CRYPT")
 HCRYPT = getenv("HUBDRIVE_CRYPT")
 KATCRYPT = getenv("KATDRIVE_CRYPT")
-
+CF = getenv("CLOUDFLARE")
 
 ############################################################
 # Lists
@@ -195,16 +195,38 @@ def try2link_scrape(url):
     
 
 def psa_bypasser(psa_url):
-    client = cloudscraper.create_scraper(allow_brotli=False)
-    r = client.get(psa_url)
+    cookies = {'cf_clearance': CF }
+    headers = {
+        'authority': 'psa.wf',
+        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+        'accept-language': 'en-US,en;q=0.9',
+        'referer': 'https://psa.wf/',
+        'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36',
+    }
+
+    r = requests.get(psa_url, headers=headers, cookies=cookies)
     soup = BeautifulSoup(r.text, "html.parser").find_all(class_="dropshadowboxes-drop-shadow dropshadowboxes-rounded-corners dropshadowboxes-inside-and-outside-shadow dropshadowboxes-lifted-both dropshadowboxes-effect-default")
-    links = ""
+    links = []
     for link in soup:
         try:
             exit_gate = link.a.get("href")
-            links = links + try2link_scrape(exit_gate) + '\n'
+            if "/exit" in exit_gate:
+                print("scraping :",exit_gate)
+                links.append(try2link_scrape(exit_gate))
         except: pass
-    return links
+
+    finals = ""
+    for li in links:
+        try:
+            res = requests.get(li, headers=headers, cookies=cookies)
+            soup = BeautifulSoup(res.text,"html.parser")
+            name = soup.find("h1",class_="entry-title", itemprop="headline").getText()
+            finals += "**" + name + "**\n\n"
+            soup = soup.find("div", class_="entry-content" ,itemprop="text").findAll("a")
+            for ele in soup: finals += "○ " + ele.get("href") + "\n"
+            finals += "\n\n"
+        except: finals += li + "\n\n"
+    return finals
 
 
 ##################################################################################################################
@@ -2068,7 +2090,7 @@ def shortners(url):
         return sh_st_bypass(url)
         
     # psa
-    elif "https://psa.pm/" in url:
+    elif "https://psa.wf/" in url:
         print("entered psa: ",url)
         return psa_bypasser(url)
         

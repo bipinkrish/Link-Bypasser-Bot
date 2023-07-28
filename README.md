@@ -10,7 +10,8 @@ a Telegram Bot that can Bypass Ad Links and Generate Direct Links. see the Bot i
 - `HASH` API Hash from my.telegram.org
 - `ID` API ID from my.telegram.org
 
-## Optional Variables
+## Optional Variables 
+you can also set these in `config.json` file
 
 - `CRYPT` GDTot Crypt If you don't know how to get Crypt then [Learn Here](https://www.youtube.com/watch?v=EfZ29CotRSU)
 - `XSRF_TOKEN` and `Laravel_Session` XSRF Token and Laravel Session cookies! If you don't know how to get then then watch [this Video](https://www.youtube.com/watch?v=EfZ29CotRSU) (for GDTOT) and do the same for sharer.pw
@@ -20,6 +21,7 @@ a Telegram Bot that can Bypass Ad Links and Generate Direct Links. see the Bot i
 - `KATDRIVE_CRYPT` Katdrive Crypt
 - `UPTOBOX_TOKEN` Uptobox Token
 - `TERA_COOKIE` Terabox Cookie (only `ndus` value) (see [Help](#help))
+- `CLOUDFLARE` Use `cf_clearance` cookie from and Cloudflare protected sites
 
 ---
 
@@ -40,7 +42,7 @@ To see the list of supported sites see [texts.py](https://github.com/bipinkrish/
 
 ## Help
 
-* If you are deploying on VPS, watch videos on how to set/export Environment Variables. OR you can set in `config.json` file
+* If you are deploying on VPS, watch videos on how to set/export Environment Variables. OR you can set these in `config.json` file
 
 * Terabox Cookie
 
