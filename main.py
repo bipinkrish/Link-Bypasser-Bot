@@ -91,9 +91,9 @@ def loopthread(message,otherss=False):
             tmsgid = tmsg.id
     except Exception as e:
         print(e)
-        try: app.send_message(message.chat.id, "__Failed to Bypass__", reply_to_message_id=msg.id)
+        try: app.send_message(message.chat.id, "__Failed to Bypass__", reply_to_message_id=message.id)
         except:
-            app.send_message(message.chat.id, "__Failed to Bypass__", reply_to_message_id=msg.id)
+            app.send_message(message.chat.id, "__Failed to Bypass__", reply_to_message_id=message.id)
 
 
 # start command
