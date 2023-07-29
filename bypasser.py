@@ -341,12 +341,13 @@ def igggames(url):
     bluelist = bluelist[3:-1]
 
     links = ""
+    last  = None
     for ele in bluelist:
         if "bluemediafile" in ele:
             tmp = bypassBluemediafiles(ele)
             links = links + "○ " + tmp + "\n"
             tt = tmp.split("/")[2]
-            if tt != last: links += "\n"
+            if last is not None and tt != last: links += "\n"
             last = tt
         elif "pcgamestorrents.com" in ele:
             res = requests.get(ele)
@@ -356,7 +357,7 @@ def igggames(url):
         else:
             links = links + "○ " + ele + "\n"
             tt = ele.split("/")[2]
-            if tt != last: links += "\n"
+            if last is not None and tt != last: links += "\n"
             last = tt
 
     return links[:-1]
