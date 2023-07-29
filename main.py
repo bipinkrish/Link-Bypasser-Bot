@@ -64,7 +64,7 @@ def loopthread(message,otherss=False):
             try: temp = bypasser.shortners(ele)
             except Exception as e: temp = "**Error**: " + str(e)
         print("bypassed:",temp)
-        if temp != None: links = links + temp + "\n\n"
+        if temp != None: links = links + temp + "\n"
     end = time()
     print("Took " + "{:.2f}".format(end-strt) + "sec")
 

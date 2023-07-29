@@ -355,14 +355,14 @@ def igggames(url):
             res = requests.get(ele)
             soup = BeautifulSoup(res.text,"html.parser")
             turl = soup.find("p",class_="uk-card uk-card-body uk-card-default uk-card-hover").find("a").get("href")
-            links = links + "○ ```" + bypassBluemediafiles(turl,True) + "```\n\n"
+            links = links + "🧲 ```" + bypassBluemediafiles(turl,True) + "```\n\n"
         elif ele != "https://igg-games.com/how-to-install-a-pc-game-and-update.html":
             if fix:
                 tt = ele.split("/")[2]
-                if last is not None and tt != last and ele != bluelist[-1]: links += "\n"
+                if last is not None and tt != last: links += "\n"
                 last = tt
             links = links + "○ " + ele + "\n"
-
+       
     return links[:-1]
 
 
