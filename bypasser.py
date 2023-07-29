@@ -294,14 +294,12 @@ def bypassBluemediafiles(url, torrent=False):
         'Sec-Fetch-Mode': 'navigate',
         'Sec-Fetch-Site': 'none',
         'Sec-Fetch-User': '?1',
-
     }
 
     res = requests.get(url, headers=headers)
     soup = BeautifulSoup(res.text, 'html.parser')
     script = str(soup.findAll('script')[3])
     encodedKey = script.split('Create_Button("')[1].split('");')[0]
-
 
     headers = {
         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:103.0) Gecko/20100101 Firefox/103.0',
@@ -330,7 +328,6 @@ def bypassBluemediafiles(url, torrent=False):
         if "mega.nz" in furl:
             furl = furl.replace("mega.nz/%23!","mega.nz/file/").replace("!","#")
 
-    #print(furl)
     return furl
 
 def igggames(url):
@@ -341,19 +338,26 @@ def igggames(url):
     bluelist = []
     for ele in soup:
         bluelist.append(ele.get('href'))
-    bluelist = bluelist[6:-1]
+    bluelist = bluelist[3:-1]
 
     links = ""
     for ele in bluelist:
         if "bluemediafile" in ele:
-            links = links + bypassBluemediafiles(ele) + "\n"
+            tmp = bypassBluemediafiles(ele)
+            links = links + "○ " + tmp + "\n"
+            tt = tmp.split("/")[2]
+            if tt != last: links += "\n"
+            last = tt
         elif "pcgamestorrents.com" in ele:
             res = requests.get(ele)
             soup = BeautifulSoup(res.text,"html.parser")
             turl = soup.find("p",class_="uk-card uk-card-body uk-card-default uk-card-hover").find("a").get("href")
-            links = links + bypassBluemediafiles(turl,True) + "\n"
+            links = links + "○ ```" + bypassBluemediafiles(turl,True) + "```\n\n"
         else:
-            links = links + ele + "\n"
+            links = links + "○ " + ele + "\n"
+            tt = ele.split("/")[2]
+            if tt != last: links += "\n"
+            last = tt
 
     return links[:-1]
 
