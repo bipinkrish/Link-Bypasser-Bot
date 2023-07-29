@@ -336,29 +336,32 @@ def igggames(url):
     soup = soup.find("div",class_="uk-margin-medium-top").findAll("a")
 
     bluelist = []
-    for ele in soup:
-        bluelist.append(ele.get('href'))
+    for ele in soup: bluelist.append(ele.get('href'))
     bluelist = bluelist[3:-1]
 
     links = ""
     last  = None
+    fix = True
     for ele in bluelist:
+        if ele == "https://igg-games.com/how-to-install-a-pc-game-and-update.html": fix = False
         if "bluemediafile" in ele:
             tmp = bypassBluemediafiles(ele)
+            if fix:
+                tt = tmp.split("/")[2]
+                if last is not None and tt != last: links += "\n"
+                last = tt
             links = links + "○ " + tmp + "\n"
-            tt = tmp.split("/")[2]
-            if last is not None and tt != last: links += "\n"
-            last = tt
         elif "pcgamestorrents.com" in ele:
             res = requests.get(ele)
             soup = BeautifulSoup(res.text,"html.parser")
             turl = soup.find("p",class_="uk-card uk-card-body uk-card-default uk-card-hover").find("a").get("href")
             links = links + "○ ```" + bypassBluemediafiles(turl,True) + "```\n\n"
-        else:
+        elif ele != "https://igg-games.com/how-to-install-a-pc-game-and-update.html":
+            if fix:
+                tt = ele.split("/")[2]
+                if last is not None and tt != last and ele != bluelist[-1]: links += "\n"
+                last = tt
             links = links + "○ " + ele + "\n"
-            tt = ele.split("/")[2]
-            if last is not None and tt != last: links += "\n"
-            last = tt
 
     return links[:-1]
 
