@@ -343,7 +343,9 @@ def igggames(url):
     last  = None
     fix = True
     for ele in bluelist:
-        if ele == "https://igg-games.com/how-to-install-a-pc-game-and-update.html": fix = False
+        if ele == "https://igg-games.com/how-to-install-a-pc-game-and-update.html": 
+            fix = False
+            links += "\n"
         if "bluemediafile" in ele:
             tmp = bypassBluemediafiles(ele)
             if fix:
