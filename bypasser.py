@@ -294,14 +294,12 @@ def bypassBluemediafiles(url, torrent=False):
         'Sec-Fetch-Mode': 'navigate',
         'Sec-Fetch-Site': 'none',
         'Sec-Fetch-User': '?1',
-
     }
 
     res = requests.get(url, headers=headers)
     soup = BeautifulSoup(res.text, 'html.parser')
     script = str(soup.findAll('script')[3])
     encodedKey = script.split('Create_Button("')[1].split('");')[0]
-
 
     headers = {
         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:103.0) Gecko/20100101 Firefox/103.0',
@@ -330,7 +328,6 @@ def bypassBluemediafiles(url, torrent=False):
         if "mega.nz" in furl:
             furl = furl.replace("mega.nz/%23!","mega.nz/file/").replace("!","#")
 
-    #print(furl)
     return furl
 
 def igggames(url):
@@ -339,22 +336,35 @@ def igggames(url):
     soup = soup.find("div",class_="uk-margin-medium-top").findAll("a")
 
     bluelist = []
-    for ele in soup:
-        bluelist.append(ele.get('href'))
-    bluelist = bluelist[6:-1]
+    for ele in soup: bluelist.append(ele.get('href'))
+    bluelist = bluelist[3:-1]
 
     links = ""
+    last  = None
+    fix = True
     for ele in bluelist:
-        if "bluemediafiles" in ele:
-            links = links + bypassBluemediafiles(ele) + "\n"
+        if ele == "https://igg-games.com/how-to-install-a-pc-game-and-update.html": 
+            fix = False
+            links += "\n"
+        if "bluemediafile" in ele:
+            tmp = bypassBluemediafiles(ele)
+            if fix:
+                tt = tmp.split("/")[2]
+                if last is not None and tt != last: links += "\n"
+                last = tt
+            links = links + "○ " + tmp + "\n"
         elif "pcgamestorrents.com" in ele:
             res = requests.get(ele)
             soup = BeautifulSoup(res.text,"html.parser")
             turl = soup.find("p",class_="uk-card uk-card-body uk-card-default uk-card-hover").find("a").get("href")
-            links = links + bypassBluemediafiles(turl,True) + "\n"
-        else:
-            links = links + ele + "\n"
-
+            links = links + "🧲 `" + bypassBluemediafiles(turl,True) + "`\n\n"
+        elif ele != "https://igg-games.com/how-to-install-a-pc-game-and-update.html":
+            if fix:
+                tt = ele.split("/")[2]
+                if last is not None and tt != last: links += "\n"
+                last = tt
+            links = links + "○ " + ele + "\n"
+       
     return links[:-1]
 
 
@@ -1596,7 +1606,7 @@ def xpshort(url):
     url = url[:-1] if url[-1] == '/' else url
     code = url.split("/")[-1]
     final_url = f"{DOMAIN}/{code}"
-    ref = "https://www.paisaking.in/"
+    ref = "https://m.awmnews.in/"
     h = {"referer": ref}
     resp = client.get(final_url,headers=h)
     soup = BeautifulSoup(resp.content, "html.parser")
@@ -1613,21 +1623,36 @@ def xpshort(url):
 # Vnshortner- 
 
 def vnshortener(url):
-    client = cloudscraper.create_scraper(allow_brotli=False)
+    sess = requests.session()
     DOMAIN = "https://vnshortener.com/"
-    url = url[:-1] if url[-1] == '/' else url
-    code = url.split("/")[-1]
-    final_url = f"{DOMAIN}/{code}"
+    org = "https://nishankhatri.xyz"
+    PhpAcc = DOMAIN + "link/new.php"
     ref = "https://nishankhatri.com.np/"
-    h = {"referer": ref}
-    resp = client.get(final_url,headers=h)
+    go = DOMAIN + "links/go"
+
+    code = url.split("/")[3]
+    final_url = f"{DOMAIN}/{code}/"
+    headers = {'authority': DOMAIN, 'origin': org}
+
+    data = {'step_1': code,}
+    response = sess.post(PhpAcc, headers=headers, data=data).json()
+    id = response["inserted_data"]["id"]
+    data = {'step_2': code, 'id': id,}
+    response = sess.post(PhpAcc, headers=headers, data=data).json()
+    
+    headers['referer'] = ref
+    params = {'sid': str(id)}
+    resp = sess.get(final_url, params=params, headers=headers)
     soup = BeautifulSoup(resp.content, "html.parser")
     inputs = soup.find_all("input")
     data = { input.get('name'): input.get('value') for input in inputs }
-    h = { "x-requested-with": "XMLHttpRequest" }
-    time.sleep(8)
-    r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
-    try: return r.json()['url']
+
+    time.sleep(1)
+    headers['x-requested-with'] = 'XMLHttpRequest'
+    try:
+        r = sess.post(go, data=data, headers=headers).json()
+        if r["status"] == "success": return r["url"]
+        else: raise
     except: return "Something went wrong :("
 
 
