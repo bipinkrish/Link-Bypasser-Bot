@@ -3,7 +3,7 @@ import bypasser
 import threading
 import re
 import os
-from texts import ddllist, gdrivetext, otherstext, ddltext, shortnertext, HELP_TEXT  # Import variables from texts.py
+from texts import gdrivetext, otherstext, ddltext, shortnertext, HELP_TEXT  # Import variables from texts.py
 
 app = Flask(__name__)
 
