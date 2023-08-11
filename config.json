@@ -9,7 +9,8 @@
     "KCRYPT": "",
     "HCRYPT": "",
     "KATCRYPT": "",
-    "UPTOBOX_TOKEN":"",
-    "TERA_COOKIE":"",
-    "CLOUDFLARE":""
+    "UPTOBOX_TOKEN": "",
+    "TERA_COOKIE": "",
+    "CLOUDFLARE": "",
+    "PORT": 5000
 }

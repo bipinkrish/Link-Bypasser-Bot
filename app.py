@@ -1,25 +1,15 @@
 from flask import Flask, request, render_template, make_response
 import bypasser
-import threading
 import re
 import os
-from texts import gdrivetext, otherstext, ddltext, shortnertext, HELP_TEXT  
-import pyrogram
-from pyrogram import Client,filters
-from pyrogram.types import InlineKeyboardMarkup,InlineKeyboardButton
-from os import environ, remove
-from threading import Thread
-from json import load
-from re import search
-from texts import HELP_TEXT
 from ddl import ddllist, direct_link_generator
-from time import time
+
 
 app = Flask(__name__)
 
+
 def handle_index(ele):
     result = bypasser.scrapeIndex(ele)
-
 
 
 def store_shortened_links(link):
@@ -54,6 +44,7 @@ def loop_thread(url):
             link = link + temp + "\n\n"
 
     return link
+
 
 @app.route("/", methods=["GET", "POST"])
 def index():
