@@ -13,8 +13,8 @@ def handle_index(ele):
 
 
 def store_shortened_links(link):
-    with open('shortened_links.txt', 'a') as file:
-        file.write(link + '\n')
+    with open("shortened_links.txt", "a") as file:
+        file.write(link + "\n")
 
 
 def loop_thread(url):
@@ -52,15 +52,35 @@ def index():
         url = request.form.get("url")
         result = loop_thread(url)
 
-        resp = make_response(render_template("index.html", result=result))
-        resp.set_cookie('shortened_links', result)
+        shortened_links = request.cookies.get("shortened_links")
+        if shortened_links:
+            prev_links = shortened_links.split(",")
+        else:
+            prev_links = []
+
+        if result:
+            prev_links.append(result)
+
+            if len(prev_links) > 10:
+                prev_links = prev_links[-10:]
+
+        shortened_links_str = ",".join(prev_links)
+
+        resp = make_response(
+            render_template("index.html", result=result, prev_links=prev_links)
+        )
+        resp.set_cookie("shortened_links", shortened_links_str)
 
         return resp
 
-    shortened_links = request.cookies.get('shortened_links')
-    return render_template("index.html", result=None, shortened_links=shortened_links.split(",") if shortened_links else None)
+    shortened_links = request.cookies.get("shortened_links")
+    return render_template(
+        "index.html",
+        result=None,
+        prev_links=shortened_links.split(",") if shortened_links else None,
+    )
 
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host="0.0.0.0", port=port)
