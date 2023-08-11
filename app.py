@@ -2,16 +2,8 @@ from flask import Flask, request, render_template, make_response
 import bypasser
 import re
 import os
-import pyrogram
-from pyrogram import Client, filters
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from os import environ, remove
-from threading import Thread
-from json import load
-from texts import gdrivetext, otherstext, ddltext, shortnertext, HELP_TEXT
-from texts import HELP_TEXT
 from ddl import ddllist, direct_link_generator
-from time import time
+
 
 app = Flask(__name__)
 
@@ -21,8 +13,8 @@ def handle_index(ele):
 
 
 def store_shortened_links(link):
-    with open("shortened_links.txt", "a") as file:
-        file.write(link + "\n")
+    with open('shortened_links.txt', 'a') as file:
+        file.write(link + '\n')
 
 
 def loop_thread(url):
@@ -60,35 +52,15 @@ def index():
         url = request.form.get("url")
         result = loop_thread(url)
 
-        shortened_links = request.cookies.get("shortened_links")
-        if shortened_links:
-            prev_links = shortened_links.split(",")
-        else:
-            prev_links = []
-
-        if result:
-            prev_links.append(result)
-
-            if len(prev_links) > 10:
-                prev_links = prev_links[-10:]
-
-        shortened_links_str = ",".join(prev_links)
-
-        resp = make_response(
-            render_template("index.html", result=result, prev_links=prev_links)
-        )
-        resp.set_cookie("shortened_links", shortened_links_str)
+        resp = make_response(render_template("index.html", result=result))
+        resp.set_cookie('shortened_links', result)
 
         return resp
 
-    shortened_links = request.cookies.get("shortened_links")
-    return render_template(
-        "index.html",
-        result=None,
-        prev_links=shortened_links.split(",") if shortened_links else None,
-    )
+    shortened_links = request.cookies.get('shortened_links')
+    return render_template("index.html", result=None, shortened_links=shortened_links.split(",") if shortened_links else None)
 
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host='0.0.0.0', port=port)
