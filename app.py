@@ -56,6 +56,7 @@ def index():
     if request.method == "POST":
         url = request.form.get("url")
         result = loop_thread(url)
+        if freewall.pass_paywall(url, check=True): return result
         
         shortened_links = request.cookies.get('shortened_links')
         if shortened_links:
