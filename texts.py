@@ -111,11 +111,25 @@ shortnertext = """__- igg-games \n\
 - pdisk \n\
 - vnshortener \n\
 - onepagelink \n\
+- lolshort \n\
 __"""
+
+
+freewalltext = """__- shutterstock \n\
+- adobe stock \n\
+- drivehub \n\
+- alamy \n\
+- gettyimages \n\
+- istockphoto \n\
+- picfair \n\
+- slideshare \n\
+- medium \n\
+    __"""
 
 
 HELP_TEXT = f'**--Just Send me any Supported Links From Below Mentioned Sites--** \n\n\
 **List of Sites for DDL : ** \n\n{ddltext} \n\
 **List of Sites for Shortners : ** \n\n{shortnertext} \n\
 **List of Sites for GDrive Look-ALike : ** \n\n{gdrivetext} \n\
+**List of Sites for Jumping Paywall : ** \n\n{freewalltext} \n\
 **Other Supported Sites : ** \n\n{otherstext}'

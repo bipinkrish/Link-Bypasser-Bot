@@ -2250,7 +2250,7 @@ def shortners(url):
         return moneykamalo(url)
 	    
     # lolshort
-    elif "http://go.lolshort.tech/" in url:
+    elif "http://go.lolshort.tech/" in url or "https://go.lolshort.tech/" in url:
         print("entered lolshort: ",url)
         return lolshort(url)
 	    
