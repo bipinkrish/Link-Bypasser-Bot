@@ -1,6 +1,6 @@
 # Link-Bypasser-Bot
 
-a Telegram Bot that can Bypass Ad Links and Generate Direct Links. see the Bot in Action [@BypassLinkBot](https://t.me/BypassLinkBot) or try it on [Replit](https://replit.com/@bipinkrish/Link-Bypasser#app.py)
+a Telegram Bot (with Site) that can Bypass Ad Links, Generate Direct Links and Jump Paywalls. see the Bot in Action [@BypassLinkBot](https://t.me/BypassLinkBot) or try it on [Replit](https://replit.com/@bipinkrish/Link-Bypasser#app.py)
 
 ---
 
@@ -22,6 +22,14 @@ you can also set these in `config.json` file
 - `UPTOBOX_TOKEN` Uptobox Token
 - `TERA_COOKIE` Terabox Cookie (only `ndus` value) (see [Help](#help))
 - `CLOUDFLARE` Use `cf_clearance` cookie from and Cloudflare protected sites
+- `PORT` Port to run the Bot Site on (default is 5000)
+
+---
+
+## Deploying on Replit
+
+1. Create a new Replit Project
+`
 
 ---
 

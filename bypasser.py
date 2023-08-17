@@ -1830,6 +1830,29 @@ def moneykamalo(url):
     try:
         return r.json()['url']
     except: return "Something went wrong :("
+	    
+
+##################################################################################################### 
+# lolshort
+
+def lolshort(url):
+    client = requests.session()
+    DOMAIN = "https://get.lolshort.tech/"
+    url = url[:-1] if url[-1] == '/' else url
+    code = url.split("/")[-1]
+    final_url = f"{DOMAIN}/{code}"
+    ref = "https://tech.animezia.com/"
+    h = {"referer": ref}
+    resp = client.get(final_url,headers=h)
+    soup = BeautifulSoup(resp.content, "html.parser")
+    inputs = soup.find_all("input")
+    data = { input.get('name'): input.get('value') for input in inputs }
+    h = { "x-requested-with": "XMLHttpRequest" }
+    time.sleep(5)
+    r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
+    try:
+        return r.json()['url']
+    except: return "Something went wrong :("
 
 
 ##################################################################################################### 
@@ -2225,7 +2248,12 @@ def shortners(url):
     elif "earn.moneykamalo.com" in url:
         print("entered moneykamalo: ",url)
         return moneykamalo(url)
-
+	    
+    # lolshort
+    elif "http://go.lolshort.tech/" in url or "https://go.lolshort.tech/" in url:
+        print("entered lolshort: ",url)
+        return lolshort(url)
+	    
     # easysky
     elif "m.easysky.in" in url:
         print("entered easysky: ",url)

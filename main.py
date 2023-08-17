@@ -8,7 +8,7 @@ from re import search
 
 from texts import HELP_TEXT
 import bypasser
-from ddl import ddllist, direct_link_generator
+import freewall
 from time import time
 
 
@@ -43,23 +43,36 @@ def loopthread(message,otherss=False):
             urls.append(ele)
     if len(urls) == 0: return
 
-    if bypasser.ispresent(ddllist,urls[0]):
+    if bypasser.ispresent(bypasser.ddl.ddllist,urls[0]):
         msg = app.send_message(message.chat.id, "⚡ __generating...__", reply_to_message_id=message.id)
+    elif freewall.pass_paywall(urls[0], check=True):
+        msg = app.send_message(message.chat.id, "🕴️ __jumping the wall...__", reply_to_message_id=message.id)
     else:
         if "https://olamovies" in urls[0] or "https://psa.wf/" in urls[0]:
-            msg = app.send_message(message.chat.id, "🔎 __this might take some time...__", reply_to_message_id=message.id)
+            msg = app.send_message(message.chat.id, "⏳ __this might take some time...__", reply_to_message_id=message.id)
         else:
             msg = app.send_message(message.chat.id, "🔎 __bypassing...__", reply_to_message_id=message.id)
 
     strt = time()
     links = ""
+    temp = None
     for ele in urls:
         if search(r"https?:\/\/(?:[\w.-]+)?\.\w+\/\d+:", ele):
             handleIndex(ele,message,msg)
             return
-        elif bypasser.ispresent(ddllist,ele):
-            try: temp = direct_link_generator(ele)
+        elif bypasser.ispresent(bypasser.ddl.ddllist,ele):
+            try: temp = bypasser.ddl.direct_link_generator(ele)
             except Exception as e: temp = "**Error**: " + str(e)
+        elif freewall.pass_paywall(ele, check=True):
+            freefile = freewall.pass_paywall(ele)
+            if freefile:
+                try: 
+                    app.send_document(message.chat.id, freefile, reply_to_message_id=message.id)
+                    remove(freefile)
+                    app.delete_messages(message.chat.id,[msg.id])
+                    return
+                except: pass
+            else: app.send_message(message.chat.id, "__Failed to Jump", reply_to_message_id=message.id)
         else:    
             try: temp = bypasser.shortners(ele)
             except Exception as e: temp = "**Error**: " + str(e)
@@ -90,10 +103,8 @@ def loopthread(message,otherss=False):
             tmsg = app.send_message(message.chat.id, f'__{ele}__',reply_to_message_id=tmsgid, disable_web_page_preview=True)
             tmsgid = tmsg.id
     except Exception as e:
-        print(e)
-        try: app.send_message(message.chat.id, "__Failed to Bypass__", reply_to_message_id=message.id)
-        except:
-            app.send_message(message.chat.id, "__Failed to Bypass__", reply_to_message_id=message.id)
+        app.send_message(message.chat.id, f"__Failed to Bypass : {e}__", reply_to_message_id=message.id)
+        
 
 
 # start command

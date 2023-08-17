@@ -1,15 +1,15 @@
-from flask import Flask, request, render_template, make_response
+from flask import Flask, request, render_template, make_response, send_file
 import bypasser
 import re
 import os
-from ddl import ddllist, direct_link_generator
+import freewall
 
 
 app = Flask(__name__)
 
 
 def handle_index(ele):
-    result = bypasser.scrapeIndex(ele)
+    return bypasser.scrapeIndex(ele)
 
 
 def store_shortened_links(link):
@@ -25,15 +25,20 @@ def loop_thread(url):
         return None
 
     link = ""
+    temp = None
     for ele in urls:
         if re.search(r"https?:\/\/(?:[\w.-]+)?\.\w+\/\d+:", ele):
             handle_index(ele)
-            return
-        elif bypasser.ispresent(ddllist, ele):
+        elif bypasser.ispresent(bypasser.ddl.ddllist, ele):
             try:
-                temp = direct_link_generator(ele)
+                temp = bypasser.ddl.direct_link_generator(ele)
             except Exception as e:
                 temp = "**Error**: " + str(e)
+        elif freewall.pass_paywall(ele, check=True):
+            freefile = freewall.pass_paywall(ele)
+            if freefile:
+                try: return send_file(freefile)
+                except: pass
         else:
             try:
                 temp = bypasser.shortners(ele)
@@ -51,25 +56,21 @@ def index():
     if request.method == "POST":
         url = request.form.get("url")
         result = loop_thread(url)
+        if freewall.pass_paywall(url, check=True): return result
         
-     
         shortened_links = request.cookies.get('shortened_links')
         if shortened_links:
             prev_links = shortened_links.split(',')
         else:
             prev_links = []
 
-       
         if result:
             prev_links.append(result)
            
             if len(prev_links) > 10: 
                 prev_links = prev_links[-10:]  
 
-       
-        shortened_links_str = ','.join(prev_links)
-
-        
+        shortened_links_str = ','.join(prev_links)        
         resp = make_response(render_template("index.html", result=result, prev_links=prev_links))
         resp.set_cookie('shortened_links', shortened_links_str)
 
