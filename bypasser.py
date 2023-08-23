@@ -2189,7 +2189,7 @@ def shortners(url):
         return rocklinks(url)
         
     # ouo
-    elif "https://ouo.press/" or "https://ouo.io/" in url:
+    elif "https://ouo.press/" in url or "https://ouo.io/" in url:
         print("entered ouo: ",url)
         return ouo(url)
 
