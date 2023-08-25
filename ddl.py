@@ -623,19 +623,29 @@ def filepress(url):
     try:
         url = cget('GET', url).url
         raw = urlparse(url)
-        json_data = {
+
+        gd_data = {
             'id': raw.path.split('/')[-1],
             'method': 'publicDownlaod',
         }
+        tg_data = {
+            'id': raw.path.split('/')[-1],
+            'method': 'telegramDownload',
+        }
+        
         api = f'{raw.scheme}://{raw.hostname}/api/file/downlaod/'
-        res = cget('POST', api, headers={
-                   'Referer': f'{raw.scheme}://{raw.hostname}'}, json=json_data).json()
+        
+        gd_res = cget('POST', api, headers={'Referer': f'{raw.scheme}://{raw.hostname}'}, json=gd_data).json()
+        tg_res = cget('POST', api, headers={'Referer': f'{raw.scheme}://{raw.hostname}'}, json=tg_data).json()
+        
     except Exception as e:
-        return (f'ERROR: {e.__class__.__name__}')
-    if 'data' not in res:
-        return (f'ERROR: {res["statusText"]}')
-    return f'https://drive.google.com/uc?id={res["data"]}'
-
+        return f'Google Drive: ERROR: {e.__class__.__name__} \nTelegram: ERROR: {e.__class__.__name__}'
+    
+    gd_result = f'https://drive.google.com/uc?id={gd_res["data"]}' if 'data' in gd_res else f'ERROR: {gd_res["statusText"]}'
+    tg_result = f'https://tghub.xyz/?start={tg_res["data"]}' if 'data' in tg_res else "No Telegram file available "
+    
+    return f'Google Drive: {gd_result} \nTelegram: {tg_result}'
+           
 
 def gdtot(url):
     cget = create_scraper().request
