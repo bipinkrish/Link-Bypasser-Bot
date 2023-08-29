@@ -127,9 +127,20 @@ freewalltext = """__- shutterstock \n\
     __"""
 
 
-HELP_TEXT = f'**--Just Send me any Supported Links From Below Mentioned Sites--** \n\n\
-**List of Sites for DDL : ** \n\n{ddltext} \n\
-**List of Sites for Shortners : ** \n\n{shortnertext} \n\
-**List of Sites for GDrive Look-ALike : ** \n\n{gdrivetext} \n\
-**List of Sites for Jumping Paywall : ** \n\n{freewalltext} \n\
+HELP_TEXT = """__Jᴜꜱᴛ Sᴇɴᴅ Mᴇ Aɴʏ Sᴜᴘᴘᴏʀᴛᴇᴅ Lɪɴᴋ Fʀᴏᴍ Mʏ Mᴇɴᴛɪᴏɴᴇᴅ Sɪᴛᴇꜱ__"""
+
+SITES_TEXT = f'**--Lists Of My Supported Sites...--** \n\n\
+**Supported Sites for DDL : ** \n\n{ddltext} \n\
+**Supported Sites for Shortners : ** \n\n{shortnertext} \n\
+**Supported Sites for GDrive Look-ALike : ** \n\n{gdrivetext} \n\
+**Supported Sites for Jumping Paywall : ** \n\n{freewalltext} \n\
 **Other Supported Sites : ** \n\n{otherstext}'
+
+ABOUT_TEXT = """<b>╭───────────⍟
+├🤖 ᴍy ɴᴀᴍᴇ : Lɪɴᴋ Bʏᴘᴀꜱꜱᴇʀ
+├🖥️ Dᴇᴠᴇʟᴏᴩᴇʀꜱ : <a href=https://github.com/bipinkrish>Bɪᴘɪɴ Kʀɪꜱʜ</a> 
+├👨‍💻 Pʀᴏɢʀᴀᴍᴇʀ : <a href=https://t.me/Shadoooow>Sʜᴀᴅᴏᴏᴏᴏᴡ</a>
+├📕 Lɪʙʀᴀʀy : <a href=https://github.com/pyrogram>Pyʀᴏɢʀᴀᴍ</a>
+├✏️ Lᴀɴɢᴜᴀɢᴇ: <a href=https://www.python.org>Pyᴛʜᴏɴ</a>
+├📊 Sᴏᴜʀᴄᴇ Cᴏᴅᴇ: <a href=https://github.com/bipinkrish/Link-Bypasser-Bot>Lɪɴᴋ Bʏᴘᴀꜱꜱᴇʀ Bᴏᴛ</a></b>     
+╰───────────────⍟ """
