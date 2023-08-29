@@ -7,6 +7,8 @@ from json import load
 from re import search
 
 from texts import HELP_TEXT
+from texts import SITES_TEXT
+from texts import ABOUT_TEXT
 import bypasser
 import freewall
 from time import time
@@ -110,7 +112,7 @@ def loopthread(message,otherss=False):
 # start command
 @app.on_message(filters.command(["start"]))
 def send_start(client: pyrogram.client.Client, message: pyrogram.types.messages_and_media.message.Message):
-    app.send_message(message.chat.id, f"__👋 Hi **{message.from_user.mention}**, i am Link Bypasser Bot, just send me any supported links and i will you get you results.\nCheckout /help to Read More__",
+    app.send_message(message.chat.id, f"__👋 Hi **{message.from_user.mention}**, i am Link Bypasser Bot, just send me any supported links and i will you get you results.\nCheckout /sites to Read More__",
     reply_markup=InlineKeyboardMarkup([
         [ InlineKeyboardButton("🌐 Source Code", url="https://github.com/bipinkrish/Link-Bypasser-Bot")],
         [ InlineKeyboardButton("Replit", url="https://replit.com/@bipinkrish/Link-Bypasser#app.py") ]]), 
@@ -122,6 +124,15 @@ def send_start(client: pyrogram.client.Client, message: pyrogram.types.messages_
 def send_help(client: pyrogram.client.Client, message: pyrogram.types.messages_and_media.message.Message):
     app.send_message(message.chat.id, HELP_TEXT, reply_to_message_id=message.id, disable_web_page_preview=True)
 
+# sites command
+@app.on_message(filters.command(["sites"]))
+def send_sites(client: pyrogram.client.Client, message: pyrogram.types.messages_and_media.message.Message):
+    app.send_message(message.chat.id, SITES_TEXT, reply_to_message_id=message.id, disable_web_page_preview=True)
+
+# about command
+@app.on_message(filters.command(["about"]))
+def send_about(client: pyrogram.client.Client, message: pyrogram.types.messages_and_media.message.Message):
+    app.send_message(message.chat.id, ABOUT_TEXT, reply_to_message_id=message.id, disable_web_page_preview=True)
 
 # links
 @app.on_message(filters.text)
