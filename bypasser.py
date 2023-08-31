@@ -1970,6 +1970,30 @@ def tnshort(url):
     except BaseException:
         return "Something went wrong :("
 
+#####################################################################################################
+# tnvalue
+
+def tnvalue(url):
+    client = cloudscraper.create_scraper(allow_brotli=False)
+    DOMAIN = "https://get.tnvalue.in"
+    url = url[:-1] if url[-1] == "/" else url
+    code = url.split("/")[-1]
+    final_url = f"{DOMAIN}/{code}"
+    ref = "https://finclub.in/"
+    h = {"referer": ref}
+    resp = client.get(final_url, headers=h)
+    soup = BeautifulSoup(resp.content, "html.parser")
+    inputs = soup.find_all("input")
+    data = {input.get("name"): input.get("value") for input in inputs}
+    h = {"x-requested-with": "XMLHttpRequest"}
+    time.sleep(12)
+    r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
+    try:
+        return str(r.json()["url"])
+    except BaseException:
+        return "Something went wrong :("
+
+
 
 #####################################################################################################
 # indianshortner
@@ -2284,6 +2308,11 @@ def shortners(url):
     elif "https://link.tnshort.net/" in url:
         print("entered tnshort:", url)
         return tnshort(url)
+
+    # tnvalue
+    elif "https://link.tnvalue.in/" in url or "https://short.tnvalue.in/" in url or "https://get.tnvalue.in/" in url:
+        print("entered tnvalue:", url)
+        return tnvalue(url)
 
     # indianshortner
     elif "indianshortner.in" in url:
