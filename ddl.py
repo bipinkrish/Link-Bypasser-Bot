@@ -520,42 +520,29 @@ def solidfiles(url: str) -> str:
 
 
 def krakenfiles(page_link: str) -> str:
-    """ krakenfiles direct link generator
-    Based on https://github.com/tha23rd/py-kraken
-    By https://github.com/junedkh """
-    cget = create_scraper().request
+    session = Session()
     try:
-        page_resp = cget('get', page_link)
+        res = session.get(url)
+        html = etree.HTML(res.text)
+        if post_url:= html.xpath('//form[@id="dl-form"]/@action'):
+        	post_url = f'https:{post_url[0]}'
+    	else:
+        	session.close()
+        	return ('ERROR: Unable to find post link.')
+    	if token:= html.xpath('//input[@id="dl-token"]/@value'):
+        	data = {'token': token[0]}
+    	else:
+        	session.close()
+        	return ('ERROR: Unable to find token for post.')
+	except Exception as e:
+        session.close()
+        return (f'ERROR: {e.__class__.__name__} Something went wrong')
+    try:
+        dl_link = session.post(post_url, data=data).json()
+		return dl_link['url']
     except Exception as e:
-        return (f"ERROR: {e.__class__.__name__}")
-    soup = BeautifulSoup(page_resp.text, "lxml")
-    try:
-        token = soup.find("input", id="dl-token")["value"]
-    except:
-        return (
-            f"ERROR: Page link is wrong: {page_link}")
-    hashes = [
-        item["data-file-hash"]
-        for item in soup.find_all("div", attrs={"data-file-hash": True})
-    ]
-    if not hashes:
-        return (
-            f"ERROR: Hash not found for : {page_link}")
-    dl_hash = hashes[0]
-    payload = f'------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name="token"\r\n\r\n{token}\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--'
-    headers = {
-        "content-type": "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
-        "cache-control": "no-cache",
-        "hash": dl_hash,
-    }
-    dl_link_resp = cget(
-        'post', f"https://krakenfiles.com/download/{hash}", data=payload, headers=headers)
-    dl_link_json = dl_link_resp.json()
-    if "url" in dl_link_json:
-        return dl_link_json["url"]
-    else:
-        return (
-            f"ERROR: Failed to acquire download URL from kraken for : {page_link}")
+        session.close()
+        return (f'ERROR: {e.__class__.__name__} While send post request')
 
 
 def uploadee(url: str) -> str:
