@@ -112,6 +112,7 @@ shortnertext = """__- igg-games \n\
 - vnshortener \n\
 - onepagelink \n\
 - lolshort \n\
+- tnvalue \n\
 __"""
 
 
