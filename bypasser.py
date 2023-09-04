@@ -1975,7 +1975,7 @@ def tnshort(url):
 
 def tnvalue(url):
     client = cloudscraper.create_scraper(allow_brotli=False)
-    DOMAIN = "https://get.tnvalue.in"
+    DOMAIN = "https://page.finclub.in"
     url = url[:-1] if url[-1] == "/" else url
     code = url.split("/")[-1]
     final_url = f"{DOMAIN}/{code}"
@@ -2310,7 +2310,7 @@ def shortners(url):
         return tnshort(url)
 
     # tnvalue
-    elif "https://link.tnvalue.in/" in url or "https://short.tnvalue.in/" in url or "https://get.tnvalue.in/" in url:
+    elif "https://link.tnvalue.in/" in url or "https://short.tnvalue.in/" in url or "https://page.finclub.in/" in url:
         print("entered tnvalue:", url)
         return tnvalue(url)
 
