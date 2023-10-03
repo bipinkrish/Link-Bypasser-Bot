@@ -7,6 +7,6 @@ tgcrypto
 lxml
 cfscrape
 urllib3==1.26
-flask==2.0.1
-gunicorn==21.0.0
+flask
+gunicorn
 curl-cffi
