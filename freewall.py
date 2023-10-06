@@ -17,11 +17,6 @@ def downloaderla(url,site):
 
 def getImg(url):
     return requests.get(url).content
-
-def getpaidstock(res):
-    if res["success"]:
-        soup = getSoup(requests.get(res["result"]))
-        return soup.find("center").findAll("a")[1].get("href")
     
 def decrypt(res, key):
     if res["success"]: return base64.b64decode(res["result"].split(key)[-1]).decode('utf-8')
@@ -34,11 +29,11 @@ def shutterstock(url):
     
 def adobestock(url):
     res = downloaderla(url, "https://new.downloader.la/adobe.php") 
-    return getpaidstock(res)
+    return decrypt(res, "#")
     
 def alamy(url):
     res = downloaderla(url, "https://new.downloader.la/alamy.php") 
-    return getpaidstock(res)
+    return decrypt(res, "#")
 
 def getty(url):
     res = downloaderla(url, "https://getpaidstock.com/api.php")
