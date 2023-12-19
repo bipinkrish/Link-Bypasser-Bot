@@ -2130,8 +2130,8 @@ def ispresent(inlist,url):
 # shortners
 def shortners(url):
     # Shortner Full Page API
-    if shortner_fpage_api(url):
-        return shortner_fpage_api(url)
+    if val := shortner_fpage_api(url):
+        return val
     
     # igg games
     elif "https://igg-games.com/" in url:
