@@ -138,6 +138,21 @@ def scrapeIndex(url, username="none", password="none"):
     if len(result)==0: return None
     return format(result)
 
+################################################################
+# Shortner Full Page API
+
+def shortner_fpage_api(link):
+    link_pattern = r"https?://[\w.-]+/full\?api=([^&]+)&url=([^&]+)(?:&type=(\d+))?"
+    match = re.match(link_pattern, link)
+    if match:
+        try:
+            url_enc_value = match.group(2)
+            url_value = base64.b64decode(url_enc_value).decode("utf-8")
+            return url_value
+        except BaseException:
+            return None
+    else:
+        return None
 
 ##############################################################
 # tnlink
@@ -2114,9 +2129,12 @@ def ispresent(inlist,url):
 
 # shortners
 def shortners(url):
+    # Shortner Full Page API
+    if val := shortner_fpage_api(url):
+        return val
     
     # igg games
-    if "https://igg-games.com/" in url:
+    elif "https://igg-games.com/" in url:
         print("entered igg: ",url)
         return igggames(url)
 
