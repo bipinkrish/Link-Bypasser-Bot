@@ -1,0 +1,40 @@
+{
+  "name": "Link-Bypasser-Bot",
+  "description": "A Telegram Bot (with Site) that can Bypass Ad Links, Generate Direct Links and Jump Paywalls",
+  "keywords": [
+    "telegram",
+    "forward",
+    "okforward"
+  ],
+  "repository": "https://github.com/bipinkrish/Link-Bypasser-Bot",
+  "logo": "https://ibb.co/kMVxrCj",
+  "env": {
+    "HASH": {
+      "description": "Your API HASH from my.telegram.org",
+      "required": true
+    },
+    "ID": {
+      "description": "Your API ID from my.telegram.org",
+      "required": true
+    },
+    "TOKEN":{
+      "description": "Your bot token from @BotFather",
+      "required": true
+    },
+    "TERA_COOKIE": {
+      "description": "Terabox Cookie (only ndus value)",
+      "required": false
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "formation": {
+    "worker": {
+      "quantity": 1,
+      "size": "standard-1x"
+    }
+  }
+}
