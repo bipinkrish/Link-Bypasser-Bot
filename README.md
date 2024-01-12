@@ -26,12 +26,15 @@ you can also set these in `config.json` file
 ---
 ### Installation
 ---
+
 ## Deploying on Replit
 1. Create a new Replit Project
 `
 ---
-### Deploy on Heroku
+
+## Deploy on Heroku
 **BEFORE YOU DEPLOY ON HEROKU, YOU SHOULD FORK THE REPO AND CHANGE ITS NAME TO ANYTHING ELSE**<br>
+
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/bipinkrish/Link-Bypasser-Bot)</br>
 
 ## Commands
