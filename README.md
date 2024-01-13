@@ -24,9 +24,6 @@ you can also set these in `config.json` file
 - `CLOUDFLARE` Use `cf_clearance` cookie from and Cloudflare protected sites
 - `PORT` Port to run the Bot Site on (default is 5000)
 ---
-### Installation
----
-
 ## Deploy on Heroku
 **BEFORE YOU DEPLOY ON HEROKU, YOU SHOULD FORK THE REPO AND CHANGE ITS NAME TO ANYTHING ELSE**<br>
 
@@ -35,8 +32,9 @@ you can also set these in `config.json` file
 ## Commands
 
 ```
-start - Welcome Message
-help - List of All Supported Sites
+/start - Welcome Message
+/help - List of All Supported Sites
+
 ```
 
 ---
