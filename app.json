@@ -1,0 +1,81 @@
+{
+  "name": "Link-Bypasser-Bot",
+  "description": "A Telegram Bot (with Site) that can Bypass Ad Links, Generate Direct Links and Jump Paywalls",
+  "keywords": [
+    "telegram",
+    "Link bypass",
+    "bypass bot", 
+    "telegram bot" 
+  ],
+  "repository": "https://github.com/bipinkrish/Link-Bypasser-Bot",
+  "logo": "https://ibb.co/kMVxrCj",
+  "env": {
+    "HASH": {
+      "description": "Your API HASH from my.telegram.org",
+      "required": true
+    },
+    "ID": {
+      "description": "Your API ID from my.telegram.org",
+      "required": true
+    },
+    "TOKEN":{
+      "description": "Your bot token from @BotFather",
+      "required": true
+    },
+    "TERA_COOKIE": {
+      "description": "Terabox Cookie (only ndus value)",
+      "required": false
+    },
+    "CRYPT": {
+      "description": "GDTot Crypt",
+      "required": false
+    },
+    "XSRF_TOKEN": {
+      "description": "XSRF Token cookies! Check readme file in repo",
+      "required": false
+    },
+    "Laravel_Session": {
+      "description": "Laravel Session cookies! Check readme file in repo",
+      "required": false
+    },
+    "DRIVEFIRE_CRYPT": {
+      "description": "Drivefire Crypt",
+      "required": false
+    },
+    "KOLOP_CRYPT": {
+      "description": "Kolop Crypt",
+      "required": false
+    },
+    "HUBDRIVE_CRYPT": {
+      "description": "Hubdrive Crypt",
+      "required": false
+    },
+    "KATDRIVE_CRYPT": {
+      "description": "Katdrive Crypt",
+      "required": false
+    },
+    "UPTOBOX_TOKEN": {
+      "description": "Uptobox Token",
+      "required": false
+    },
+    "CLOUDFLARE": {
+      "description": "Use cf_clearance cookie from and Cloudflare protected sites",
+      "required": false
+    },
+    "PORT": {
+      "description": "Port to run the Bot Site on (default is 5000)",
+      "required": false
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "standard-1x"
+    }
+  }
+}

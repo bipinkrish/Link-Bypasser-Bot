@@ -23,35 +23,26 @@ you can also set these in `config.json` file
 - `TERA_COOKIE` Terabox Cookie (only `ndus` value) (see [Help](#help))
 - `CLOUDFLARE` Use `cf_clearance` cookie from and Cloudflare protected sites
 - `PORT` Port to run the Bot Site on (default is 5000)
-
 ---
+## Deploy on Heroku
+**BEFORE YOU DEPLOY ON HEROKU, YOU SHOULD FORK THE REPO AND CHANGE ITS NAME TO ANYTHING ELSE**<br>
 
-## Deploying on Replit
-
-1. Create a new Replit Project
-`
-
----
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/bipinkrish/Link-Bypasser-Bot)</br>
 
 ## Commands
 
 ```
-start - Welcome Message
-help - List of All Supported Sites
+/start - Welcome Message
+/help - List of All Supported Sites
+
 ```
 
 ---
-
 ## Supported Sites
-
 To see the list of supported sites see [texts.py](https://github.com/bipinkrish/Link-Bypasser-Bot/blob/main/texts.py) file
-
 ---
-
 ## Help
-
 * If you are deploying on VPS, watch videos on how to set/export Environment Variables. OR you can set these in `config.json` file
-
 * Terabox Cookie
 
     1. Open any Browser
