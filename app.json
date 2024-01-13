@@ -25,6 +25,46 @@
     "TERA_COOKIE": {
       "description": "Terabox Cookie (only ndus value)",
       "required": false
+    },
+    "CRYPT": {
+      "description": "GDTot Crypt",
+      "required": false
+    },
+    "XSRF_TOKEN": {
+      "description": "XSRF Token cookies! Check readme file in repo",
+      "required": false
+    },
+    "Laravel_Session": {
+      "description": "Laravel Session cookies! Check readme file in repo",
+      "required": false
+    },
+    "DRIVEFIRE_CRYPT": {
+      "description": "Drivefire Crypt",
+      "required": false
+    },
+    "KOLOP_CRYPT": {
+      "description": "Kolop Crypt",
+      "required": false
+    },
+    "HUBDRIVE_CRYPT": {
+      "description": "Hubdrive Crypt",
+      "required": false
+    },
+    "KATDRIVE_CRYPT": {
+      "description": "Katdrive Crypt",
+      "required": false
+    },
+    "UPTOBOX_TOKEN": {
+      "description": "Uptobox Token",
+      "required": false
+    },
+    "CLOUDFLARE": {
+      "description": "Use cf_clearance cookie from and Cloudflare protected sites",
+      "required": false
+    },
+    "PORT": {
+      "description": "Port to run the Bot Site on (default is 5000)",
+      "required": false
     }
   },
   "buildpacks": [
