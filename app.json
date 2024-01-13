@@ -3,8 +3,9 @@
   "description": "A Telegram Bot (with Site) that can Bypass Ad Links, Generate Direct Links and Jump Paywalls",
   "keywords": [
     "telegram",
-    "forward",
-    "okforward"
+    "Link bypass",
+    "bypass bot", 
+    "telegram bot" 
   ],
   "repository": "https://github.com/bipinkrish/Link-Bypasser-Bot",
   "logo": "https://ibb.co/kMVxrCj",
