@@ -112,8 +112,8 @@ def loopthread(message,otherss=False):
 def send_start(client: pyrogram.client.Client, message: pyrogram.types.messages_and_media.message.Message):
     app.send_message(message.chat.id, f"__👋 Hi **{message.from_user.mention}**, i am Link Bypasser Bot, just send me any supported links and i will you get you results.\nCheckout /help to Read More__",
     reply_markup=InlineKeyboardMarkup([
-        [ InlineKeyboardButton("🌐 Source Code", url="#")],
-        [ InlineKeyboardButton("Replit", url="#") ]]), 
+        [ InlineKeyboardButton("🌐 Bot owner ", url="https://t.me/bugbountyhunt")],
+        [ InlineKeyboardButton("Support channel", url="https://t.me/+5lLi1M5kUElkYjE1") ]]), 
         reply_to_message_id=message.id)
 
 
