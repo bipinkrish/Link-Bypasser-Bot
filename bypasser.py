@@ -154,6 +154,20 @@ def shortner_fpage_api(link):
     else:
         return None
 
+# Shortner Quick Link API
+
+def shortner_quick_api(link):
+    link_pattern = r"https?://[\w.-]+/st\?api=([^&]+)&url=([^&]+)"
+    match = re.match(link_pattern, link)
+    if match:
+        try:
+            url_value = match.group(2)
+            return url_value
+        except BaseException:
+            return None
+    else:
+        return None
+
 ##############################################################
 # tnlink
 
@@ -2131,6 +2145,10 @@ def ispresent(inlist,url):
 def shortners(url):
     # Shortner Full Page API
     if val := shortner_fpage_api(url):
+        return val
+
+    # Shortner Quick Link API
+    elif val := shortner_quick_api(url):
         return val
     
     # igg games
