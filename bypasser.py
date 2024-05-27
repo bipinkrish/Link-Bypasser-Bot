@@ -2129,6 +2129,28 @@ def thinfi(url: str) -> str :
 	soup = BeautifulSoup(response.content,  "html.parser").p.a.get("href")
 	try: return soup
 	except: return "Something went wrong :("
+##################################################################################################### 
+# kingurl
+
+def kingurl(url):
+    client = cloudscraper.create_scraper(allow_brotli=False)
+    DOMAIN = "https://go.kingurl.in/"
+    url = url[:-1] if url[-1] == "/" else url
+    code = url.split("/")[-1]
+    final_url = f"{DOMAIN}/{code}"
+    ref = "https://a1.bankshiksha.in/"
+    h = {"referer": ref}
+    resp = client.get(final_url, headers=h)
+    soup = BeautifulSoup(resp.content, "html.parser")
+    inputs = soup.find_all("input")
+    data = {input.get("name"): input.get("value") for input in inputs}
+    h = {"x-requested-with": "XMLHttpRequest"}
+    time.sleep(7)
+    r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
+    try:
+        return str(r.json()["url"])
+    except BaseException:
+        return "Something went wrong :("
 
 ##################################################################################################### 
 # helpers
@@ -2421,7 +2443,12 @@ def shortners(url):
     elif "mdisky.link" in url:
         print("entered mdisky:", url)
         return mdisky(url)
-        
+
+    # kingurl
+    elif "https://kingurl.in/" in url:
+        print("entered kingurl:", url)
+        return kingurl(url)
+	    
     # htpmovies sharespark cinevood
     elif "https://htpmovies." in url or 'https://sharespark.me/' in url or "https://cinevood." in url or "https://atishmkv." in url \
         or "https://teluguflix" in url or 'https://taemovies' in url or "https://toonworld4all" in url or "https://animeremux" in url:
