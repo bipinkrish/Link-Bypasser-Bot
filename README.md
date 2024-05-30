@@ -1,6 +1,7 @@
 # Link-Bypasser-Bot
 
-a Telegram Bot (with Site) that can Bypass Ad Links, Generate Direct Links and Jump Paywalls. see the Bot in Action [@BypassLinkBot](https://t.me/BypassLinkBot) or try it on [Replit](https://replit.com/@bipinkrish/Link-Bypasser#app.py)
+a Telegram Bot (with Site) that can Bypass Ad Links, Generate Direct Links and Jump Paywalls. see the Bot in
+~~[@BypassLinkBot](https://t.me/BypassLinkBot)~~ [@BypassUrlsBot](https://t.me/BypassUrlsBot) or try it on [Replit](https://replit.com/@bipinkrish/Link-Bypasser#app.py)
 
 ---
 
@@ -22,7 +23,26 @@ you can also set these in `config.json` file
 - `UPTOBOX_TOKEN` Uptobox Token
 - `TERA_COOKIE` Terabox Cookie (only `ndus` value) (see [Help](#help))
 - `CLOUDFLARE` Use `cf_clearance` cookie from and Cloudflare protected sites
-- `PORT` Port to run the Bot Site on (default is 5000)
+- `PORT` Port to run the Bot Site on (defaults to 5000)
+
+## Optinal Databse Feature
+You need set all three to work
+
+- `DB_API` API KEY from [DBHub](https://dbhub.io/pref),
+- `DB_OWNER` (defaults to `bipinkrish`)
+- `DB_NAME` (defaults to `link_bypass.db`)
+
+---
+
+## Special Feature - Public Database
+
+Results of the bypass is hosted on public database on [DBHub.io](https://dbhub.io/bipinkrish/link_bypass.db) so if the bot finds link alredy in database it uses the result from the same, time saved and so many problems will be solved.
+
+Table is creted with the below command, if anyone wants to use it for thier own.
+
+```sql
+CREATE TABLE results (link TEXT PRIMARY KEY, result TEXT)
+```
 
 ---
 
@@ -36,7 +56,7 @@ you can also set these in `config.json` file
 
 ## Commands
 
-Everything is set programtically
+Everything is set programtically, nothing to work
 
 ```
 /start - Welcome Message

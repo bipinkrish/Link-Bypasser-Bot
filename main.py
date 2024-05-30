@@ -1,4 +1,3 @@
-import pyrogram
 from pyrogram import Client, filters
 from pyrogram.types import (
     InlineKeyboardMarkup,
@@ -15,6 +14,7 @@ from texts import HELP_TEXT
 import bypasser
 import freewall
 from time import time
+from db import DB
 
 
 # bot
@@ -38,6 +38,15 @@ with app:
         ]
     )
 
+# DB
+db_api = getenv("DB_API")
+db_owner = getenv("DB_OWNER")
+db_name = getenv("DB_NAME")
+try: database = DB(api_key=db_api, db_owner=db_owner, db_name=db_name)
+except: 
+    print("Database is Not Set")
+    database = None
+
 
 # handle index
 def handleIndex(ele: str, message: Message, msg: Message):
@@ -46,6 +55,7 @@ def handleIndex(ele: str, message: Message, msg: Message):
         app.delete_messages(message.chat.id, msg.id)
     except:
         pass
+    if database: database.insert(ele, result)
     for page in result:
         app.send_message(
             message.chat.id,
@@ -97,7 +107,12 @@ def loopthread(message: Message, otherss=False):
     temp = None
 
     for ele in urls:
-        if search(r"https?:\/\/(?:[\w.-]+)?\.\w+\/\d+:", ele):
+        if database: df_find = database.find(ele)
+        else: df_find = None
+        if df_find:
+            print("Found in DB")
+            temp = df_find
+        elif search(r"https?:\/\/(?:[\w.-]+)?\.\w+\/\d+:", ele):
             handleIndex(ele, message, msg)
             return
         elif bypasser.ispresent(bypasser.ddl.ddllist, ele):
@@ -126,9 +141,14 @@ def loopthread(message: Message, otherss=False):
                 temp = bypasser.shortners(ele)
             except Exception as e:
                 temp = "**Error**: " + str(e)
+
         print("bypassed:", temp)
         if temp != None:
+            if (not df_find) and (("Error" not in temp) and (temp != "Not in Supported Sites")) and database:
+                print("Adding to DB")
+                database.insert(ele, temp)
             links = links + temp + "\n"
+
     end = time()
     print("Took " + "{:.2f}".format(end - strt) + "sec")
 

@@ -2783,6 +2783,7 @@ def shortners(url):
 
     # else
     else:
+        print("entered: ", url)
         return "Not in Supported Sites"
 
 
