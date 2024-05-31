@@ -1,7 +1,19 @@
 # Link-Bypasser-Bot
 
-a Telegram Bot (with Site) that can Bypass Ad Links, Generate Direct Links and Jump Paywalls. see the Bot in
+a Telegram Bot (with Site) that can Bypass Ad Links, Generate Direct Links and Jump Paywalls. see the Bot at
 ~~[@BypassLinkBot](https://t.me/BypassLinkBot)~~ [@BypassUrlsBot](https://t.me/BypassUrlsBot) or try it on [Replit](https://replit.com/@bipinkrish/Link-Bypasser#app.py)
+
+---
+
+## Special Feature - Public Database
+
+Results of the bypass is hosted on public database on [DBHub.io](https://dbhub.io/bipinkrish/link_bypass.db) so if the bot finds link alredy in database it uses the result from the same, time saved and so many problems will be solved.
+
+Table is creted with the below command, if anyone wants to use it for thier own.
+
+```sql
+CREATE TABLE results (link TEXT PRIMARY KEY, result TEXT)
+```
 
 ---
 
@@ -11,7 +23,7 @@ a Telegram Bot (with Site) that can Bypass Ad Links, Generate Direct Links and J
 - `HASH` API Hash from my.telegram.org
 - `ID` API ID from my.telegram.org
 
-## Optional Variables 
+## Optional Variables
 you can also set these in `config.json` file
 
 - `CRYPT` GDTot Crypt If you don't know how to get Crypt then [Learn Here](https://www.youtube.com/watch?v=EfZ29CotRSU)
@@ -25,24 +37,12 @@ you can also set these in `config.json` file
 - `CLOUDFLARE` Use `cf_clearance` cookie from and Cloudflare protected sites
 - `PORT` Port to run the Bot Site on (defaults to 5000)
 
-## Optinal Databse Feature
+## Optinal Database Feature
 You need set all three to work
 
-- `DB_API` API KEY from [DBHub](https://dbhub.io/pref),
+- `DB_API` API KEY from [DBHub](https://dbhub.io/pref) make sure it haas Read/Write permission
 - `DB_OWNER` (defaults to `bipinkrish`)
 - `DB_NAME` (defaults to `link_bypass.db`)
-
----
-
-## Special Feature - Public Database
-
-Results of the bypass is hosted on public database on [DBHub.io](https://dbhub.io/bipinkrish/link_bypass.db) so if the bot finds link alredy in database it uses the result from the same, time saved and so many problems will be solved.
-
-Table is creted with the below command, if anyone wants to use it for thier own.
-
-```sql
-CREATE TABLE results (link TEXT PRIMARY KEY, result TEXT)
-```
 
 ---
 

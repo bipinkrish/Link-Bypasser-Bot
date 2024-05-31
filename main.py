@@ -144,7 +144,7 @@ def loopthread(message: Message, otherss=False):
 
         print("bypassed:", temp)
         if temp != None:
-            if (not df_find) and (("Error" not in temp) and (temp != "Not in Supported Sites")) and database:
+            if (not df_find) and ("http://" in temp or "https://" in temp) and database:
                 print("Adding to DB")
                 database.insert(ele, temp)
             links = links + temp + "\n"
