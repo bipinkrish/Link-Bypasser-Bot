@@ -40,7 +40,7 @@ you can also set these in `config.json` file
 ## Optinal Database Feature
 You need set all three to work
 
-- `DB_API` API KEY from [DBHub](https://dbhub.io/pref) make sure it haas Read/Write permission
+- `DB_API` API KEY from [DBHub](https://dbhub.io/pref), make sure it has Read/Write permission
 - `DB_OWNER` (defaults to `bipinkrish`)
 - `DB_NAME` (defaults to `link_bypass.db`)
 

@@ -55,7 +55,7 @@ def handleIndex(ele: str, message: Message, msg: Message):
         app.delete_messages(message.chat.id, msg.id)
     except:
         pass
-    if database: database.insert(ele, result)
+    if database and result: database.insert(ele, result)
     for page in result:
         app.send_message(
             message.chat.id,
