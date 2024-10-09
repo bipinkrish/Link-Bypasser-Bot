@@ -2428,7 +2428,7 @@ def thinfi(url: str) -> str:
 # kingurl
 
 
-def kingurl(url):
+def kingurl1(url):
     client = cloudscraper.create_scraper(allow_brotli=False)
     DOMAIN = "https://go.kingurl.in/"
     url = url[:-1] if url[-1] == "/" else url
@@ -2449,6 +2449,12 @@ def kingurl(url):
         return "Something went wrong :("
 
 
+def kingurl(url):
+    DOMAIN = "https://earn.bankshiksha.in/click.php?LinkShortUrlID"
+    url = url[:-1] if url[-1] == "/" else url
+    code = url.split("/")[-1]
+    final_url = f"{DOMAIN}={code}"
+    return final_url
 #####################################################################################################
 # helpers
 
