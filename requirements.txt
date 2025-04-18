@@ -2,11 +2,12 @@ requests
 cloudscraper
 bs4 
 python-dotenv
-pyrogram
-tgcrypto
+kurigram=2.2.0
+PyroTgCrypto=1.2.7
 lxml
 cfscrape
 urllib3==1.26
 flask
 gunicorn
 curl-cffi
+urlextract
