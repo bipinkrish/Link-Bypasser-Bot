@@ -2,8 +2,8 @@ requests
 cloudscraper
 bs4 
 python-dotenv
-kurigram=2.2.0
-PyroTgCrypto=1.2.7
+kurigram
+PyroTgCrypto
 lxml
 cfscrape
 urllib3==1.26
