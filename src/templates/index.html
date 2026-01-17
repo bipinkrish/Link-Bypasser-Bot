@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Link Bypasser</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        background: #0a0a0a;
+        color: #e5e5e5;
+        min-height: 100vh;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .title {
+        font-size: 2.5rem;
+        font-weight: 600;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0.5rem;
+      }
+
+      .subtitle {
+        color: #888;
+        font-size: 1.1rem;
+      }
+
+      .main-form {
+        background: #111;
+        border: 1px solid #222;
+        border-radius: 12px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .input-group {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .url-input {
+        flex: 1;
+        background: #1a1a1a;
+        border: 1px solid #333;
+        border-radius: 8px;
+        padding: 1rem;
+        color: #e5e5e5;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+      }
+
+      .url-input:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+
+      .submit-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        border-radius: 8px;
+        padding: 1rem 2rem;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .submit-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+      }
+
+      .result-section {
+        background: #111;
+        border: 1px solid #222;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .result-link {
+        color: #667eea;
+        text-decoration: none;
+        word-break: break-all;
+        display: block;
+        padding: 1rem;
+        background: #1a1a1a;
+        border-radius: 8px;
+        border: 1px solid #333;
+        transition: all 0.3s ease;
+      }
+
+      .result-link:hover {
+        border-color: #667eea;
+        background: #1f1f1f;
+      }
+
+      .sites-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .site-category {
+        background: #111;
+        border: 1px solid #222;
+        border-radius: 12px;
+        padding: 1.5rem;
+      }
+
+      .category-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #667eea;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .site-list {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .site-tag {
+        background: #1a1a1a;
+        border: 1px solid #333;
+        border-radius: 6px;
+        padding: 0.3rem 0.8rem;
+        font-size: 0.85rem;
+        color: #ccc;
+        transition: all 0.3s ease;
+      }
+
+      .site-tag:hover {
+        background: #222;
+        border-color: #555;
+      }
+
+      .icon {
+        width: 20px;
+        height: 20px;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 1rem;
+        }
+
+        .title {
+          font-size: 2rem;
+        }
+
+        .input-group {
+          flex-direction: column;
+        }
+
+        .sites-section {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1 class="title">Link Bypasser</h1>
+        {% with a=bypasser_sites|length, b=ddl_sites|length, c=freewall_sites|length %}
+          <p class="subtitle">Supports {{ a + b + c }} sites total</p>
+        {% endwith %}
+      </div>
+
+      <form method="post" class="main-form">
+        <div class="input-group">
+          <input
+            type="url"
+            name="url"
+            class="url-input"
+            placeholder="Enter URL to bypass..."
+            required
+          />
+          <button type="submit" class="submit-btn">Process</button>
+        </div>
+      </form>
+
+      {% if result %}
+      <div class="result-section">
+        <a href="{{ result }}" class="result-link" target="_blank"
+          >{{ result }}</a
+        >
+      </div>
+      {% endif %}
+
+      <div class="sites-section">
+        <div class="site-category">
+          <h3 class="category-title">
+            <svg class="icon" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M13.5 2c-5.621 0-10.211 4.443-10.49 10h-3.01l4 5.917 4-5.917h-2.992c.279-4.316 3.846-7.75 8.492-7.75s8.212 3.434 8.491 7.75h-2.991l4 5.917 4-5.917h-3.009c-.28-5.557-4.869-10-10.491-10z"
+              />
+            </svg>
+            Bypassers ({{ bypasser_sites|length }} sites)
+          </h3>
+          <ul class="site-list">
+            {% for site in bypasser_sites %}
+            <li class="site-tag">{{ site }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="site-category">
+          <h3 class="category-title">
+            <svg class="icon" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"
+              />
+              <path
+                d="m14 2 6 6v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8z"
+              />
+              <path d="M14 8h6l-6-6v6z" />
+            </svg>
+            DDL Sites ({{ ddl_sites|length }} sites)
+          </h3>
+          <ul class="site-list">
+            {% for site in ddl_sites %}
+            <li class="site-tag">{{ site }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="site-category">
+          <h3 class="category-title">
+            <svg class="icon" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+              />
+            </svg>
+            Freewall ({{ freewall_sites|length }} sites)
+          </h3>
+          <ul class="site-list">
+            {% for site in freewall_sites %}
+            <li class="site-tag">{{ site }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

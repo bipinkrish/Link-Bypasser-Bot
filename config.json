@@ -13,7 +13,5 @@
     "TERA_COOKIE": "",
     "CLOUDFLARE": "",
     "PORT": 5000,
-    "DB_API": "",
-    "DB_OWNER": "bipinkrish",
-    "DB_NAME": "link_bypass.db"
+    "MONGODB_URI": null
 }

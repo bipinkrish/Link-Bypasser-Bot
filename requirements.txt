@@ -11,3 +11,4 @@ flask
 gunicorn
 curl-cffi
 urlextract
+pymongo
